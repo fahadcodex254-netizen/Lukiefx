@@ -1,6 +1,6 @@
 /**
- * TRADE WITH LUKIE — Bootstrap
- * - Animated candlestick preloader
+ * Lukie Fx — Bootstrap
+ * - Animated candlestick preloader (waits for logo image)
  * - Theme-aware TradingView ticker
  * - Module initialization
  */
@@ -197,5 +197,72 @@
   }
 
   /* ============================================================
+     Wait for the preloader logo image before hiding
+  ============================================================ */
+  function waitForLogoImage(){
+    return new Promise(resolve => {
+      const img = document.querySelector('.preloader-logo');
+      if (!img) return resolve();
+      if (img.complete && img.naturalWidth > 0) return resolve();
+      let done = false;
+      const finish = () => { if (!done){ done = true; resolve(); } };
+      img.addEventListener('load', finish);
+      img.addEventListener('error', () => {
+        console.warn('Preloader logo failed to load:', img.src);
+        finish();
+      });
+      setTimeout(finish, 3000);
+    });
+  }
+
+  /* ============================================================
      Boot
- 
+  ============================================================ */
+  async function boot(){
+    const LFX = window.LFX || {};
+
+    try {
+      const stopPreloaderChart = startPreloaderChart();
+
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      loadTicker(currentTheme);
+      window.addEventListener('lfx:themechange', (e) => loadTicker(e.detail.theme));
+
+      LFX.nav?.init?.();
+      LFX.charts?.init?.();
+      LFX.market?.init?.();
+      LFX.ui?.init?.();
+      LFX.pages?.init?.();
+      LFX.tools?.init?.();
+
+      const hidePreloader = async () => {
+        const pre = document.getElementById('preloader');
+        if (!pre) return;
+        await waitForLogoImage();
+        setTimeout(() => {
+          pre.classList.add('hide');
+          if (typeof stopPreloaderChart === 'function') stopPreloaderChart();
+        }, 500);
+      };
+
+      if (document.readyState === 'complete'){
+        hidePreloader();
+      } else {
+        window.addEventListener('load', hidePreloader);
+        setTimeout(hidePreloader, 4500);
+      }
+
+      console.log('%cLukie Fx', 'color:#f5b301;font-size:22px;font-weight:900;letter-spacing:2px');
+      console.log('%c🕯️ Animated candlestick preloader · 🌓 Theme toggle · 📱 Responsive', 'color:#f5b301;font-size:12px;font-weight:700');
+    } catch(err){
+      console.error('Lukie Fx boot error:', err);
+      document.getElementById('preloader')?.classList.add('hide');
+    }
+  }
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
