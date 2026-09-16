@@ -1,5 +1,5 @@
 /**
- * LUKIE FX — Page Overlay System
+ * Lukie Fx — Page Overlay System
  */
 (function(){
   const { CONFIG, $, $$ } = LFX;
@@ -61,7 +61,7 @@
       `,
       pricing: { amount:'$49', period:'/month', note:'Billed monthly · Cancel anytime' },
       ctaLabel: 'Pay & Get Started',
-      paymentMessage: 'Hi LUKIE FX, I would like to pay and get started with the Premium Trading Signals subscription ($49/month). Please send me the payment details.'
+      paymentMessage: 'Hi Lukie Fx, I would like to pay and get started with the Premium Trading Signals subscription ($49/month). Please send me the payment details.'
     },
     copy: {
       title: 'Copy Trading',
@@ -79,11 +79,11 @@
       `,
       pricing: { amount:'$79', period:'/month', note:'Billed monthly · Cancel anytime' },
       ctaLabel: 'Pay & Get Started',
-      paymentMessage: 'Hi LUKIE FX, I would like to pay and get started with Copy Trading ($79/month). Please send me the payment details.'
+      paymentMessage: 'Hi Lukie Fx, I would like to pay and get started with Copy Trading ($79/month). Please send me the payment details.'
     },
     management: {
       title: 'Account Management Onboarding',
-      lead: 'No linking fee — just share your trading account details so LUKIE can link you up.',
+      lead: 'No linking fee — just share your trading account details so we can link you up.',
       onboarding: true,
       fields: [
         { id:'onb_name',    label:'Full name',                type:'text',     placeholder:'Your full name',              required:true },
@@ -114,7 +114,7 @@
       `,
       pricing: { amount:'$99', period:'/month', note:'Billed monthly · Cancel anytime' },
       ctaLabel: 'Pay & Get Started',
-      paymentMessage: 'Hi LUKIE FX, I would like to pay and get started with Education & Mentorship ($99/month). Please send me the payment details.'
+      paymentMessage: 'Hi Lukie Fx, I would like to pay and get started with Education & Mentorship ($99/month). Please send me the payment details.'
     },
     funded: {
       title: 'Funded Challenges',
@@ -132,7 +132,7 @@
       `,
       pricing: { amount:'$149', period:'one-time', note:'Refundable with your first funded payout' },
       ctaLabel: 'Pay & Get Started',
-      paymentMessage: 'Hi LUKIE FX, I would like to pay and start the Funded Challenge ($149 one-time). Please send me the payment details.'
+      paymentMessage: 'Hi Lukie Fx, I would like to pay and start the Funded Challenge ($149 one-time). Please send me the payment details.'
     },
     risk: {
       title: 'Risk Management Tools',
@@ -150,7 +150,7 @@
       `,
       pricing: { amount:'$39', period:'/month', note:'Billed monthly · Cancel anytime' },
       ctaLabel: 'Pay & Get Started',
-      paymentMessage: 'Hi LUKIE FX, I would like to pay and get started with the Risk Management Tools ($39/month). Please send me the payment details.'
+      paymentMessage: 'Hi Lukie Fx, I would like to pay and get started with the Risk Management Tools ($39/month). Please send me the payment details.'
     }
   };
 
@@ -174,7 +174,7 @@
             </div>
             <p style="color:var(--muted);font-size:.86rem;margin-bottom:24px">${svc.pricing.note}</p>
             <a href="#" class="btn btn-wa btn-block" style="margin-bottom:12px" data-action="whatsapp" data-message="${svc.paymentMessage}">${svc.ctaLabel}</a>
-            <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I have a question about ${svc.title}.">Ask a Question</a>
+            <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi Lukie Fx, I have a question about ${svc.title}.">Ask a Question</a>
           </aside>
         </div>
       </div>
@@ -272,15 +272,15 @@
           <li>To respond to your inquiries and provide customer support</li>
         </ul>
         <h2>4. Information Sharing</h2>
-        <p>We do <strong>not</strong> sell, trade or rent your personal information to third parties. We may share your information only with service providers who help us operate, legal authorities when required by law, and successors in the event of a merger or acquisition.</p>
+        <p>We do <strong>not</strong> sell, trade or rent your personal information to third parties.</p>
         <h2>5. Data Security</h2>
-        <p>We implement industry-standard security measures to protect your personal information, including SSL/TLS encryption for data in transit and restricted access on a need-to-know basis.</p>
+        <p>We implement industry-standard security measures to protect your personal information.</p>
         <h2>6. Your Rights</h2>
-        <p>Depending on your jurisdiction, you may have the right to access, correct or delete your personal information, and to opt out of marketing communications. Contact us at <span class="placeholder">${CONFIG.EMAIL}</span> to exercise these rights.</p>
+        <p>Contact us at <span class="placeholder">${CONFIG.EMAIL}</span> to exercise your data rights.</p>
         <h2>7. Contact Us</h2>
         <ul>
           <li>Email: <span class="placeholder">${CONFIG.EMAIL}</span></li>
-          <li>Phone: <span class="placeholder">${CONFIG.PHONE_DISPLAY}</span></li>
+          <li>WhatsApp: <span class="placeholder">${CONFIG.PHONE_DISPLAY}</span></li>
           <li>Address: <span class="placeholder">${CONFIG.COMPANY_ADDRESS}</span></li>
         </ul>
         <div class="page-last-updated">Last updated: <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></div>
@@ -292,31 +292,27 @@
       content: `
         <p><strong>Effective date:</strong> <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></p>
         <h2>1. Acceptance of Terms</h2>
-        <p>By accessing or using the ${CONFIG.COMPANY_NAME} website and services, you agree to be bound by these Terms of Service.</p>
+        <p>By accessing or using ${CONFIG.COMPANY_NAME}, you agree to be bound by these Terms of Service.</p>
         <h2>2. Eligibility</h2>
-        <p>You must be at least 18 years old and legally capable of entering into binding contracts to use our services.</p>
+        <p>You must be at least 18 years old and legally capable of entering into binding contracts.</p>
         <h2>3. Nature of Services</h2>
-        <p>${CONFIG.COMPANY_NAME} provides educational content, market analysis, trading signals and mentorship. We are <strong>not</strong> a broker, dealer or financial advisor. We do not hold client funds, execute trades on your behalf, or provide personalized investment advice.</p>
+        <p>${CONFIG.COMPANY_NAME} provides educational content, market analysis, trading signals and mentorship. We are <strong>not</strong> a broker or financial advisor.</p>
         <h2>4. No Financial Advice</h2>
-        <p>All content, signals, analysis and mentorship provided by ${CONFIG.COMPANY_NAME} are for educational and informational purposes only.</p>
+        <p>All content is for educational and informational purposes only.</p>
         <h2>5. Risk Disclosure</h2>
-        <p>Trading foreign exchange, CFDs, commodities and cryptocurrencies carries a high level of risk and may not be suitable for all investors. You could lose some or all of your initial capital.</p>
+        <p>Trading carries a high level of risk and you could lose some or all of your capital.</p>
         <h2>6. Account Registration</h2>
         <ul>
-          <li>You agree to provide accurate, current and complete information during registration</li>
-          <li>You are responsible for maintaining the confidentiality of your account credentials</li>
-          <li>We reserve the right to suspend or terminate accounts that violate these terms</li>
+          <li>Provide accurate information during registration</li>
+          <li>Maintain the confidentiality of your credentials</li>
+          <li>We may suspend accounts that violate these terms</li>
         </ul>
         <h2>7. Payment and Refunds</h2>
-        <p>Subscription fees are billed in advance on a monthly basis. All payments are non-refundable except as described in our <a href="#" data-page="refund">Refund Policy</a>. Payments are accepted via <span class="placeholder">${CONFIG.PAYMENT_METHODS}</span>.</p>
-        <h2>8. Intellectual Property</h2>
-        <p>All content on this website is the property of ${CONFIG.COMPANY_NAME} and is protected by international copyright laws.</p>
-        <h2>9. Limitation of Liability</h2>
-        <p>To the maximum extent permitted by law, ${CONFIG.COMPANY_NAME} shall not be liable for any direct, indirect, incidental, consequential or punitive damages arising from your use of our services.</p>
-        <h2>10. Governing Law</h2>
-        <p>These Terms shall be governed by and construed in accordance with the laws of <span class="placeholder">[YOUR_JURISDICTION]</span>.</p>
-        <h2>11. Contact</h2>
-        <p>Questions about these terms? Contact us at <span class="placeholder">${CONFIG.EMAIL}</span>.</p>
+        <p>Subscriptions are billed monthly. Refunds per our <a href="#" data-page="refund">Refund Policy</a>. Payments accepted via <span class="placeholder">${CONFIG.PAYMENT_METHODS}</span>.</p>
+        <h2>8. Governing Law</h2>
+        <p>These Terms shall be governed by the laws of <span class="placeholder">[YOUR_JURISDICTION]</span>.</p>
+        <h2>9. Contact</h2>
+        <p>Questions? Contact us at <span class="placeholder">${CONFIG.EMAIL}</span>.</p>
         <div class="page-last-updated">Effective date: <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></div>
       `
     },
@@ -326,21 +322,21 @@
       content: `
         <p><strong>Effective date:</strong> <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></p>
         <h2>⚠️ High Risk Warning</h2>
-        <p>Trading foreign exchange (Forex), Contracts for Difference (CFDs), commodities, indices and cryptocurrencies carries a <strong>high level of risk</strong> and may not be suitable for all investors. <strong>You could sustain a loss of some or all of your initial investment.</strong> Do not invest money that you cannot afford to lose.</p>
+        <p>Trading forex, CFDs, commodities, indices and cryptocurrencies carries a <strong>high level of risk</strong>. <strong>You could sustain a loss of some or all of your initial investment.</strong></p>
         <h2>Leverage Risk</h2>
-        <p>Leverage allows you to control a large position with a relatively small amount of capital. While it can amplify profits, it can equally amplify losses.</p>
+        <p>Leverage amplifies both profits and losses.</p>
         <h2>Market Risk</h2>
-        <p>Financial markets are volatile and unpredictable. Prices can move rapidly against your position due to economic news, geopolitical events, central bank decisions and other factors.</p>
+        <p>Markets are volatile and unpredictable.</p>
         <h2>Liquidity Risk</h2>
-        <p>During periods of high volatility or market stress, liquidity may dry up, causing wider spreads, slippage and difficulty closing positions at your desired price.</p>
+        <p>Liquidity may dry up during high volatility.</p>
         <h2>Technology Risk</h2>
-        <p>Trading platforms may experience outages, connectivity issues or execution delays. Stop-loss orders do not guarantee you will be closed at your specified level.</p>
+        <p>Platforms may experience outages or execution delays.</p>
         <h2>Third-Party Risk</h2>
-        <p>${CONFIG.COMPANY_NAME} provides educational content and analysis only. We do not execute trades or hold client funds.</p>
+        <p>${CONFIG.COMPANY_NAME} provides education only. We do not execute trades or hold funds.</p>
         <h2>No Guarantee of Profit</h2>
-        <p>Past performance is not indicative of future results. We make no guarantee that you will profit from using our services.</p>
+        <p>Past performance is not indicative of future results.</p>
         <h2>Seek Independent Advice</h2>
-        <p>If you do not fully understand these risks, please seek independent professional advice before trading.</p>
+        <p>Consult a professional if you do not understand these risks.</p>
         <div class="page-last-updated">Effective date: <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></div>
       `
     },
@@ -350,26 +346,25 @@
       content: `
         <p><strong>Effective date:</strong> <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></p>
         <h2>Subscription Services</h2>
-        <p>All subscription-based services are billed in advance on a monthly recurring basis.</p>
+        <p>Billed monthly in advance.</p>
         <h2>Refund Eligibility</h2>
         <ul>
-          <li><strong>Within 7 days of first subscription:</strong> Full refund if you're not satisfied</li>
-          <li><strong>Duplicate payment:</strong> The duplicate charge will be refunded in full</li>
-          <li><strong>Service not delivered:</strong> Full refund will be issued</li>
+          <li><strong>Within 7 days of first subscription:</strong> Full refund if not satisfied</li>
+          <li><strong>Duplicate payment:</strong> Refunded in full</li>
+          <li><strong>Service not delivered:</strong> Full refund issued</li>
         </ul>
         <h2>Non-Refundable Situations</h2>
         <ul>
-          <li>After the 7-day refund window has passed</li>
+          <li>After the 7-day refund window</li>
           <li>Trading losses or dissatisfaction with outcomes</li>
-          <li>Failure to use the service during your subscription period</li>
-          <li>Account termination due to violation of our Terms of Service</li>
+          <li>Account termination due to violation of Terms</li>
         </ul>
         <h2>Funded Challenges</h2>
-        <p>The Funded Challenge fee is refundable <strong>only after</strong> you successfully pass the evaluation and receive your first payout.</p>
+        <p>Refundable <strong>only after</strong> you pass the evaluation and receive your first payout.</p>
         <h2>How to Request a Refund</h2>
-        <p>Contact us at <span class="placeholder">${CONFIG.EMAIL}</span> or via WhatsApp at <span class="placeholder">${CONFIG.PHONE_DISPLAY}</span>.</p>
+        <p>Contact us at <span class="placeholder">${CONFIG.EMAIL}</span> or WhatsApp <span class="placeholder">${CONFIG.PHONE_DISPLAY}</span>.</p>
         <h2>Processing Time</h2>
-        <p>Approved refunds are processed within 5–10 business days.</p>
+        <p>Approved refunds processed in 5–10 business days.</p>
         <div class="page-last-updated">Effective date: <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></div>
       `
     },
@@ -378,26 +373,26 @@
       subtitle: 'Quick answers to common questions and ways to reach us.',
       content: `
         <h2>📞 Contact Support</h2>
-        <p>Our team is available <span class="placeholder">${CONFIG.SUPPORT_HOURS}</span> and typically responds within a few hours.</p>
+        <p>Available <span class="placeholder">${CONFIG.SUPPORT_HOURS}</span>.</p>
         <ul>
           <li><strong>WhatsApp:</strong> <span class="placeholder">${CONFIG.PHONE_DISPLAY}</span> — fastest response</li>
-          <li><strong>Email:</strong> <span class="placeholder">${CONFIG.EMAIL}</span> — for detailed inquiries</li>
-          <li><strong>Telegram:</strong> <span class="placeholder">${CONFIG.TELEGRAM_LINK}</span> — join our community</li>
+          <li><strong>Email:</strong> <span class="placeholder">${CONFIG.EMAIL}</span></li>
+          <li><strong>Telegram:</strong> <span class="placeholder">${CONFIG.TELEGRAM_LINK}</span></li>
         </ul>
         <h2>🚀 Getting Started</h2>
         <ul>
-          <li>1. Join our free Telegram community to see sample content</li>
-          <li>2. Explore our service offerings and pick the one that fits your goals</li>
-          <li>3. Complete the onboarding for your chosen service</li>
-          <li>4. Follow our daily market updates and start learning</li>
+          <li>1. Join our Telegram community</li>
+          <li>2. Explore service offerings</li>
+          <li>3. Complete onboarding</li>
+          <li>4. Follow daily market updates</li>
         </ul>
         <h2>💳 Payment &amp; Billing</h2>
-        <p>We accept <span class="placeholder">${CONFIG.PAYMENT_METHODS}</span>. Minimum deposit is <span class="placeholder">${CONFIG.MIN_DEPOSIT}</span>.</p>
+        <p>We accept <span class="placeholder">${CONFIG.PAYMENT_METHODS}</span>. Minimum deposit <span class="placeholder">${CONFIG.MIN_DEPOSIT}</span>.</p>
         <h2>🎓 Common Questions</h2>
-        <p><strong>Do I need a broker account first?</strong><br>Yes, our signals and strategies work on your own broker account.</p>
-        <p><strong>Can I cancel anytime?</strong><br>Yes. All subscriptions are month-to-month with no lock-in.</p>
-        <p><strong>Do you guarantee profits?</strong><br>No. Trading involves risk and no service can guarantee profits.</p>
-        <div class="page-last-updated">Need more help? Reach out on WhatsApp for a quick reply.</div>
+        <p><strong>Do I need a broker account?</strong><br>Yes, our strategies work on your own broker account.</p>
+        <p><strong>Can I cancel anytime?</strong><br>Yes. All subscriptions are month-to-month.</p>
+        <p><strong>Do you guarantee profits?</strong><br>No. Trading involves risk.</p>
+        <div class="page-last-updated">Need more help? WhatsApp us for a quick reply.</div>
       `
     }
   };
@@ -490,7 +485,7 @@
               <label for="reg_newsletter">Send me weekly market analysis, trade ideas and platform updates.</label>
             </div>
             <button type="submit" class="form-submit">Create Account</button>
-            <div class="form-success" id="registerSuccess">✅ Account created! Please check your email to verify your address. Our team will contact you shortly on WhatsApp.</div>
+            <div class="form-success" id="registerSuccess">✅ Account created! Please check your email to verify your address.</div>
           </form>
         </div>
       </div>
@@ -514,7 +509,7 @@
             <button type="submit" class="form-submit">Sign In</button>
             <div class="form-success" id="loginSuccess">✅ Sign-in successful! (demo only)</div>
             <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:18px">
-              Forgot password? <a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I forgot my password and need help resetting it." style="color:var(--gold);text-decoration:underline">Contact support</a>.
+              Forgot password? <a href="#" data-action="whatsapp" data-message="Hi Lukie Fx, I forgot my password and need help resetting it." style="color:var(--gold);text-decoration:underline">Contact support</a>.
             </p>
           </form>
         </div>
