@@ -1,18 +1,26 @@
 /**
- * LUKIE FX — Configuration & Shared Utilities
+ * TRADE WITH LUKIE — Configuration & Shared Utilities
  */
+
 window.LFX = window.LFX || {};
 
 LFX.CONFIG = {
-  WHATSAPP_NUMBER:    '[YOUR_WHATSAPP_NUMBER]',
+  /* Contact */
+  WHATSAPP_NUMBER:    '254114319611',          /* 0114319611 in international format */
+  WHATSAPP_DISPLAY:   '0114319611',
   TELEGRAM_LINK:      '[YOUR_TELEGRAM_LINK]',
   EMAIL:              '[YOUR_EMAIL_ADDRESS]',
-  PHONE_DISPLAY:      '[YOUR_PHONE_NUMBER]',
-  COMPANY_NAME:       'LUKIE FX',
+  PHONE_DISPLAY:      '0114319611',
+
+  /* Company */
+  COMPANY_NAME:       'TRADE WITH LUKIE',
+  COMPANY_SHORT:      'TWL',
   COMPANY_ADDRESS:    '[YOUR_REGISTERED_ADDRESS]',
   REGULATORY_LICENSE: '[YOUR_REGULATORY_LICENSE_NUMBER]',
   SUPPORT_HOURS:      'Monday – Friday · 24 hours',
   EFFECTIVE_DATE:     '[EFFECTIVE_DATE]',
+
+  /* Payments */
   PAYMENT_METHODS:    '[YOUR_ACCEPTED_PAYMENT_METHODS]',
   MIN_DEPOSIT:        '[MINIMUM_DEPOSIT]'
 };
@@ -35,7 +43,9 @@ LFX.escapeHTML = (str) => String(str).replace(/[&<>"']/g, c => ({
 LFX.bus = (() => {
   const listeners = {};
   return {
-    on(evt, fn){ (listeners[evt] = listeners[evt] || []).push(fn); },
+    on(evt, fn){
+      (listeners[evt] = listeners[evt] || []).push(fn);
+    },
     emit(evt, detail){
       (listeners[evt] || []).forEach(fn => {
         try { fn(detail); } catch(e){ console.warn('bus handler error:', e); }
