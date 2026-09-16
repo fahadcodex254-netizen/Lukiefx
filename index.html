@@ -14,6 +14,15 @@
 </head>
 <body>
 
+<!-- Preloader with animated candlestick canvas -->
+<div id="preloader">
+  <canvas id="preloaderChart"></canvas>
+  <div class="preloader-content">
+    <div class="loader-mark"><span class="grad">LUKIE</span> FX</div>
+    <div class="loader-bar"><span></span></div>
+  </div>
+</div>
+
 <div class="config-notice" id="configNotice">
   <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.86a2 2 0 013.4 0l7.5 13a2 2 0 01-1.7 3H4.5a2 2 0 01-1.7-3l7.5-13z"/></svg>
   <div style="flex:1">
@@ -21,13 +30,6 @@
     <p>Some contact details are marked as <code>[PLACEHOLDERS]</code>. Edit <code>js/config.js</code> to fill them in.</p>
   </div>
   <button class="close-btn" aria-label="Dismiss" data-dismiss-notice>×</button>
-</div>
-
-<div id="preloader">
-  <div>
-    <div class="loader-mark"><span class="grad">LUKIE</span> FX</div>
-    <div class="loader-bar"><span></span></div>
-  </div>
 </div>
 
 <div id="progress"></div>
@@ -254,9 +256,6 @@
   </div>
 </section>
 
-<!-- ============================================================
-     FREE TRADING TOOLS — Lot Size Calculator + Strength Meter
-============================================================ -->
 <section class="section" id="tools" style="background:linear-gradient(180deg,transparent,rgba(var(--glow-rgb),.05),transparent)">
   <div class="container">
     <div class="section-head center" data-reveal>
@@ -267,7 +266,6 @@
 
     <div class="tools-grid">
 
-      <!-- LOT SIZE CALCULATOR -->
       <div class="tool-card" data-reveal>
         <div class="tool-head">
           <div class="tool-icon">
@@ -328,7 +326,6 @@
         </div>
       </div>
 
-      <!-- CURRENCY STRENGTH METER -->
       <div class="tool-card" data-reveal>
         <div class="tool-head">
           <div class="tool-icon">
