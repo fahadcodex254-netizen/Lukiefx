@@ -4,21 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#04091a" />
-<meta name="description" content="LUKIE FX — Professional forex trading, premium signals, copy trading and account management." />
-<title>LUKIE FX — Trade Smarter. Profit Faster.</title>
+<meta name="description" content="TRADE WITH LUKIE — Professional forex trading, premium signals, copy trading and account management." />
+<title>TRADE WITH LUKIE — Learn · Trade · Grow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a1836'/%3E%3Cg fill='%237dd3fc'%3E%3Crect x='14' y='30' width='6' height='20'/%3E%3Crect x='26' y='22' width='6' height='28'/%3E%3Crect x='38' y='14' width='6' height='36'/%3E%3C/g%3E%3Cpath d='M44 22 L54 12 M54 12 L46 12 M54 12 L54 20' stroke='%23f5b301' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ctext x='32' y='44' font-size='34' font-weight='900' text-anchor='middle' fill='%23f5b301' font-family='Georgia,serif'%3ETL%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 
-<!-- Preloader with animated candlestick canvas -->
+<!-- Preloader -->
 <div id="preloader">
   <canvas id="preloaderChart"></canvas>
   <div class="preloader-content">
-    <div class="loader-mark"><span class="grad">LUKIE</span> FX</div>
+    <div class="loader-mark">TRADE WITH <span class="grad-gold">LUKIE</span></div>
     <div class="loader-bar"><span></span></div>
   </div>
 </div>
@@ -36,25 +36,52 @@
 
 <header class="nav" id="nav">
   <div class="container nav-inner">
-    <a href="#home" class="logo" aria-label="LUKIE FX home">
+    <a href="#home" class="logo" aria-label="Trade With Lukie home">
       <span class="logo-icon" aria-hidden="true">
-        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-          <path d="M49 15 A 24 24 0 1 0 56 32" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
-          <g fill="currentColor" stroke="currentColor" stroke-linecap="round">
-            <line x1="22" y1="42" x2="22" y2="54" stroke-width="2"/>
-            <rect x="19" y="45" width="6" height="7" stroke="none"/>
-            <line x1="30" y1="36" x2="30" y2="52" stroke-width="2"/>
-            <rect x="27" y="39" width="6" height="10" stroke="none"/>
-            <line x1="38" y1="30" x2="38" y2="48" stroke-width="2"/>
-            <rect x="35" y="33" width="6" height="11" stroke="none"/>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffe680"/>
+              <stop offset="45%" stop-color="#f5b301"/>
+              <stop offset="100%" stop-color="#8a6300"/>
+            </linearGradient>
+            <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="55%" stop-color="#d4dae3"/>
+              <stop offset="100%" stop-color="#7c8490"/>
+            </linearGradient>
+            <linearGradient id="goldArc" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#8a6300"/>
+              <stop offset="50%" stop-color="#ffe680"/>
+              <stop offset="100%" stop-color="#f5b301"/>
+            </linearGradient>
+          </defs>
+          <path d="M 20 62 A 40 40 0 0 1 82 30"
+                fill="none" stroke="url(#goldArc)" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M 18 22 L 52 22 L 52 30 L 39 30 L 39 74 L 31 74 L 31 30 L 18 30 Z"
+                fill="url(#goldGrad)"/>
+          <path d="M 44 30 L 52 30 L 52 68 L 74 68 L 74 76 L 44 76 Z"
+                fill="url(#silverGrad)"/>
+          <g>
+            <rect x="58" y="48" width="3" height="12" fill="#22c55e"/>
+            <rect x="56.8" y="50" width="5.4" height="7" fill="#22c55e"/>
+            <rect x="64" y="42" width="3" height="14" fill="#22c55e"/>
+            <rect x="62.8" y="44" width="5.4" height="9" fill="#22c55e"/>
+            <rect x="70" y="46" width="3" height="10" fill="#f43f5e"/>
+            <rect x="68.8" y="48" width="5.4" height="6" fill="#f43f5e"/>
+            <rect x="76" y="36" width="3" height="14" fill="#22c55e"/>
+            <rect x="74.8" y="38" width="5.4" height="9" fill="#22c55e"/>
           </g>
-          <path d="M40 28 L 54 14 M 54 14 L 45 14 M 54 14 L 54 23" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 34 70 Q 60 60 84 26"
+                fill="none" stroke="url(#goldGrad)" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M 84 26 L 84 38 M 84 26 L 72 26"
+                fill="none" stroke="#f5b301" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </span>
       <span class="logo-divider" aria-hidden="true"></span>
       <span class="logo-text">
-        <b>LUKIE <span class="fx">FX</span></b>
-        <small>Trade With Confidence</small>
+        <b>TRADE WITH <span class="fx">LUKIE</span></b>
+        <small>Learn · Trade · Grow</small>
       </span>
     </a>
 
@@ -66,7 +93,7 @@
       <a href="#tools">Tools</a>
       <a href="#plans">Plans</a>
       <a href="#faq">FAQ</a>
-      <a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a>
+      <a href="#" data-action="whatsapp" data-message="Hi Trade With Lukie, I'd like to get in touch.">Contact</a>
     </nav>
 
     <div class="nav-cta">
@@ -90,7 +117,7 @@
   <a href="#plans">Plans</a>
   <a href="#testimonials">Reviews</a>
   <a href="#faq">FAQ</a>
-  <a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a>
+  <a href="#" data-action="whatsapp" data-message="Hi Trade With Lukie, I'd like to get in touch.">Contact</a>
   <div class="mobile-menu-footer">
     <span>Appearance</span>
     <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
@@ -109,9 +136,9 @@
 <section class="hero" id="home">
   <div class="container hero-grid">
     <div data-reveal="left">
-      <span class="eyebrow">Trusted Forex Trading Partner</span>
+      <span class="eyebrow">Learn · Trade · Grow</span>
       <h1>Trade Smarter.<br /><span class="grad-gold">Profit Faster.</span></h1>
-      <p class="lead">LUKIE FX gives you institutional-grade tools, real-time market intelligence and expert-guided strategies — so you can trade the world's markets with clarity and confidence.</p>
+      <p class="lead">TRADE WITH LUKIE gives you institutional-grade tools, real-time market intelligence and expert-guided strategies — so you can trade the world's markets with clarity and confidence.</p>
       <div class="hero-actions">
         <a href="#tools" class="btn btn-accent">
           Try Free Tools
@@ -164,9 +191,9 @@
 <section class="section" id="about">
   <div class="container about-grid">
     <div data-reveal="left">
-      <span class="eyebrow">About LUKIE FX</span>
+      <span class="eyebrow">About Trade With Lukie</span>
       <h2>Built For Traders Who <span class="grad-gold">Refuse To Settle</span></h2>
-      <p style="color:var(--muted);margin-top:18px">LUKIE FX was founded on a simple belief: world-class trading tools shouldn't be reserved for institutions. We combine deep market research, transparent execution and hands-on mentorship to give every trader a genuine edge.</p>
+      <p style="color:var(--muted);margin-top:18px">TRADE WITH LUKIE was founded on a simple belief: world-class trading tools shouldn't be reserved for institutions. We combine deep market research, transparent execution and hands-on mentorship to give every trader a genuine edge.</p>
       <ul class="about-list">
         <li><span class="check">✓</span><span><strong>Transparent Pricing</strong> — no hidden spreads, no surprise fees. Ever.</span></li>
         <li><span class="check">✓</span><span><strong>Lightning Execution</strong> — orders filled in under 30 milliseconds.</span></li>
@@ -265,7 +292,6 @@
     </div>
 
     <div class="tools-grid">
-
       <div class="tool-card" data-reveal>
         <div class="tool-head">
           <div class="tool-icon">
@@ -352,7 +378,6 @@
           </p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -375,7 +400,7 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Community chat access</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Beginner video course</li>
         </ul>
-        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Starter plan ($49/month).">Choose Starter</a>
+        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi Trade With Lukie, I'd like to subscribe to the Starter plan ($49/month).">Choose Starter</a>
       </div>
       <div class="plan featured" data-reveal>
         <h3>Professional</h3>
@@ -388,7 +413,7 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Risk management toolkit</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Priority support</li>
         </ul>
-        <a href="#" class="btn btn-accent btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Professional plan ($129/month).">Choose Professional</a>
+        <a href="#" class="btn btn-accent btn-block" data-action="whatsapp" data-message="Hi Trade With Lukie, I'd like to subscribe to the Professional plan ($129/month).">Choose Professional</a>
       </div>
       <div class="plan" data-reveal>
         <h3>VIP Elite</h3>
@@ -401,7 +426,7 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Dedicated account manager</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Funded account fast-track</li>
         </ul>
-        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the VIP Elite plan ($299/month).">Choose VIP Elite</a>
+        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi Trade With Lukie, I'd like to subscribe to the VIP Elite plan ($299/month).">Choose VIP Elite</a>
       </div>
     </div>
   </div>
@@ -411,7 +436,7 @@
   <div class="container">
     <div class="section-head center" data-reveal>
       <span class="eyebrow">Testimonials</span>
-      <h2>Traders Who <span class="grad-gold">Trust LUKIE FX</span></h2>
+      <h2>Traders Who <span class="grad-gold">Trust Trade With Lukie</span></h2>
     </div>
     <div style="max-width:880px;margin-inline:auto" data-reveal="scale">
       <div class="slider">
@@ -419,7 +444,7 @@
           <div class="slide">
             <div class="quote-mark">"</div>
             <div class="stars">★★★★★</div>
-            <p>The signals are genuinely well-researched, not random alerts. My win rate improved noticeably within two months of joining LUKIE FX.</p>
+            <p>The signals are genuinely well-researched, not random alerts. My win rate improved noticeably within two months of joining Trade With Lukie.</p>
             <div class="who"><div class="avatar">DM</div><div><b>Daniel M.</b><small>Retail Trader · Nairobi</small></div></div>
           </div>
           <div class="slide">
@@ -431,7 +456,7 @@
           <div class="slide">
             <div class="quote-mark">"</div>
             <div class="stars">★★★★★</div>
-            <p>Execution is fast, spreads are tight and support actually replies. After three years with other brokers, LUKIE FX is a clear step up.</p>
+            <p>Execution is fast, spreads are tight and support actually replies. After three years with other brokers, Trade With Lukie is a clear step up.</p>
             <div class="who"><div class="avatar">JK</div><div><b>James K.</b><small>Funded Trader · Dubai</small></div></div>
           </div>
         </div>
@@ -448,12 +473,12 @@
       <h2>Questions? <span class="grad-gold">We've Got Answers</span></h2>
     </div>
     <div class="faq" data-reveal>
-      <div class="faq-item"><button class="faq-q">What is LUKIE FX and how does it work? <i>+</i></button><div class="faq-a"><p>LUKIE FX is a trading education and market-analysis platform. We provide signals, copy trading, account management and mentorship. You connect your own brokerage account and apply the strategies we share — we never hold your funds.</p></div></div>
+      <div class="faq-item"><button class="faq-q">What is Trade With Lukie and how does it work? <i>+</i></button><div class="faq-a"><p>Trade With Lukie is a trading education and market-analysis platform. We provide signals, copy trading, account management and mentorship. You connect your own brokerage account and apply the strategies we share — we never hold your funds.</p></div></div>
       <div class="faq-item"><button class="faq-q">Do I need experience to get started? <i>+</i></button><div class="faq-a"><p>Not at all. Our Starter plan includes a beginner course that covers charts, order types and risk fundamentals. Most members start seeing consistency within 60–90 days of active practice.</p></div></div>
       <div class="faq-item"><button class="faq-q">How much capital do I need to begin? <i>+</i></button><div class="faq-a"><p>You can begin practising with a demo account for free. For live trading we generally recommend starting with at least $200 so that proper risk management (1–2% per trade) remains practical.</p></div></div>
       <div class="faq-item"><button class="faq-q">Are the signals sent in real time? <i>+</i></button><div class="faq-a"><p>Yes. Signals are pushed instantly to our private Telegram room and member dashboard, complete with entry price, stop-loss, take-profit and a short rationale for each setup.</p></div></div>
       <div class="faq-item"><button class="faq-q">Can I cancel my membership anytime? <i>+</i></button><div class="faq-a"><p>Absolutely. All plans are month-to-month with no lock-in contract. You can cancel from your dashboard in one click and retain access until the end of your billing period.</p></div></div>
-      <div class="faq-item"><button class="faq-q">Is trading risky? <i>+</i></button><div class="faq-a"><p>Yes — trading leveraged instruments carries significant risk and can result in the loss of your capital. LUKIE FX provides education and analysis, not financial advice. Never trade money you cannot afford to lose.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Is trading risky? <i>+</i></button><div class="faq-a"><p>Yes — trading leveraged instruments carries significant risk and can result in the loss of your capital. Trade With Lukie provides education and analysis, not financial advice. Never trade money you cannot afford to lose.</p></div></div>
     </div>
   </div>
 </section>
@@ -462,9 +487,9 @@
   <div class="container">
     <div class="cta-band" data-reveal="scale">
       <h2>Your Next Trade Could Be <span class="grad-gold">Your Best One</span></h2>
-      <p>Join thousands of traders using LUKIE FX to approach the markets with discipline, data and confidence.</p>
+      <p>Join thousands of traders using Trade With Lukie to approach the markets with discipline, data and confidence.</p>
       <div class="hero-actions">
-        <a href="#" class="btn btn-accent" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to create a free account.">Get Started</a>
+        <a href="#" class="btn btn-accent" data-action="whatsapp" data-message="Hi Trade With Lukie, I'd like to create a free account.">Get Started</a>
         <a href="#" class="btn btn-tg" data-action="telegram">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.2-.5.4-.9.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L7.3 12.6l-4.4-1.4c-1-.3-1-1 .2-1.4l17.4-6.7c.8-.3 1.5.2 1.4 1.2z"/></svg>
           Join Telegram
@@ -479,23 +504,50 @@
   <div class="container">
     <div class="foot-grid">
       <div class="foot-brand">
-        <a href="#home" class="logo" aria-label="LUKIE FX home">
+        <a href="#home" class="logo" aria-label="Trade With Lukie home">
           <span class="logo-icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-              <path d="M49 15 A 24 24 0 1 0 56 32" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
-              <g fill="currentColor" stroke="currentColor" stroke-linecap="round">
-                <line x1="22" y1="42" x2="22" y2="54" stroke-width="2"/>
-                <rect x="19" y="45" width="6" height="7" stroke="none"/>
-                <line x1="30" y1="36" x2="30" y2="52" stroke-width="2"/>
-                <rect x="27" y="39" width="6" height="10" stroke="none"/>
-                <line x1="38" y1="30" x2="38" y2="48" stroke-width="2"/>
-                <rect x="35" y="33" width="6" height="11" stroke="none"/>
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="goldGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffe680"/>
+                  <stop offset="45%" stop-color="#f5b301"/>
+                  <stop offset="100%" stop-color="#8a6300"/>
+                </linearGradient>
+                <linearGradient id="silverGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="55%" stop-color="#d4dae3"/>
+                  <stop offset="100%" stop-color="#7c8490"/>
+                </linearGradient>
+                <linearGradient id="goldArc2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#8a6300"/>
+                  <stop offset="50%" stop-color="#ffe680"/>
+                  <stop offset="100%" stop-color="#f5b301"/>
+                </linearGradient>
+              </defs>
+              <path d="M 20 62 A 40 40 0 0 1 82 30"
+                    fill="none" stroke="url(#goldArc2)" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M 18 22 L 52 22 L 52 30 L 39 30 L 39 74 L 31 74 L 31 30 L 18 30 Z"
+                    fill="url(#goldGrad2)"/>
+              <path d="M 44 30 L 52 30 L 52 68 L 74 68 L 74 76 L 44 76 Z"
+                    fill="url(#silverGrad2)"/>
+              <g>
+                <rect x="58" y="48" width="3" height="12" fill="#22c55e"/>
+                <rect x="56.8" y="50" width="5.4" height="7" fill="#22c55e"/>
+                <rect x="64" y="42" width="3" height="14" fill="#22c55e"/>
+                <rect x="62.8" y="44" width="5.4" height="9" fill="#22c55e"/>
+                <rect x="70" y="46" width="3" height="10" fill="#f43f5e"/>
+                <rect x="68.8" y="48" width="5.4" height="6" fill="#f43f5e"/>
+                <rect x="76" y="36" width="3" height="14" fill="#22c55e"/>
+                <rect x="74.8" y="38" width="5.4" height="9" fill="#22c55e"/>
               </g>
-              <path d="M40 28 L 54 14 M 54 14 L 45 14 M 54 14 L 54 23" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 34 70 Q 60 60 84 26"
+                    fill="none" stroke="url(#goldGrad2)" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M 84 26 L 84 38 M 84 26 L 72 26"
+                    fill="none" stroke="#f5b301" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>
           <span class="logo-divider" aria-hidden="true"></span>
-          <span class="logo-text"><b>LUKIE <span class="fx">FX</span></b><small>Trade With Confidence</small></span>
+          <span class="logo-text"><b>TRADE WITH <span class="fx">LUKIE</span></b><small>Learn · Trade · Grow</small></span>
         </a>
         <p>Professional forex trading tools, signals and mentorship — built for traders who take the markets seriously.</p>
         <div class="socials">
@@ -511,7 +563,7 @@
           <li><a href="#about">About Us</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#plans">Pricing</a></li>
-          <li><a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a></li>
+          <li><a href="#" data-action="whatsapp" data-message="Hi Trade With Lukie, I'd like to get in touch.">Contact</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -536,10 +588,10 @@
       </div>
     </div>
     <div class="risk">
-      <strong style="color:var(--muted)">Risk Warning:</strong> Trading foreign exchange and CFDs on margin carries a high level of risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade, you should carefully consider your investment objectives, level of experience and risk appetite. You could sustain a loss of some or all of your initial investment. <span class="placeholder">[YOUR_REGULATORY_LICENSE_NUMBER]</span> · LUKIE FX provides educational content and market analysis only and does not provide financial advice.
+      <strong style="color:var(--muted)">Risk Warning:</strong> Trading foreign exchange and CFDs on margin carries a high level of risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade, you should carefully consider your investment objectives, level of experience and risk appetite. You could sustain a loss of some or all of your initial investment. <span class="placeholder">[YOUR_REGULATORY_LICENSE_NUMBER]</span> · Trade With Lukie provides educational content and market analysis only and does not provide financial advice.
     </div>
     <div class="foot-bottom">
-      <span>© <span id="year"></span> LUKIE FX. All rights reserved. Registered at <span class="placeholder">[YOUR_REGISTERED_ADDRESS]</span></span>
+      <span>© <span id="year"></span> Trade With Lukie. All rights reserved. Registered at <span class="placeholder">[YOUR_REGISTERED_ADDRESS]</span></span>
       <span>Built with precision for traders worldwide.</span>
     </div>
   </div>
