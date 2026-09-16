@@ -1,13 +1,13 @@
 /**
  * LUKIE FX — Market Data
+ * US30 removed. Renders 5 live instruments with sparklines.
  */
 (function(){
-  const { fmtPrice, fmtPct, drawSparkline } = {
-    fmtPrice: LFX.fmtPrice,
-    fmtPct: LFX.fmtPct,
-    drawSparkline: LFX.charts.drawSparkline
-  };
+  const fmtPrice = LFX.fmtPrice;
+  const fmtPct = LFX.fmtPct;
+  const drawSparkline = LFX.charts.drawSparkline;
 
+  /* ---- Market config (no US30) ---- */
   const MARKET = [
     { sym:'EUR/USD', desc:'Euro / US Dollar',    icon:'EU', digits:5, type:'forex',
       tv:'FX:EURUSD', spread:0.4, base:1.09342, cross:{ base:'EUR', quote:'USD' } },
@@ -18,11 +18,10 @@
     { sym:'XAU/USD', desc:'Gold Spot',           icon:'XA', digits:2, type:'metal',
       tv:'OANDA:XAUUSD', spread:1.5, base:2338.55, binance:'PAXGUSDT' },
     { sym:'BTC/USD', desc:'Bitcoin',             icon:'BT', digits:1, type:'crypto',
-      tv:'BINANCE:BTCUSDT', spread:1.3, base:67432.0, binance:'BTCUSDT' },
-    { sym:'US30',    desc:'Dow Jones 30',        icon:'US', digits:1, type:'index',
-      tv:'FOREXCOM:US30USD', spread:1.3, base:39425.0 }
+      tv:'BINANCE:BTCUSDT', spread:1.3, base:67432.0, binance:'BTCUSDT' }
   ];
 
+  /* ---- Live data fetchers ---- */
   async function fetchForexRates(){
     const res = await fetch('https://open.er-api.com/v6/latest/USD', { cache:'no-store' });
     if (!res.ok) throw new Error('Forex API failed');
@@ -34,7 +33,7 @@
   async function fetchBinance1h(symbol){
     const res = await fetch(
       `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1m&limit=60`,
-      { cache: 'no-store' }
+      { cache:'no-store' }
     );
     if (!res.ok) throw new Error('Binance klines failed');
     const klines = await res.json();
@@ -45,6 +44,7 @@
     return { price: last, change: changePct, points: closes };
   }
 
+  /* ---- Deterministic helpers ---- */
   function hashCode(str){
     let h = 0;
     for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
@@ -68,6 +68,7 @@
     return points;
   }
 
+  /* ---- Table rendering ---- */
   const marketBody = document.getElementById('marketBody');
   const marketTable = document.getElementById('marketTable');
   const lastUpdateEl = document.getElementById('lastUpdate');
@@ -127,6 +128,7 @@
     drawSparkline(tr.querySelector('.spark-canvas'), points, change >= 0);
   }
 
+  /* ---- Data pipeline ---- */
   let forexRatesCache = null;
 
   async function fetchAllData(){
