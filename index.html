@@ -61,6 +61,7 @@
       <a href="#about">About</a>
       <a href="#services">Services</a>
       <a href="#markets">Markets</a>
+      <a href="#tools">Tools</a>
       <a href="#plans">Plans</a>
       <a href="#faq">FAQ</a>
       <a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a>
@@ -71,8 +72,7 @@
         <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
-      <a href="#" class="btn btn-ghost" data-page="login">Login</a>
-      <a href="#" class="btn btn-gold" data-page="register">Open Account</a>
+      <a href="#tools" class="btn btn-gold" style="padding:11px 22px;font-size:.85rem">Tools</a>
       <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -84,12 +84,11 @@
   <a href="#about">About</a>
   <a href="#services">Services</a>
   <a href="#markets">Markets</a>
+  <a href="#tools">Tools</a>
   <a href="#plans">Plans</a>
   <a href="#testimonials">Reviews</a>
   <a href="#faq">FAQ</a>
   <a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a>
-  <a href="#" data-page="login">Login</a>
-  <a href="#" class="btn btn-gold btn-block" data-page="register">Open Account</a>
   <div class="mobile-menu-footer">
     <span>Appearance</span>
     <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
@@ -99,7 +98,6 @@
   </div>
 </aside>
 
-<!-- Ticker container — JS fills it, no US30 -->
 <div class="ticker-wrap">
   <div class="tradingview-widget-container" id="tickerContainer">
     <div class="tradingview-widget-container__widget"></div>
@@ -113,8 +111,8 @@
       <h1>Trade Smarter.<br /><span class="grad-gold">Profit Faster.</span></h1>
       <p class="lead">LUKIE FX gives you institutional-grade tools, real-time market intelligence and expert-guided strategies — so you can trade the world's markets with clarity and confidence.</p>
       <div class="hero-actions">
-        <a href="#" class="btn btn-accent" data-page="register">
-          Open Account
+        <a href="#tools" class="btn btn-accent">
+          Try Free Tools
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a href="#services" class="btn btn-ghost">Explore Services</a>
@@ -256,6 +254,112 @@
   </div>
 </section>
 
+<!-- ============================================================
+     FREE TRADING TOOLS — Lot Size Calculator + Strength Meter
+============================================================ -->
+<section class="section" id="tools" style="background:linear-gradient(180deg,transparent,rgba(var(--glow-rgb),.05),transparent)">
+  <div class="container">
+    <div class="section-head center" data-reveal>
+      <span class="eyebrow">Free Trading Tools</span>
+      <h2>Calculate. Analyze. <span class="grad-gold">Trade Smarter.</span></h2>
+      <p>Two professional-grade tools every trader needs — free, no sign-up, and instant.</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- LOT SIZE CALCULATOR -->
+      <div class="tool-card" data-reveal>
+        <div class="tool-head">
+          <div class="tool-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="16" rx="2"/>
+              <path d="M7 8h2M7 12h2M7 16h2M11 8h6M11 12h6M11 16h6"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Lot Size Calculator</h3>
+            <p>Find the exact position size for your risk</p>
+          </div>
+        </div>
+        <div class="tool-body">
+          <div class="tool-field">
+            <label for="calcBalance">Account Balance (USD)</label>
+            <input type="number" id="calcBalance" value="1000" min="1" step="1" />
+          </div>
+          <div class="tool-field">
+            <label>Risk Percentage</label>
+            <div class="risk-presets" id="riskPresets">
+              <button type="button" data-risk="0.5">0.5%</button>
+              <button type="button" data-risk="1" class="active">1%</button>
+              <button type="button" data-risk="2">2%</button>
+              <button type="button" data-risk="3">3%</button>
+            </div>
+            <input type="number" id="calcRisk" value="1" min="0.1" max="100" step="0.1" />
+          </div>
+          <div class="tool-field">
+            <label for="calcSL">Stop Loss (pips)</label>
+            <input type="number" id="calcSL" value="20" min="1" step="1" />
+          </div>
+          <div class="tool-field">
+            <label for="calcPair">Currency Pair</label>
+            <select id="calcPair">
+              <option value="EURUSD">EUR / USD</option>
+              <option value="GBPUSD">GBP / USD</option>
+              <option value="USDJPY">USD / JPY</option>
+              <option value="AUDUSD">AUD / USD</option>
+              <option value="USDCAD">USD / CAD</option>
+              <option value="USDCHF">USD / CHF</option>
+              <option value="NZDUSD">NZD / USD</option>
+              <option value="XAUUSD">XAU / USD (Gold)</option>
+            </select>
+          </div>
+          <button class="tool-submit" id="calcSubmit">Calculate Position Size</button>
+
+          <div class="tool-result" id="calcResult">
+            <div class="result-main">
+              <span>Position Size</span>
+              <b id="resultLots">0.00</b>
+              <span>standard lots</span>
+            </div>
+            <div class="result-row"><span>Mini lots</span><b id="resultMini">0.0</b></div>
+            <div class="result-row"><span>Micro lots</span><b id="resultMicro">0</b></div>
+            <div class="result-row"><span>Risk amount</span><b id="resultRisk">$0.00</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CURRENCY STRENGTH METER -->
+      <div class="tool-card" data-reveal>
+        <div class="tool-head">
+          <div class="tool-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 20h18"/>
+              <rect x="4" y="12" width="3" height="8"/>
+              <rect x="9" y="8" width="3" height="12"/>
+              <rect x="14" y="4" width="3" height="16"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Currency Strength Meter</h3>
+            <p>Live strength ranking of the 8 majors</p>
+          </div>
+        </div>
+        <div class="tool-body">
+          <div class="strength-list" id="strengthList">
+            <div style="text-align:center;padding:30px 0;color:var(--muted);font-size:.9rem">
+              Loading live data…
+            </div>
+          </div>
+          <p class="strength-note">
+            Stronger currencies are more likely to trend. Look for buys on the strongest vs sells on the weakest.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <section class="section" id="plans" style="background:linear-gradient(180deg,transparent,rgba(var(--glow-rgb),.04),transparent)">
   <div class="container">
     <div class="section-head center" data-reveal>
@@ -363,7 +467,7 @@
       <h2>Your Next Trade Could Be <span class="grad-gold">Your Best One</span></h2>
       <p>Join thousands of traders using LUKIE FX to approach the markets with discipline, data and confidence.</p>
       <div class="hero-actions">
-        <a href="#" class="btn btn-accent" data-page="register">Open Free Account</a>
+        <a href="#" class="btn btn-accent" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to create a free account.">Get Started</a>
         <a href="#" class="btn btn-tg" data-action="telegram">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.2-.5.4-.9.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L7.3 12.6l-4.4-1.4c-1-.3-1-1 .2-1.4l17.4-6.7c.8-.3 1.5.2 1.4 1.2z"/></svg>
           Join Telegram
@@ -417,9 +521,9 @@
         <h4>Trading</h4>
         <ul>
           <li><a href="#markets">Markets</a></li>
+          <li><a href="#tools">Free Tools</a></li>
           <li><a href="#services">Signals</a></li>
           <li><a href="#services">Copy Trading</a></li>
-          <li><a href="#services">Funded Accounts</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -463,6 +567,7 @@
 <script src="js/market.js"></script>
 <script src="js/pages.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/tools.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
