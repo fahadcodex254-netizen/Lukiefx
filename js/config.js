@@ -1,5 +1,5 @@
 /**
- * TRADE WITH LUKIE — Configuration & Shared Utilities
+ * Lukie Fx — Configuration & Shared Utilities
  */
 
 window.LFX = window.LFX || {};
@@ -13,8 +13,8 @@ LFX.CONFIG = {
   PHONE_DISPLAY:      '0114319611',
 
   /* Company */
-  COMPANY_NAME:       'TRADE WITH LUKIE',
-  COMPANY_SHORT:      'TWL',
+  COMPANY_NAME:       'Lukie Fx',
+  COMPANY_SHORT:      'LFX',
   COMPANY_ADDRESS:    '[YOUR_REGISTERED_ADDRESS]',
   REGULATORY_LICENSE: '[YOUR_REGULATORY_LICENSE_NUMBER]',
   SUPPORT_HOURS:      'Monday – Friday · 24 hours',
