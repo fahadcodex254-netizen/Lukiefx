@@ -1,6 +1,6 @@
 /**
- * Lukie Fx — Bootstrap
- * - Animated candlestick preloader (waits for logo image)
+ * Trade with Lukie — Bootstrap
+ * - Animated candlestick preloader (text only, no image)
  * - Theme-aware TradingView ticker
  * - Module initialization
  */
@@ -197,28 +197,9 @@
   }
 
   /* ============================================================
-     Wait for the preloader logo image before hiding
-  ============================================================ */
-  function waitForLogoImage(){
-    return new Promise(resolve => {
-      const img = document.querySelector('.preloader-logo');
-      if (!img) return resolve();
-      if (img.complete && img.naturalWidth > 0) return resolve();
-      let done = false;
-      const finish = () => { if (!done){ done = true; resolve(); } };
-      img.addEventListener('load', finish);
-      img.addEventListener('error', () => {
-        console.warn('Preloader logo failed to load:', img.src);
-        finish();
-      });
-      setTimeout(finish, 3000);
-    });
-  }
-
-  /* ============================================================
      Boot
   ============================================================ */
-  async function boot(){
+  function boot(){
     const LFX = window.LFX || {};
 
     try {
@@ -235,27 +216,26 @@
       LFX.pages?.init?.();
       LFX.tools?.init?.();
 
-      const hidePreloader = async () => {
+      const hidePreloader = () => {
         const pre = document.getElementById('preloader');
         if (!pre) return;
-        await waitForLogoImage();
         setTimeout(() => {
           pre.classList.add('hide');
           if (typeof stopPreloaderChart === 'function') stopPreloaderChart();
-        }, 500);
+        }, 600);
       };
 
       if (document.readyState === 'complete'){
         hidePreloader();
       } else {
         window.addEventListener('load', hidePreloader);
-        setTimeout(hidePreloader, 4500);
+        setTimeout(hidePreloader, 4000);
       }
 
-      console.log('%cLukie Fx', 'color:#f5b301;font-size:22px;font-weight:900;letter-spacing:2px');
+      console.log('%cTrade with Lukie', 'color:#f5b301;font-size:22px;font-weight:900;letter-spacing:2px');
       console.log('%c🕯️ Animated candlestick preloader · 🌓 Theme toggle · 📱 Responsive', 'color:#f5b301;font-size:12px;font-weight:700');
     } catch(err){
-      console.error('Lukie Fx boot error:', err);
+      console.error('Trade with Lukie boot error:', err);
       document.getElementById('preloader')?.classList.add('hide');
     }
   }
