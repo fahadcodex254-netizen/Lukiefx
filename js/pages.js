@@ -1,5 +1,12 @@
 /**
  * Lukie Fx — Page Overlay System
+ * Now with full browser back/forward button support.
+ *
+ * How it works:
+ *  - When an overlay opens, we push a new history state.
+ *  - When the user presses BACK, the popstate event fires and we
+ *    close the overlay instead of leaving the page.
+ *  - When the user presses FORWARD, we reopen the last overlay.
  */
 (function(){
   const { CONFIG, $, $$ } = LFX;
@@ -8,6 +15,13 @@
   const overlayContent = $('#pageOverlayContent');
   let lastScrollY = 0;
 
+  /* Track the currently open overlay so we can restore it on forward */
+  let currentPageKey = null;   /* e.g. 'service:signals', 'legal:privacy', 'register', 'login' */
+  let isHandlingPop = false;   /* Prevents double-triggering inside popstate */
+
+  /* ============================================================
+     Core open / close
+  ============================================================ */
   function openPage(html, opts = {}){
     if (!overlay || !overlayContent) return;
     overlayContent.innerHTML = html;
@@ -22,18 +36,97 @@
     if (opts.onReady) opts.onReady(overlayContent);
   }
 
-  function closePage(){
+  function closePage(opts = {}){
     if (!overlay) return;
+    if (!overlay.classList.contains('open')) return;
     overlay.classList.remove('open');
     document.body.style.overflow = '';
     window.scrollTo({ top: lastScrollY, behavior: 'auto' });
     LFX.bus.emit('closeMenu');
+
+    /* If called by the user (X button, Esc key, back link), pop the
+       history entry so the back button state stays in sync. */
+    if (!opts.silent && !isHandlingPop && currentPageKey){
+      try { history.back(); } catch(e){ /* older browsers */ }
+    }
+    currentPageKey = null;
   }
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && overlay?.classList.contains('open')) closePage();
+  /* ============================================================
+     History helpers
+  ============================================================ */
+  function pushOverlayHistory(key, data = {}){
+    try {
+      history.pushState({ lfxOverlay: true, key, ...data }, '', location.href);
+      currentPageKey = key;
+    } catch(e){ /* silently ignore */ }
+  }
+
+  function replaceOverlayHistory(key, data = {}){
+    try {
+      history.replaceState({ lfxOverlay: true, key, ...data }, '', location.href);
+      currentPageKey = key;
+    } catch(e){}
+  }
+
+  /* ============================================================
+     Popstate — the heart of back-button support
+  ============================================================ */
+  window.addEventListener('popstate', (event) => {
+    isHandlingPop = true;
+
+    const state = event.state || {};
+
+    if (state.lfxOverlay){
+      /* Forward navigation — reopen the overlay matching this state */
+      restoreOverlay(state);
+    } else {
+      /* Back navigation to a normal page state — close the overlay */
+      closePage({ silent: true });
+    }
+
+    /* Reset the flag after a short tick to allow normal clicks */
+    setTimeout(() => { isHandlingPop = false; }, 50);
   });
 
+  /* Restore overlay when user presses forward, or on page load */
+  function restoreOverlay(state){
+    if (!state || !state.key) return;
+    const key = state.key;
+
+    if (key.startsWith('service:')){
+      const svcKey = key.split(':')[1];
+      openService(svcKey, { silent: true });
+    } else if (key.startsWith('legal:')){
+      const pageKey = key.split(':')[1];
+      openLegalPage(pageKey, { silent: true });
+    } else if (key === 'register'){
+      openPage(renderRegisterPage(), {
+        onReady: bindRegisterForm,
+        skipHistory: true
+      });
+      currentPageKey = key;
+    } else if (key === 'login'){
+      openPage(renderLoginPage(), {
+        onReady: bindLoginForm,
+        skipHistory: true
+      });
+      currentPageKey = key;
+    }
+  }
+
+  /* ============================================================
+     Keyboard: Esc closes the overlay
+  ============================================================ */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay?.classList.contains('open')){
+      closePage();
+    }
+  });
+
+  /* ============================================================
+     Shared page header
+  ============================================================ */
   function pageHeader(){
     return `
       <button class="page-back" data-close-page type="button">
@@ -43,6 +136,9 @@
     `;
   }
 
+  /* ============================================================
+     SERVICES
+  ============================================================ */
   const SERVICES = {
     signals: {
       title: 'Premium Trading Signals',
@@ -229,7 +325,8 @@
     });
   }
 
-  function openService(key){
+  /* Public: open a service page (adds to history) */
+  function openService(key, opts = {}){
     const svc = SERVICES[key];
     if (!svc) return;
     lastScrollY = window.scrollY;
@@ -239,8 +336,17 @@
     } else {
       openPage(renderServicePage(svc));
     }
+
+    if (!opts.silent){
+      pushOverlayHistory('service:' + key);
+    } else {
+      currentPageKey = 'service:' + key;
+    }
   }
 
+  /* ============================================================
+     LEGAL PAGES
+  ============================================================ */
   const LEGAL = {
     privacy: {
       title: 'Privacy Policy',
@@ -248,7 +354,7 @@
       content: `
         <p><strong>Last updated:</strong> <span class="placeholder">${CONFIG.EFFECTIVE_DATE}</span></p>
         <h2>1. Introduction</h2>
-        <p>${CONFIG.COMPANY_NAME} ("we", "our", "us") is committed to protecting the privacy of our users. This Privacy Policy explains how we collect, use, disclose and safeguard your information.</p>
+        <p>${CONFIG.COMPANY_NAME} ("we", "our", "us") is committed to protecting the privacy of our users.</p>
         <h2>2. Information We Collect</h2>
         <h3>Personal Information You Provide</h3>
         <ul>
@@ -397,7 +503,7 @@
     }
   };
 
-  function openLegalPage(key){
+  function openLegalPage(key, opts = {}){
     const page = LEGAL[key];
     if (!page) return;
     lastScrollY = window.scrollY;
@@ -409,8 +515,17 @@
         <div class="page-content">${page.content}</div>
       </div>
     `);
+
+    if (!opts.silent){
+      pushOverlayHistory('legal:' + key);
+    } else {
+      currentPageKey = 'legal:' + key;
+    }
   }
 
+  /* ============================================================
+     REGISTER / LOGIN
+  ============================================================ */
   function renderRegisterPage(){
     return `
       <div class="page-inner">
@@ -565,6 +680,10 @@
     });
   }
 
+  /* ============================================================
+     Global [data-page] click handler
+     Adds history entry so BACK button closes the overlay.
+  ============================================================ */
   document.addEventListener('click', e => {
     const el = e.target.closest('[data-page]');
     if (!el) return;
@@ -574,13 +693,16 @@
 
     if (page === 'register'){
       openPage(renderRegisterPage(), { onReady: bindRegisterForm });
+      pushOverlayHistory('register');
     } else if (page === 'login'){
       openPage(renderLoginPage(), { onReady: bindLoginForm });
+      pushOverlayHistory('login');
     } else if (LEGAL[page]){
       openLegalPage(page);
     }
   });
 
+  /* Global [data-service] click handler — also pushes history */
   document.addEventListener('click', e => {
     const card = e.target.closest('.card[data-service]');
     if (!card) return;
