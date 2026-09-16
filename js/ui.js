@@ -1,5 +1,5 @@
 /**
- * LUKIE FX — UI Interactivity
+ * Lukie Fx — UI Interactivity
  */
 (function(){
   const $  = LFX.$;
@@ -122,11 +122,14 @@
     });
   }
 
+  /* ============================================================
+     Universal action handler — WhatsApp / Telegram
+  ============================================================ */
   function handleActionButton(el){
     const action = el.dataset.action;
     if (action === 'whatsapp'){
-      const msg = el.dataset.message || 'Hi LUKIE FX, I would like more information.';
-      const phone = LFX.phoneSafe();
+      const msg = el.dataset.message || 'Hi Lukie Fx, I would like more information.';
+      const phone = LFX.phoneSafe();       /* 254114319611 */
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank', 'noopener');
       return true;
@@ -144,9 +147,13 @@
       if (!el) return;
       if (handleActionButton(el)) e.preventDefault();
     });
+
+    /* Wire the floating WhatsApp button to the configured number */
     const waFloat = document.getElementById('waFloat');
     if (waFloat){
       waFloat.href = `https://wa.me/${LFX.phoneSafe()}`;
+      waFloat.target = '_blank';
+      waFloat.rel = 'noopener';
     }
   }
 
