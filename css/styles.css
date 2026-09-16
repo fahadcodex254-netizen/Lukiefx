@@ -1,5 +1,5 @@
 /* ============================================================
-   Lukie Fx — Complete Stylesheet
+   Trade with Lukie — Complete Stylesheet
 ============================================================ */
 
 /* ============================================================
@@ -184,7 +184,7 @@ h3{font-size:1.18rem}
 .overlay.show{opacity:1;visibility:visible}
 
 /* ============================================================
-   6. PRELOADER — image only
+   6. PRELOADER — text only
 ============================================================ */
 #preloader{
   position:fixed;inset:0;
@@ -214,27 +214,58 @@ h3{font-size:1.18rem}
   -webkit-backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,.08);
   box-shadow:0 30px 80px -30px rgba(0,0,0,.9);
-  animation:preloaderPulse 2.4s ease-in-out infinite;
 }
 [data-theme="light"] .preloader-content{
   background:rgba(244,247,252,.72);
   border-color:rgba(10,24,54,.08);
   box-shadow:0 30px 80px -30px rgba(10,24,54,.15);
 }
-@keyframes preloaderPulse{
-  0%,100%{transform:scale(1);opacity:1}
-  50%{transform:scale(1.03);opacity:.92}
+
+/* Main brand text */
+#preloader .loader-mark{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:2.2rem;
+  font-weight:700;
+  letter-spacing:.02em;
+  margin-bottom:10px;
+  text-align:center;
+  color:var(--txt);
+  line-height:1.1;
+}
+#preloader .loader-mark .grad-gold{
+  background:linear-gradient(100deg,#f5b301 10%,#ffd45e 55%,#fff6d1 130%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
-.preloader-logo{
-  display:block;
-  width:180px;
-  max-width:60vw;
-  height:auto;
-  filter:drop-shadow(0 8px 24px rgba(245,179,1,.35));
+/* Caption */
+#preloader .loader-caption{
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:22px;
 }
-[data-theme="light"] .preloader-logo{
-  filter:drop-shadow(0 8px 24px rgba(200,136,0,.25));
+
+/* Loading bar */
+#preloader .loader-bar{
+  width:220px;height:3px;
+  background:rgba(255,255,255,.08);
+  border-radius:10px;overflow:hidden;
+  margin-inline:auto;
+}
+[data-theme="light"] #preloader .loader-bar{background:rgba(10,24,54,.08)}
+#preloader .loader-bar span{
+  display:block;height:100%;width:40%;border-radius:10px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-2));
+  animation:preloaderLoad 1.2s infinite var(--ease);
+  box-shadow:0 0 12px rgba(var(--glow-rgb),.6);
+}
+@keyframes preloaderLoad{
+  0%{transform:translateX(-120%)}
+  100%{transform:translateX(320%)}
 }
 
 /* ============================================================
@@ -562,6 +593,8 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 [data-theme="light"] .logo-text b{color:#0a1836}
 [data-theme="light"] .logo-text small{color:#5a6f8c}
 [data-theme="light"] #preloader{background:#f4f7fc}
+[data-theme="light"] #preloader .loader-mark{color:#0a1836}
+[data-theme="light"] #preloader .loader-caption{color:#5a6f8c}
 [data-theme="light"] .nav-links a.active{color:#2563eb}
 [data-theme="light"] .foot-col a:hover,
 [data-theme="light"] .nav-links a:hover{color:#2563eb}
@@ -684,8 +717,10 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
   .strength-row{grid-template-columns:38px 1fr;gap:12px}
   .strength-flag{width:38px;height:38px;font-size:.72rem}
   .tool-field input,.tool-field select{font-size:16px}
-  .preloader-content{padding:28px 32px;border-radius:20px}
-  .preloader-logo{width:140px}
+  .preloader-content{padding:28px 30px;border-radius:20px}
+  #preloader .loader-mark{font-size:1.7rem}
+  #preloader .loader-caption{font-size:.64rem;letter-spacing:.2em}
+  #preloader .loader-bar{width:170px}
   #preloaderChart{opacity:.25}
 }
 @media (max-width:400px){
@@ -704,7 +739,8 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
   .logo-text b{font-size:.78rem}
   .logo-text small{font-size:.46rem}
   .preloader-content{padding:22px 26px}
-  .preloader-logo{width:120px}
+  #preloader .loader-mark{font-size:1.45rem}
+  #preloader .loader-caption{font-size:.58rem}
 }
 @media (max-height:500px) and (orientation:landscape){
   .mobile-menu{padding-top:70px}
