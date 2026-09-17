@@ -182,16 +182,17 @@
       lead: 'No linking fee — just share your trading account details so LUKIE can link you up.',
       onboarding: true,
       fields: [
-        { id:'onb_name',    label:'Full name',                type:'text',     placeholder:'Your full name',              required:true },
-        { id:'onb_email',   label:'Email',                    type:'email',    placeholder:'you@example.com',             required:true },
-        { id:'onb_phone',   label:'Phone',                    type:'tel',      placeholder:'07XXXXXXXX',                  required:true },
-        { id:'onb_country', label:'Country',                  type:'text',     placeholder:'e.g. Kenya',                  required:true },
-        { id:'onb_broker',  label:'Broker',                   type:'text',     placeholder:'e.g. Exness, HFM, Deriv',     required:true },
-        { id:'onb_account', label:'Account number',           type:'text',     placeholder:'Your MT5 account number',     required:true },
-        { id:'onb_server',  label:'MT5 Server',               type:'text',     placeholder:'e.g. Exness-MT5Real8',        required:true },
-        { id:'onb_balance', label:'Account balance (USD)',    type:'text',     placeholder:'e.g. 2000',                   required:true },
-        { id:'onb_leverage',label:'Preferred leverage',       type:'text',     placeholder:'e.g. 1:500',                  required:false },
-        { id:'onb_notes',   label:'Additional notes',         type:'textarea', placeholder:'Anything we should know?',    required:false, optional:true }
+        { id:'onb_name',     label:'Full name',              type:'text',     placeholder:'Your full name',              required:true },
+        { id:'onb_email',    label:'Email',                  type:'email',    placeholder:'you@example.com',             required:true },
+        { id:'onb_phone',    label:'Phone',                  type:'tel',      placeholder:'07XXXXXXXX',                  required:true, digitsOnly:true },
+        { id:'onb_country',  label:'Country',                type:'text',     placeholder:'e.g. Kenya',                  required:true },
+        { id:'onb_broker',   label:'Broker',                 type:'text',     placeholder:'e.g. Exness, HFM, Deriv',     required:true },
+        { id:'onb_account',  label:'MT5 Account Number',     type:'text',     placeholder:'Your MT5 account number',     required:true, digitsOnly:true },
+        { id:'onb_server',   label:'MT5 Server',             type:'text',     placeholder:'e.g. Exness-MT5Real8',        required:true },
+        { id:'onb_password', label:'MT5 Password',           type:'password', placeholder:'Enter MT5 Password',          required:true },
+        { id:'onb_balance',  label:'Account balance (USD)',  type:'text',     placeholder:'e.g. 2000',                   required:true },
+        { id:'onb_leverage', label:'Preferred leverage',     type:'text',     placeholder:'e.g. 1:500',                  required:false },
+        { id:'onb_notes',    label:'Additional notes',       type:'textarea', placeholder:'Anything we should know?',    required:false, optional:true }
       ]
     },
     education: {
@@ -279,14 +280,49 @@
     `;
   }
 
+  /* ============================================================
+     ONBOARDING FORM — fields builder
+     Supports: text, email, tel, password (with toggle), textarea
+     Also supports: digitsOnly flag for numeric-only inputs
+  ============================================================ */
+  function buildFieldHtml(f){
+    const optional = f.optional ? ' <span class="optional">(optional)</span>' : '';
+    const required = f.required ? 'required' : '';
+    const digitAttrs = f.digitsOnly
+      ? ' inputmode="numeric" pattern="[0-9]*" title="Please enter only digits"'
+      : '';
+
+    // TEXTAREA
+    if (f.type === 'textarea'){
+      return `<div class="form-field">
+        <label for="${f.id}">${f.label}${optional}</label>
+        <textarea id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${required}></textarea>
+      </div>`;
+    }
+
+    // PASSWORD (with show/hide toggle button)
+    if (f.type === 'password'){
+      return `<div class="form-field">
+        <label for="${f.id}">${f.label}${optional}</label>
+        <div class="password-wrapper">
+          <input type="password" id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${required} />
+          <button type="button" class="password-toggle" onclick="togglePassword('${f.id}', this)" aria-label="Toggle password visibility">
+            <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+          </button>
+        </div>
+      </div>`;
+    }
+
+    // DEFAULT (text, email, tel, etc.)
+    return `<div class="form-field">
+      <label for="${f.id}">${f.label}${optional}</label>
+      <input type="${f.type}" id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${required}${digitAttrs} />
+    </div>`;
+  }
+
   function renderOnboardingPage(svc){
-    const fields = svc.fields.map(f => {
-      const optional = f.optional ? ' <span class="optional">(optional)</span>' : '';
-      if (f.type === 'textarea'){
-        return `<div class="form-field"><label for="${f.id}">${f.label}${optional}</label><textarea id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${f.required ? 'required' : ''}></textarea></div>`;
-      }
-      return `<div class="form-field"><label for="${f.id}">${f.label}${optional}</label><input type="${f.type}" id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${f.required ? 'required' : ''} /></div>`;
-    }).join('');
+    const fields = svc.fields.map(buildFieldHtml).join('');
 
     return `
       <div class="page-inner">
@@ -308,6 +344,14 @@
     const form = container.querySelector('#onbForm');
     const success = container.querySelector('#onbSuccess');
     if (!form) return;
+
+    // Apply digits-only restriction to any input with inputmode="numeric"
+    form.querySelectorAll('input[inputmode="numeric"]').forEach(input => {
+      input.addEventListener('input', function(){
+        this.value = this.value.replace(/[^0-9]/g, '');
+      });
+    });
+
     form.addEventListener('submit', e => {
       e.preventDefault();
       if (!form.checkValidity()){ form.reportValidity(); return; }
@@ -576,8 +620,26 @@
             </div>
             <div class="form-divider"><span>Security</span></div>
             <div class="form-row-2">
-              <div class="form-field"><label for="reg_password">Password</label><input type="password" id="reg_password" placeholder="Min. 8 characters" minlength="8" required /></div>
-              <div class="form-field"><label for="reg_confirm">Confirm password</label><input type="password" id="reg_confirm" placeholder="Re-enter password" minlength="8" required /></div>
+              <div class="form-field">
+                <label for="reg_password">Password</label>
+                <div class="password-wrapper">
+                  <input type="password" id="reg_password" placeholder="Min. 8 characters" minlength="8" required />
+                  <button type="button" class="password-toggle" onclick="togglePassword('reg_password', this)" aria-label="Toggle password visibility">
+                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="reg_confirm">Confirm password</label>
+                <div class="password-wrapper">
+                  <input type="password" id="reg_confirm" placeholder="Re-enter password" minlength="8" required />
+                  <button type="button" class="password-toggle" onclick="togglePassword('reg_confirm', this)" aria-label="Toggle password visibility">
+                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                  </button>
+                </div>
+              </div>
             </div>
             <div class="form-checkbox">
               <input type="checkbox" id="reg_terms" required />
@@ -604,7 +666,16 @@
           <p class="form-sub">Sign in to access your dashboard, signals and account details. New here? <a href="#" data-page="register">Open an account</a>.</p>
           <form id="loginForm" novalidate>
             <div class="form-field"><label for="log_email">Email address</label><input type="email" id="log_email" placeholder="you@example.com" required /></div>
-            <div class="form-field"><label for="log_password">Password</label><input type="password" id="log_password" placeholder="Your password" required /></div>
+            <div class="form-field">
+              <label for="log_password">Password</label>
+              <div class="password-wrapper">
+                <input type="password" id="log_password" placeholder="Your password" required />
+                <button type="button" class="password-toggle" onclick="togglePassword('log_password', this)" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+              </div>
+            </div>
             <div class="form-checkbox">
               <input type="checkbox" id="log_remember" />
               <label for="log_remember">Remember me on this device</label>
