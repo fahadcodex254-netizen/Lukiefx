@@ -11,6 +11,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='20' fill='%230a1836'/%3E%3Ccircle cx='60' cy='60' r='55' fill='none' stroke='%23f5b301' stroke-width='1.8'/%3E%3Cpath d='M 20 32 L 76 32 L 76 44 L 56 44 L 56 100 L 40 100 L 40 44 L 20 44 Z' fill='%23f5b301'/%3E%3Cpath d='M 66 46 L 80 46 L 80 88 L 104 88 L 104 100 L 66 100 Z' fill='%23ffffff'/%3E%3Cpath d='M 25 95 Q 50 82 75 62 T 108 38' fill='none' stroke='%23f5b301' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E" />
+
+<!-- ADDED CSS FOR THE PASSWORD ICON -->
+<style>
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .password-wrapper input {
+        width: 100%;
+        padding-right: 40px; /* Makes room so text doesn't type under the icon */
+    }
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        cursor: pointer;
+        user-select: none;
+        font-style: normal;
+        font-size: 1.1rem;
+        color: var(--muted);
+        transition: color 0.2s;
+    }
+    .toggle-password:hover {
+        color: var(--accent-gold);
+    }
+</style>
 </head>
 <body>
 
@@ -604,7 +630,30 @@
 </a>
 
 <div class="page-overlay" id="pageOverlay" role="dialog" aria-modal="true">
-  <div id="pageOverlayContent"></div>
+  <div id="pageOverlayContent">
+      <!-- 
+        NOTE: Your Account Management form is dynamically loaded here via JavaScript.
+        I have added the requested fields below so they are ready to use. 
+        If your JS injects a different form, simply copy these fields into your JS template.
+      -->
+      <div style="display:none;" id="accountManagementTemplate">
+          <div class="form-group">
+              <label>Account Password</label>
+              <div class="password-wrapper">
+                  <input type="password" id="accountPassword" placeholder="Enter Account Password">
+                  <i class="toggle-password" onclick="togglePassword('accountPassword', this)">👁️</i>
+              </div>
+          </div>
+          <div class="form-group">
+              <label>MT5 Account Number</label>
+              <input type="text" id="mt5Account" inputmode="numeric" pattern="[0-9]*" title="Please enter only digits" placeholder="MT5 Account Number">
+          </div>
+          <div class="form-group">
+              <label>Phone Number</label>
+              <input type="text" id="phoneNumber" inputmode="numeric" pattern="[0-9]*" title="Please enter only digits" placeholder="Phone Number">
+          </div>
+      </div>
+  </div>
 </div>
 
 <script src="js/config.js"></script>
@@ -617,5 +666,35 @@
 <script src="js/tools.js"></script>
 <script src="js/admin.js"></script>
 <script src="js/app.js"></script>
+
+<!-- ADDED JAVASCRIPT FOR THE NEW FIELDS -->
+<script>
+    // 1. Function to toggle password visibility
+    function togglePassword(inputId, iconElement) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+            iconElement.textContent = "🙈"; // Closed eye
+        } else {
+            input.type = "password";
+            iconElement.textContent = "👁️"; // Open eye
+        }
+    }
+
+    // 2. Function to enforce digits only (MT5 and Phone)
+    function enforceDigitsOnly(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        input.addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+
+    // 3. Apply digit-only restriction when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        enforceDigitsOnly('mt5Account');
+        enforceDigitsOnly('phoneNumber');
+    });
+</script>
 </body>
 </html>
