@@ -1,20 +1,8 @@
 /**
  * LUKIE FX — Admin Panel
- * ============================================================
- * Features:
- *   - Password login (change ADMIN_PASSWORD below)
- *   - View all form submissions captured on this device
- *   - Edit key site content (persists to localStorage)
- *
- * ⚠️ Static-site limitation: submissions are stored in the
- * browser they were submitted from. For multi-device capture
- * you need a backend (Firebase/Supabase/Formspree).
- * ============================================================
+ * Route-aware: opens on #admin, closes via back button or X.
  */
 (function(){
-  /* ============================================================
-     CONFIG — CHANGE YOUR PASSWORD HERE
-  ============================================================ */
   const ADMIN_PASSWORD = 'lukie2026';
   const STORAGE_SUBS     = 'lfx_submissions';
   const STORAGE_CONTENT  = 'lfx_content_overrides';
@@ -25,42 +13,28 @@
      STORAGE HELPERS
   ============================================================ */
   function getSubmissions(){
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_SUBS) || '[]');
-    } catch(e){ return []; }
+    try { return JSON.parse(localStorage.getItem(STORAGE_SUBS) || '[]'); }
+    catch(e){ return []; }
   }
-
   function saveSubmission(entry){
     const list = getSubmissions();
     list.unshift(entry);
     if (list.length > MAX_SUBMISSIONS) list.length = MAX_SUBMISSIONS;
-    try {
-      localStorage.setItem(STORAGE_SUBS, JSON.stringify(list));
-    } catch(e){ console.warn('Could not save submission:', e); }
+    try { localStorage.setItem(STORAGE_SUBS, JSON.stringify(list)); } catch(e){}
   }
-
   function clearSubmissions(){
     try { localStorage.removeItem(STORAGE_SUBS); } catch(e){}
   }
-
   function getOverrides(){
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_CONTENT) || '{}');
-    } catch(e){ return {}; }
+    try { return JSON.parse(localStorage.getItem(STORAGE_CONTENT) || '{}'); }
+    catch(e){ return {}; }
   }
-
   function setOverride(key, value){
     const all = getOverrides();
-    if (value === '' || value == null){
-      delete all[key];
-    } else {
-      all[key] = value;
-    }
-    try {
-      localStorage.setItem(STORAGE_CONTENT, JSON.stringify(all));
-    } catch(e){}
+    if (value === '' || value == null) delete all[key];
+    else all[key] = value;
+    try { localStorage.setItem(STORAGE_CONTENT, JSON.stringify(all)); } catch(e){}
   }
-
   function clearOverrides(){
     try { localStorage.removeItem(STORAGE_CONTENT); } catch(e){}
   }
@@ -71,17 +45,11 @@
   function applyContentOverrides(){
     const overrides = getOverrides();
     if (!Object.keys(overrides).length) return;
-
     document.querySelectorAll('[data-edit]').forEach(el => {
       const key = el.getAttribute('data-edit');
-      if (overrides[key] !== undefined){
-        el.innerHTML = overrides[key];
-      }
+      if (overrides[key] !== undefined) el.innerHTML = overrides[key];
     });
-
-    if (overrides['site.title']){
-      document.title = overrides['site.title'];
-    }
+    if (overrides['site.title']) document.title = overrides['site.title'];
   }
 
   /* ============================================================
@@ -91,7 +59,6 @@
     try { return sessionStorage.getItem(STORAGE_AUTH) === 'yes'; }
     catch(e){ return false; }
   }
-
   function login(password){
     if (password === ADMIN_PASSWORD){
       try { sessionStorage.setItem(STORAGE_AUTH, 'yes'); } catch(e){}
@@ -99,10 +66,10 @@
     }
     return false;
   }
-
   function logout(){
     try { sessionStorage.removeItem(STORAGE_AUTH); } catch(e){}
-    closeAdmin();
+    // Go back to home — router will close the overlay
+    LFX.router.navigate({ page: 'home' }, '');
   }
 
   /* ============================================================
@@ -115,8 +82,7 @@
       setTimeout(() => {
         try {
           const data = {};
-          const formData = new FormData(form);
-          formData.forEach((value, key) => {
+          new FormData(form).forEach((value, key) => {
             if (data[key] === undefined) data[key] = value;
             else {
               if (!Array.isArray(data[key])) data[key] = [data[key]];
@@ -133,14 +99,8 @@
           else if (form.closest('[data-service]')) type = 'Service: ' + form.closest('[data-service]').dataset.service;
           else if (id) type = id;
 
-          saveSubmission({
-            type,
-            timestamp: new Date().toISOString(),
-            data
-          });
-        } catch(err){
-          console.warn('Submission capture error:', err);
-        }
+          saveSubmission({ type, timestamp: new Date().toISOString(), data });
+        } catch(err){ console.warn('Submission capture error:', err); }
       }, 100);
     }, true);
   }
@@ -153,7 +113,6 @@
 
   function ensureOverlay(){
     if (adminOverlay) return adminOverlay;
-
     adminOverlay = document.createElement('div');
     adminOverlay.className = 'admin-overlay';
     adminOverlay.id = 'adminOverlay';
@@ -161,13 +120,6 @@
     adminOverlay.setAttribute('aria-modal', 'true');
     adminOverlay.innerHTML = '<div class="admin-inner" id="adminInner"></div>';
     document.body.appendChild(adminOverlay);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && adminOverlay.classList.contains('open')){
-        closeAdmin();
-      }
-    });
-
     return adminOverlay;
   }
 
@@ -175,15 +127,11 @@
     ensureOverlay();
     adminOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-
-    if (isLoggedIn()){
-      renderDashboard();
-    } else {
-      renderLogin();
-    }
+    if (isLoggedIn()) renderDashboard();
+    else renderLogin();
   }
 
-  function closeAdmin(){
+  function closeAdminVisual(){
     if (!adminOverlay) return;
     adminOverlay.classList.remove('open');
     document.body.style.overflow = '';
@@ -211,12 +159,12 @@
         <p class="admin-login-hint">Default password: <code>lukie2026</code> — change it in <code>js/admin.js</code></p>
       </div>
     `;
-
-    inner.querySelector('.admin-close').onclick = closeAdmin;
+    inner.querySelector('.admin-close').onclick = () => {
+      LFX.router.navigate({ page: 'home' }, '');
+    };
     const form = inner.querySelector('#adminLoginForm');
     const errorEl = inner.querySelector('#adminLoginError');
     const passInput = inner.querySelector('#adminPass');
-
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (login(passInput.value)){
@@ -249,59 +197,46 @@
           <button class="admin-close" aria-label="Close">×</button>
         </div>
       </header>
-
       <nav class="admin-tabs">
         <button class="admin-tab ${currentTab === 'submissions' ? 'active' : ''}" data-tab="submissions">
           Submissions <span class="admin-badge">${subs.length}</span>
         </button>
-        <button class="admin-tab ${currentTab === 'content' ? 'active' : ''}" data-tab="content">
-          Site Content
-        </button>
-        <button class="admin-tab ${currentTab === 'settings' ? 'active' : ''}" data-tab="settings">
-          Settings
-        </button>
+        <button class="admin-tab ${currentTab === 'content' ? 'active' : ''}" data-tab="content">Site Content</button>
+        <button class="admin-tab ${currentTab === 'settings' ? 'active' : ''}" data-tab="settings">Settings</button>
       </nav>
-
       <div class="admin-body" id="adminBody"></div>
     `;
 
-    inner.querySelector('.admin-close').onclick = closeAdmin;
+    inner.querySelector('.admin-close').onclick = () => {
+      LFX.router.navigate({ page: 'home' }, '');
+    };
     inner.querySelector('#adminLogoutBtn').onclick = logout;
     inner.querySelectorAll('.admin-tab').forEach(tab => {
-      tab.onclick = () => {
-        currentTab = tab.dataset.tab;
-        renderDashboard();
-      };
+      tab.onclick = () => { currentTab = tab.dataset.tab; renderDashboard(); };
     });
-
     renderTabContent();
   }
 
   function renderTabContent(){
     const body = document.getElementById('adminBody');
     if (!body) return;
-
     if (currentTab === 'submissions') renderSubmissionsTab(body);
     else if (currentTab === 'content') renderContentTab(body);
     else if (currentTab === 'settings') renderSettingsTab(body);
   }
 
-  /* ---------- SUBMISSIONS TAB ---------- */
   function renderSubmissionsTab(container){
     const subs = getSubmissions();
-
     if (!subs.length){
       container.innerHTML = `
         <div class="admin-empty">
           <div class="admin-empty-icon">📭</div>
           <h2>No submissions yet</h2>
           <p>When someone fills in the Account Management form, registers, or submits any form on the site, their data will appear here.</p>
-        </div>
-      `;
+        </div>`;
       return;
     }
-
-    const rows = subs.map((sub) => {
+    const rows = subs.map(sub => {
       const date = new Date(sub.timestamp);
       const dateStr = date.toLocaleDateString() + ' · ' + date.toLocaleTimeString();
       const fields = Object.entries(sub.data).map(([k, v]) => {
@@ -315,8 +250,7 @@
             <span class="admin-sub-time">${dateStr}</span>
           </div>
           <div class="admin-sub-body">${fields}</div>
-        </div>
-      `;
+        </div>`;
     }).join('');
 
     container.innerHTML = `
@@ -327,8 +261,7 @@
           <button class="admin-btn admin-btn-danger" id="clearSubsBtn">Clear All</button>
         </div>
       </div>
-      <div class="admin-subs-list">${rows}</div>
-    `;
+      <div class="admin-subs-list">${rows}</div>`;
 
     const exportBtn = container.querySelector('#exportSubsBtn');
     if (exportBtn){
@@ -342,7 +275,6 @@
         URL.revokeObjectURL(url);
       };
     }
-
     const clearBtn = container.querySelector('#clearSubsBtn');
     if (clearBtn){
       clearBtn.onclick = () => {
@@ -354,14 +286,15 @@
     }
   }
 
-  /* ---------- CONTENT TAB ---------- */
   function renderContentTab(container){
     const editable = [];
     document.querySelectorAll('[data-edit]').forEach(el => {
-      const key = el.getAttribute('data-edit');
-      const label = el.getAttribute('data-edit-label') || key;
-      const currentValue = el.innerHTML.trim();
-      editable.push({ key, label, value: currentValue, tag: el.tagName.toLowerCase() });
+      editable.push({
+        key: el.getAttribute('data-edit'),
+        label: el.getAttribute('data-edit-label') || el.getAttribute('data-edit'),
+        value: el.innerHTML.trim(),
+        tag: el.tagName.toLowerCase()
+      });
     });
 
     if (!editable.length){
@@ -370,15 +303,14 @@
           <div class="admin-empty-icon">📝</div>
           <h2>No editable fields found</h2>
           <p>Add <code>data-edit="unique.key"</code> to any HTML element to make it editable here.</p>
-        </div>
-      `;
+        </div>`;
       return;
     }
 
     const overrides = getOverrides();
     const fields = editable.map(f => {
       const isOverridden = overrides[f.key] !== undefined;
-      const isMulti = f.value.includes('\n') || f.value.length > 80 || f.tag === 'p' || f.tag === 'h1' || f.tag === 'h2';
+      const isMulti = f.value.includes('\n') || f.value.length > 80 || ['p','h1','h2','div'].includes(f.tag);
       const input = isMulti
         ? `<textarea data-key="${f.key}" rows="3">${escapeHtml(f.value)}</textarea>`
         : `<input type="text" data-key="${f.key}" value="${escapeHtml(f.value)}" />`;
@@ -393,8 +325,7 @@
             <button class="admin-btn admin-btn-sm" data-save="${f.key}">Save</button>
             <button class="admin-btn admin-btn-sm admin-btn-ghost" data-reset="${f.key}" ${isOverridden ? '' : 'disabled'}>Reset</button>
           </div>
-        </div>
-      `;
+        </div>`;
     }).join('');
 
     container.innerHTML = `
@@ -404,8 +335,7 @@
       <div class="admin-edit-list">${fields}</div>
       <div class="admin-edit-footer">
         <button class="admin-btn admin-btn-danger" id="resetAllContent">Reset all edits</button>
-      </div>
-    `;
+      </div>`;
 
     container.querySelectorAll('[data-save]').forEach(btn => {
       btn.onclick = () => {
@@ -417,16 +347,13 @@
         setTimeout(() => renderDashboard(), 600);
       };
     });
-
     container.querySelectorAll('[data-reset]').forEach(btn => {
       btn.onclick = () => {
-        const key = btn.dataset.reset;
-        setOverride(key, '');
+        setOverride(btn.dataset.reset, '');
         flash(btn, '✓ Reset');
         setTimeout(() => renderDashboard(), 400);
       };
     });
-
     const resetAll = container.querySelector('#resetAllContent');
     if (resetAll){
       resetAll.onclick = () => {
@@ -438,46 +365,25 @@
     }
   }
 
-  /* ---------- SETTINGS TAB ---------- */
   function renderSettingsTab(container){
     const config = (window.LFX && window.LFX.CONFIG) || {};
     container.innerHTML = `
       <div class="admin-info-banner">
-        <strong>ℹ️ About settings:</strong> These values are read from <code>js/config.js</code>. To change them permanently, edit that file. Any overrides you set here will apply only to this browser.
+        <strong>ℹ️ About settings:</strong> These values are read from <code>js/config.js</code>. To change them permanently, edit that file.
       </div>
       <div class="admin-settings">
-        <div class="admin-edit-row">
-          <label>WhatsApp Number</label>
-          <input type="text" value="${escapeHtml(config.WHATSAPP_NUMBER || '')}" readonly />
-        </div>
-        <div class="admin-edit-row">
-          <label>Telegram Link</label>
-          <input type="text" value="${escapeHtml(config.TELEGRAM_LINK || '')}" readonly />
-        </div>
-        <div class="admin-edit-row">
-          <label>Email</label>
-          <input type="text" value="${escapeHtml(config.EMAIL || '')}" readonly />
-        </div>
-        <div class="admin-edit-row">
-          <label>Phone</label>
-          <input type="text" value="${escapeHtml(config.PHONE_DISPLAY || '')}" readonly />
-        </div>
-        <div class="admin-edit-row">
-          <label>Payment Methods</label>
-          <input type="text" value="${escapeHtml(config.PAYMENT_METHODS || '')}" readonly />
-        </div>
-        <div class="admin-edit-row">
-          <label>Minimum Deposit</label>
-          <input type="text" value="${escapeHtml(config.MIN_DEPOSIT || '')}" readonly />
-        </div>
+        <div class="admin-edit-row"><label>WhatsApp Number</label><input type="text" value="${escapeHtml(config.WHATSAPP_NUMBER || '')}" readonly /></div>
+        <div class="admin-edit-row"><label>Telegram Link</label><input type="text" value="${escapeHtml(config.TELEGRAM_LINK || '')}" readonly /></div>
+        <div class="admin-edit-row"><label>Email</label><input type="text" value="${escapeHtml(config.EMAIL || '')}" readonly /></div>
+        <div class="admin-edit-row"><label>Phone</label><input type="text" value="${escapeHtml(config.PHONE_DISPLAY || '')}" readonly /></div>
+        <div class="admin-edit-row"><label>Payment Methods</label><input type="text" value="${escapeHtml(config.PAYMENT_METHODS || '')}" readonly /></div>
+        <div class="admin-edit-row"><label>Minimum Deposit</label><input type="text" value="${escapeHtml(config.MIN_DEPOSIT || '')}" readonly /></div>
       </div>
-
       <div class="admin-danger-zone">
         <h3>⚠️ Danger Zone</h3>
         <p>These actions affect data stored in this browser only.</p>
         <button class="admin-btn admin-btn-danger" id="clearAllData">Clear all admin data</button>
-      </div>
-    `;
+      </div>`;
 
     const clearAll = container.querySelector('#clearAllData');
     if (clearAll){
@@ -500,7 +406,6 @@
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
     }[c]));
   }
-
   function flash(btn, text){
     const original = btn.textContent;
     btn.textContent = text;
@@ -515,14 +420,33 @@
     applyContentOverrides();
     interceptForms();
 
+    // Register the admin route with the router
+    if (LFX.router){
+      LFX.router.register('admin', () => {
+        openAdmin();
+      });
+    }
+
+    // Bind all [data-admin-open] triggers to navigate to #admin
     document.querySelectorAll('[data-admin-open]').forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
-        openAdmin();
+        if (LFX.router){
+          LFX.router.navigate({ page: 'admin' }, 'admin');
+        } else {
+          openAdmin();
+        }
       });
+    });
+
+    // Close admin on ESC → navigate home
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && adminOverlay && adminOverlay.classList.contains('open')){
+        LFX.router.navigate({ page: 'home' }, '');
+      }
     });
   }
 
   window.LFX = window.LFX || {};
-  LFX.admin = { init, open: openAdmin, close: closeAdmin };
+  LFX.admin = { init, open: () => LFX.router.navigate({ page: 'admin' }, 'admin'), close: closeAdminVisual };
 })();
