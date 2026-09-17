@@ -1,8 +1,8 @@
 /**
- * Trade with Lukie — Bootstrap
- * - Animated candlestick preloader (text only, no image)
+ * LUKIE FX — Bootstrap
+ * - Animated candlestick preloader
  * - Theme-aware TradingView ticker
- * - Module initialization
+ * - Module initialization (incl. admin)
  */
 (function(){
 
@@ -25,8 +25,7 @@
     function resize(){
       dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
-      W = rect.width;
-      H = rect.height;
+      W = rect.width; H = rect.height;
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -55,11 +54,7 @@
     function shiftAndAppend(){
       const step = 0.6;
       candles.forEach(c => { c.x -= step; });
-
-      while (candles.length && candles[0].x < -SPACING * 2){
-        candles.shift();
-      }
-
+      while (candles.length && candles[0].x < -SPACING * 2) candles.shift();
       const last = candles[candles.length - 1];
       const next = newCandle(last ? last.close : 100);
       next.x = (last ? last.x : 0) + SPACING;
@@ -107,20 +102,16 @@
       const bodyW = SPACING * 0.55;
       candles.forEach(c => {
         if (c.x < -SPACING * 3 || c.x > W + SPACING * 3) return;
-
         const bull = c.close >= c.open;
         const color = bull ? cBull : cBear;
-
         ctx.strokeStyle = color;
         ctx.fillStyle = color;
         ctx.globalAlpha = 0.85;
-
         ctx.beginPath();
         ctx.moveTo(c.x, y(c.high));
         ctx.lineTo(c.x, y(c.low));
         ctx.lineWidth = 1.4;
         ctx.stroke();
-
         const top = Math.min(y(c.open), y(c.close));
         const hgt = Math.max(2, Math.abs(y(c.close) - y(c.open)));
         ctx.fillRect(c.x - bodyW / 2, top, bodyW, hgt);
@@ -167,7 +158,7 @@
   }
 
   /* ============================================================
-     TICKER
+     TICKER — TradingView, theme-aware
   ============================================================ */
   function loadTicker(theme){
     const container = document.getElementById('tickerContainer');
@@ -215,6 +206,7 @@
       LFX.ui?.init?.();
       LFX.pages?.init?.();
       LFX.tools?.init?.();
+      LFX.admin?.init?.();
 
       const hidePreloader = () => {
         const pre = document.getElementById('preloader');
@@ -232,10 +224,10 @@
         setTimeout(hidePreloader, 4000);
       }
 
-      console.log('%cTrade with Lukie', 'color:#f5b301;font-size:22px;font-weight:900;letter-spacing:2px');
-      console.log('%c🕯️ Animated candlestick preloader · 🌓 Theme toggle · 📱 Responsive', 'color:#f5b301;font-size:12px;font-weight:700');
+      console.log('%cLUKIE FX', 'color:#3b82f6;font-size:22px;font-weight:900;letter-spacing:2px');
+      console.log('%c🕯️ Animated candlestick preloader · 🌓 Theme toggle · 📱 Responsive · 🎛️ Admin panel', 'color:#f5b301;font-size:12px;font-weight:700');
     } catch(err){
-      console.error('Trade with Lukie boot error:', err);
+      console.error('LUKIE FX boot error:', err);
       document.getElementById('preloader')?.classList.add('hide');
     }
   }
