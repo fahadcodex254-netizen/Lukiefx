@@ -28,7 +28,6 @@
       try {
         history.pushState(state, '', url);
       } catch(err){
-        // Fallback: update location.hash only. Page still works.
         try {
           if (hash) location.hash = hash;
           else if (location.hash) location.hash = '';
@@ -40,13 +39,10 @@
       const url = hash ? '#' + hash : location.pathname + location.search;
       try {
         history.replaceState(state, '', url);
-      } catch(err){
-        /* silent — initial route still dispatches below */
-      }
+      } catch(err){ /* silent */ }
     }
 
     function navigate(state, hash){
-      // Don't push duplicate states
       if (currentState &&
           currentState.page === state.page &&
           currentState.key === state.key &&
@@ -332,8 +328,13 @@
           <p class="form-sub">${svc.lead}</p>
           <form id="onbForm" novalidate>
             ${fields}
-            <button type="submit" class="form-submit">Submit Details</button>
+            <div class="form-checkbox">
+              <input type="checkbox" id="onb_confirm" name="onb_confirm" value="yes" required />
+              <label for="onb_confirm">I confirm the account details above are mine and accurate, I understand trading involves risk of loss, I will not interfere with trades on this account, and I agree to the <a href="#" data-page="terms">Terms &amp; Conditions</a>, <a href="#" data-page="privacy">Privacy Policy</a> and <a href="#" data-page="risk">Risk Disclaimer</a>.</label>
+            </div>
+            <button type="submit" class="form-submit">Submit account details</button>
             <div class="form-success" id="onbSuccess">✅ Thanks! We've received your details. Our team will reach out within 24 hours to link your account.</div>
+            <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-top:16px">Your details are sent securely. Make sure trading is enabled and the password is the investor / main password we need to link.</p>
           </form>
         </div>
       </div>
@@ -354,6 +355,16 @@
 
     form.addEventListener('submit', e => {
       e.preventDefault();
+
+      // ---- Confirm checkbox check ----
+      const confirmBox = form.querySelector('#onb_confirm');
+      if (confirmBox && !confirmBox.checked){
+        alert('Please tick the confirmation box before submitting.');
+        confirmBox.focus();
+        return;
+      }
+
+      // ---- Standard validity check ----
       if (!form.checkValidity()){ form.reportValidity(); return; }
 
       const submitBtn = form.querySelector('.form-submit');
