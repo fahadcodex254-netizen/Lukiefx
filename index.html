@@ -1,619 +1,545 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#04091a" />
-<meta name="description" content="Trade with LUKIE FX — Premium forex signals, copy trading and account management." />
-<title>LUKIE FX — Learn · Trade · Grow</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/styles.css" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='20' fill='%230a1836'/%3E%3Ccircle cx='60' cy='60' r='55' fill='none' stroke='%23f5b301' stroke-width='1.8'/%3E%3Cpath d='M 20 32 L 76 32 L 76 44 L 56 44 L 56 100 L 40 100 L 40 44 L 20 44 Z' fill='%23f5b301'/%3E%3Cpath d='M 66 46 L 80 46 L 80 88 L 104 88 L 104 100 L 66 100 Z' fill='%23ffffff'/%3E%3Cpath d='M 25 95 Q 50 82 75 62 T 108 38' fill='none' stroke='%23f5b301' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LUKIE FX — Trusted Forex Trading Partner. Premium signals, copy trading, account management, and education.">
+  <title>LUKIE FX — Trusted Forex Trading Partner</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<!-- Preloader -->
-<div id="preloader">
-  <canvas id="preloaderChart"></canvas>
-  <div class="preloader-content">
-    <div class="preloader-logo">
-      <span class="preloader-icon" aria-hidden="true">
-        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="pGold" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffd75e"/>
-              <stop offset="50%" stop-color="#f5b301"/>
-              <stop offset="100%" stop-color="#9a6800"/>
-            </linearGradient>
-            <linearGradient id="pSilver" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#b8c2d0"/>
-            </linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="55" fill="none" stroke="url(#pGold)" stroke-width="1.8"/>
-          <path d="M 20 32 L 76 32 L 76 44 L 56 44 L 56 100 L 40 100 L 40 44 L 20 44 Z" fill="url(#pGold)"/>
-          <path d="M 66 46 L 80 46 L 80 88 L 104 88 L 104 100 L 66 100 Z" fill="url(#pSilver)"/>
-          <g stroke-linecap="round">
-            <line x1="62" y1="58" x2="62" y2="80" stroke="#16a34a" stroke-width="1.4"/>
-            <rect x="59" y="62" width="5" height="14" fill="#16a34a"/>
-            <line x1="70" y1="54" x2="70" y2="76" stroke="#dc2626" stroke-width="1.4"/>
-            <rect x="67" y="58" width="5" height="14" fill="#dc2626"/>
-            <line x1="78" y1="50" x2="78" y2="72" stroke="#16a34a" stroke-width="1.4"/>
-            <rect x="75" y="54" width="5" height="14" fill="#16a34a"/>
-          </g>
-          <path d="M 25 95 Q 50 82 75 62 T 108 38" fill="none" stroke="url(#pGold)" stroke-width="3.2" stroke-linecap="round"/>
-          <path d="M 96 36 L 112 34 L 106 50 Z" fill="#ffe680"/>
-        </svg>
-      </span>
-      <span class="preloader-text">
-        <em>TRADE WITH</em>
-        <b>LUKIE FX</b>
-        <small>LEARN · TRADE · GROW</small>
-      </span>
-    </div>
-    <div class="loader-bar"><span></span></div>
-  </div>
-</div>
+  <!-- ============ PRELOADER ============ -->
+  <div id="preloader"><div class="loader"></div></div>
 
-<div id="progress"></div>
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#home" class="brand">LUKIE<span>FX</span></a>
 
-<header class="nav" id="nav">
-  <div class="container nav-inner">
-    <a href="#home" class="logo" aria-label="Trade with LUKIE FX — home">
-      <span class="logo-icon" aria-hidden="true">
-        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="lfxGold" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffd75e"/>
-              <stop offset="50%" stop-color="#f5b301"/>
-              <stop offset="100%" stop-color="#9a6800"/>
-            </linearGradient>
-            <linearGradient id="lfxSilver" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#b8c2d0"/>
-            </linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="55" fill="none" stroke="url(#lfxGold)" stroke-width="1.8"/>
-          <path d="M 20 32 L 76 32 L 76 44 L 56 44 L 56 100 L 40 100 L 40 44 L 20 44 Z" fill="url(#lfxGold)"/>
-          <path d="M 66 46 L 80 46 L 80 88 L 104 88 L 104 100 L 66 100 Z" fill="url(#lfxSilver)"/>
-          <g stroke-linecap="round">
-            <line x1="62" y1="58" x2="62" y2="80" stroke="#16a34a" stroke-width="1.4"/>
-            <rect x="59" y="62" width="5" height="14" fill="#16a34a"/>
-            <line x1="70" y1="54" x2="70" y2="76" stroke="#dc2626" stroke-width="1.4"/>
-            <rect x="67" y="58" width="5" height="14" fill="#dc2626"/>
-            <line x1="78" y1="50" x2="78" y2="72" stroke="#16a34a" stroke-width="1.4"/>
-            <rect x="75" y="54" width="5" height="14" fill="#16a34a"/>
-          </g>
-          <path d="M 25 95 Q 50 82 75 62 T 108 38" fill="none" stroke="url(#lfxGold)" stroke-width="3.2" stroke-linecap="round"/>
-          <path d="M 96 36 L 112 34 L 106 50 Z" fill="#ffe680"/>
-        </svg>
-      </span>
-      <span class="logo-divider" aria-hidden="true"></span>
-      <span class="logo-text">
-        <em>TRADE WITH</em>
-        <b>LUKIE <span class="fx">FX</span></b>
-        <small>LEARN · TRADE · GROW</small>
-      </span>
-    </a>
+      <nav class="main-nav" id="mainNav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#markets">Markets</a>
+        <a href="#tools">Tools</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#account">Account Management</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-    <nav class="nav-links" id="navLinks">
-      <a href="#home" class="active">Home</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#markets">Markets</a>
-      <a href="#tools">Tools</a>
-      <a href="#plans">Plans</a>
-      <a href="#faq">FAQ</a>
-      <a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a>
-    </nav>
-
-    <div class="nav-cta">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
-        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      </button>
-      <a href="#tools" class="btn btn-gold" style="padding:11px 22px;font-size:.85rem">Tools</a>
-      <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</header>
-
-<div class="overlay" id="overlay"></div>
-<aside class="mobile-menu" id="mobileMenu">
-  <a href="#home">Home</a>
-  <a href="#about">About</a>
-  <a href="#services">Services</a>
-  <a href="#markets">Markets</a>
-  <a href="#tools">Tools</a>
-  <a href="#plans">Plans</a>
-  <a href="#testimonials">Reviews</a>
-  <a href="#faq">FAQ</a>
-  <a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a>
-  <div class="mobile-menu-footer">
-    <span>Appearance</span>
-    <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-    </button>
-  </div>
-</aside>
-
-<div class="ticker-wrap">
-  <div class="tradingview-widget-container" id="tickerContainer">
-    <div class="tradingview-widget-container__widget"></div>
-  </div>
-</div>
-
-<section class="hero" id="home">
-  <div class="container hero-single">
-    <div data-reveal>
-      <span class="eyebrow" data-edit="hero.eyebrow" data-edit-label="Hero — Eyebrow Badge">Trusted Forex Trading Partner</span>
-      <h1 data-edit="hero.title" data-edit-label="Hero — Main Heading">Trade Smarter.<br /><span class="grad-gold">Profit Faster.</span></h1>
-      <p class="lead" data-edit="hero.lead" data-edit-label="Hero — Lead Paragraph">LUKIE FX gives you institutional-grade tools, real-time market intelligence and expert-guided strategies — so you can trade the world's markets with clarity and confidence.</p>
-      <div class="hero-actions">
-        <a href="#tools" class="btn btn-accent">
-          Try Free Tools
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <a href="#services" class="btn btn-ghost">Explore Services</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><b data-count="12500" data-suffix="+">0</b><small>Active Traders</small></div>
-        <div class="stat"><b data-count="98" data-suffix="%">0</b><small>Payout Rate</small></div>
-        <div class="stat"><b data-count="24" data-suffix="/7">0</b><small>Market Access</small></div>
+      <div class="header-actions">
+        <button id="themeToggle" type="button" aria-label="Toggle theme">🌓</button>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu">☰</button>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<div class="trust">
-  <div class="container trust-inner">
-    <p>Regulated &amp; Secured By</p>
-    <div class="trust-logos">
-      <span>MetaTrader 5</span>
-      <span>TradingView</span>
-      <span>Visa</span>
-      <span>Mastercard</span>
-      <span>Bitcoin</span>
-      <span>USDT</span>
-    </div>
-  </div>
-</div>
-
-<section class="section" id="about">
-  <div class="container">
-    <div class="about-single" data-reveal="left">
-      <span class="eyebrow">About LUKIE FX</span>
-      <h2 data-edit="about.title" data-edit-label="About — Heading">Built For Traders Who <span class="grad-gold">Refuse To Settle</span></h2>
-      <p style="color:var(--muted);margin-top:18px" data-edit="about.body" data-edit-label="About — Body Text">LUKIE FX was founded on a simple belief: world-class trading tools shouldn't be reserved for institutions. We combine deep market research, transparent execution and hands-on mentorship to give every trader a genuine edge.</p>
-      <ul class="about-list">
-        <li><span class="check">✓</span><span><strong>Transparent Pricing</strong> — no hidden spreads, no surprise fees. Ever.</span></li>
-        <li><span class="check">✓</span><span><strong>Lightning Execution</strong> — orders filled in under 30 milliseconds.</span></li>
-        <li><span class="check">✓</span><span><strong>Expert Analysis</strong> — daily market breakdowns from seasoned strategists.</span></li>
-        <li><span class="check">✓</span><span><strong>Risk First</strong> — capital protection built into every strategy we teach.</span></li>
-      </ul>
-      <div class="mini-stats">
-        <div class="mini-stat"><b data-count="8" data-suffix="+">0</b><small>Years Experience</small></div>
-        <div class="mini-stat"><b data-count="120" data-suffix="+">0</b><small>Global Markets</small></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="services" style="background:linear-gradient(180deg,transparent,rgba(var(--glow-rgb),.04),transparent)">
-  <div class="container">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">What We Offer</span>
-      <h2>Everything You Need To <span class="grad-gold">Win The Markets</span></h2>
-      <p>A complete ecosystem of trading services designed for beginners and professionals alike. Click any service to learn more.</p>
-    </div>
-    <div class="grid-3">
-      <article class="card" data-service="signals" data-reveal>
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-7"/><path d="M14 8h7v7"/></svg></div>
-        <h3>Premium Trading Signals</h3>
-        <p>Precision entries and exits delivered in real time across forex, indices, commodities and crypto — complete with stop-loss and take-profit levels.</p>
-        <button class="card-cta pay" type="button">Pay &amp; Get Started <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </article>
-      <article class="card green" data-service="copy" data-reveal>
-        <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-        <h3>Copy Trading</h3>
-        <p>Mirror the trades of verified, consistently profitable traders automatically. Choose your risk level and let the system handle execution.</p>
-        <button class="card-cta pay" type="button">Pay &amp; Get Started <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </article>
-      <article class="card" data-service="management" data-reveal>
-        <div class="card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M2 13h20"/></svg></div>
-        <h3>Account Management</h3>
-        <p>Let our professional desk manage your portfolio with disciplined risk models and a documented, performance-driven approach.</p>
-        <button class="card-cta submit" type="button">Submit Your Account Details <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </article>
-      <article class="card green" data-service="education" data-reveal>
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></div>
-        <h3>Education &amp; Mentorship</h3>
-        <p>Structured courses, live webinars and one-on-one mentorship that take you from fundamentals to advanced price-action mastery.</p>
-        <button class="card-cta pay" type="button">Pay &amp; Get Started <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </article>
-      <article class="card" data-service="funded" data-reveal>
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-        <h3>Funded Challenges</h3>
-        <p>Prove your skill, pass our evaluation and trade a funded account with profit splits up to 90% — without risking your own capital.</p>
-        <button class="card-cta pay" type="button">Pay &amp; Get Started <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </article>
-      <article class="card green" data-service="risk" data-reveal>
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <h3>Risk Management Tools</h3>
-        <p>Position-size calculators, drawdown alerts and portfolio heat maps that keep your capital protected in every market condition.</p>
-        <button class="card-cta pay" type="button">Pay &amp; Get Started <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="markets">
-  <div class="container">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow">Live Markets</span>
-      <h2>Real Prices. <span class="grad-gold">Real Movements.</span></h2>
-      <p>Live spot prices with 1-hour change. Click any row to open the full chart on TradingView.</p>
-    </div>
-    <div class="market-meta" data-reveal>
-      <span class="market-live"><i></i> Live Feed</span>
-      <span class="market-updated">Last update: <b id="lastUpdate">—</b></span>
-    </div>
-    <div class="table-wrap" data-reveal="scale">
-      <table class="market-table loading" id="marketTable">
-        <thead>
-          <tr>
-            <th>Instrument</th><th>Bid</th><th>Ask</th><th>Change (1H)</th><th>Spread</th><th>Trend</th>
-          </tr>
-        </thead>
-        <tbody id="marketBody"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="tools" style="background:linear-gradient(180deg,transparent,rgba(var(--glow-rgb),.05),transparent)">
-  <div class="container">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">Free Trading Tools</span>
-      <h2>Calculate. Analyze. <span class="grad-gold">Trade Smarter.</span></h2>
-      <p>Two professional-grade tools every trader needs — free, no sign-up, and instant.</p>
-    </div>
-
-    <div class="tools-grid">
-
-      <div class="tool-card" data-reveal>
-        <div class="tool-head">
-          <div class="tool-icon">
-            <svg viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="16" rx="2"/>
-              <path d="M7 8h2M7 12h2M7 16h2M11 8h6M11 12h6M11 16h6"/>
-            </svg>
-          </div>
-          <div>
-            <h3>Lot Size Calculator</h3>
-            <p>Find the exact position size for your risk</p>
-          </div>
+  <!-- ============ HERO ============ -->
+  <section id="home" class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <span class="eyebrow">Trusted by 4,000+ traders worldwide</span>
+        <h1>Trade Smarter with <span class="accent">LUKIE FX</span></h1>
+        <p>Premium signals, copy trading, account management, and professional-grade tools — all in one place. Whether you're a beginner or a funded trader, we give you the edge.</p>
+        <div class="hero-cta">
+          <a href="#account" class="btn btn-primary">Get Started</a>
+          <a href="#services" class="btn btn-ghost">View Services</a>
         </div>
-        <div class="tool-body">
-          <div class="tool-field">
-            <label for="calcBalance">Account Balance (USD)</label>
-            <input type="number" id="calcBalance" value="1000" min="1" step="1" />
-          </div>
-          <div class="tool-field">
-            <label>Risk Percentage</label>
-            <div class="risk-presets" id="riskPresets">
-              <button type="button" data-risk="0.5">0.5%</button>
-              <button type="button" data-risk="1" class="active">1%</button>
-              <button type="button" data-risk="2">2%</button>
-              <button type="button" data-risk="3">3%</button>
-            </div>
-            <input type="number" id="calcRisk" value="1" min="0.1" max="100" step="0.1" />
-          </div>
-          <div class="tool-field">
-            <label for="calcSL">Stop Loss (pips)</label>
-            <input type="number" id="calcSL" value="20" min="1" step="1" />
-          </div>
-          <div class="tool-field">
-            <label for="calcPair">Currency Pair</label>
-            <select id="calcPair">
-              <option value="EURUSD">EUR / USD</option>
-              <option value="GBPUSD">GBP / USD</option>
-              <option value="USDJPY">USD / JPY</option>
-              <option value="AUDUSD">AUD / USD</option>
-              <option value="USDCAD">USD / CAD</option>
-              <option value="USDCHF">USD / CHF</option>
-              <option value="NZDUSD">NZD / USD</option>
-              <option value="XAUUSD">XAU / USD (Gold)</option>
+        <ul class="hero-stats">
+          <li><strong>4,000+</strong><span>Active traders</span></li>
+          <li><strong>88%</strong><span>Signal win rate</span></li>
+          <li><strong>24/5</strong><span>Support</span></li>
+        </ul>
+      </div>
+      <div class="hero-visual">
+        <div class="chart-mock">
+          <div class="chart-bar" style="height:30%"></div>
+          <div class="chart-bar" style="height:55%"></div>
+          <div class="chart-bar" style="height:40%"></div>
+          <div class="chart-bar" style="height:75%"></div>
+          <div class="chart-bar" style="height:60%"></div>
+          <div class="chart-bar" style="height:90%"></div>
+          <div class="chart-bar" style="height:70%"></div>
+          <div class="chart-bar" style="height:100%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">About Us</span>
+        <h2>Built by traders, for traders</h2>
+        <p>LUKIE FX was founded by a small team of full-time forex traders who were tired of low-quality signals and overpriced courses. We built the platform we wished existed.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <h3>Experience</h3>
+          <p>Over a decade of combined trading experience across forex, indices, and commodities.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3>Transparency</h3>
+          <p>Every signal, every trade, every result is documented. No fake screenshots, no hype.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Execution</h3>
+          <p>Signals delivered in real time via Telegram and WhatsApp, with clear entries, SL, and TP.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="services" class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What We Offer</span>
+        <h2>Services built for every level</h2>
+        <p>Pick the service that fits where you are right now. Upgrade anytime.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="service-card">
+          <h3>Premium Trading Signals</h3>
+          <p>3–5 high-probability setups per day with entry, stop loss, take profit, and reasoning.</p>
+          <ul>
+            <li>Forex, gold, and indices</li>
+            <li>Real-time Telegram delivery</li>
+            <li>Full trade breakdown</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <h3>Copy Trading</h3>
+          <p>Mirror our trades automatically through your broker. No screen time required.</p>
+          <ul>
+            <li>Auto-copy via MT4/MT5</li>
+            <li>Risk-adjusted position sizing</li>
+            <li>Monthly performance reports</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <h3>Account Management</h3>
+          <p>Let our team trade your account with a documented, risk-first strategy.</p>
+          <ul>
+            <li>Minimum $200 account</li>
+            <li>Profit split model</li>
+            <li>Weekly performance updates</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <h3>Education</h3>
+          <p>Structured lessons from beginner to advanced, taught by active traders.</p>
+          <ul>
+            <li>Video modules</li>
+            <li>Live weekly Q&amp;A</li>
+            <li>Private community access</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <h3>Funded Challenges</h3>
+          <p>Guidance and strategy for passing prop firm evaluations.</p>
+          <ul>
+            <li>Challenge-specific playbooks</li>
+            <li>Drawdown management</li>
+            <li>Payout planning</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <h3>Risk Management Tools</h3>
+          <p>Free position size, pip value, and risk calculators built for real trading.</p>
+          <ul>
+            <li>Position size calculator</li>
+            <li>Risk-to-reward planner</li>
+            <li>Compounding projections</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARKETS ============ -->
+  <section id="markets" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Live Markets</span>
+        <h2>Today's key instruments</h2>
+        <p>Real-time pricing via TradingView. Click any row to open the full chart.</p>
+      </div>
+
+      <div class="markets-wrap">
+        <table class="markets-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Bid</th>
+              <th>Ask</th>
+              <th>1H Change</th>
+              <th>Chart</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>EUR/USD</strong></td>
+              <td class="bid">—</td>
+              <td class="ask">—</td>
+              <td class="chg">—</td>
+              <td><a href="https://www.tradingview.com/symbols/EURUSD/" target="_blank" rel="noopener">View</a></td>
+            </tr>
+            <tr>
+              <td><strong>GBP/USD</strong></td>
+              <td class="bid">—</td>
+              <td class="ask">—</td>
+              <td class="chg">—</td>
+              <td><a href="https://www.tradingview.com/symbols/GBPUSD/" target="_blank" rel="noopener">View</a></td>
+            </tr>
+            <tr>
+              <td><strong>USD/JPY</strong></td>
+              <td class="bid">—</td>
+              <td class="ask">—</td>
+              <td class="chg">—</td>
+              <td><a href="https://www.tradingview.com/symbols/USDJPY/" target="_blank" rel="noopener">View</a></td>
+            </tr>
+            <tr>
+              <td><strong>XAU/USD</strong></td>
+              <td class="bid">—</td>
+              <td class="ask">—</td>
+              <td class="chg">—</td>
+              <td><a href="https://www.tradingview.com/symbols/XAUUSD/" target="_blank" rel="noopener">View</a></td>
+            </tr>
+            <tr>
+              <td><strong>US30</strong></td>
+              <td class="bid">—</td>
+              <td class="ask">—</td>
+              <td class="chg">—</td>
+              <td><a href="https://www.tradingview.com/symbols/DJ-DJI/" target="_blank" rel="noopener">View</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOOLS ============ -->
+  <section id="tools" class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Free Tools</span>
+        <h2>Professional-grade calculators</h2>
+        <p>No sign-up required. Use them right now.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="tool-card">
+          <h3>Position Size Calculator</h3>
+          <p>Know exactly how many lots to trade based on your risk.</p>
+          <label>Account Balance ($)
+            <input type="number" id="psBalance" value="1000">
+          </label>
+          <label>Risk (%)
+            <input type="number" id="psRisk" value="1" step="0.1">
+          </label>
+          <label>Stop Loss (pips)
+            <input type="number" id="psSl" value="20">
+          </label>
+          <div class="tool-result">Lots: <strong id="psResult">0.50</strong></div>
+        </div>
+
+        <div class="tool-card">
+          <h3>Risk-to-Reward</h3>
+          <p>Quickly compare potential profit against potential loss.</p>
+          <label>Entry
+            <input type="number" id="rrEntry" value="1.1000" step="0.0001">
+          </label>
+          <label>Stop Loss
+            <input type="number" id="rrSl" value="1.0980" step="0.0001">
+          </label>
+          <label>Take Profit
+            <input type="number" id="rrTp" value="1.1040" step="0.0001">
+          </label>
+          <div class="tool-result">R:R = <strong id="rrResult">1 : 2.00</strong></div>
+        </div>
+
+        <div class="tool-card">
+          <h3>Compound Growth</h3>
+          <p>See what consistent monthly returns do to your account.</p>
+          <label>Starting Capital ($)
+            <input type="number" id="cgStart" value="1000">
+          </label>
+          <label>Monthly Return (%)
+            <input type="number" id="cgRate" value="5" step="0.1">
+          </label>
+          <label>Months
+            <input type="number" id="cgMonths" value="12">
+          </label>
+          <div class="tool-result">End: <strong id="cgResult">$1,795.86</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICING ============ -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pricing</span>
+        <h2>Simple, honest pricing</h2>
+        <p>No hidden fees. Cancel anytime.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="price-card">
+          <h3>Starter</h3>
+          <div class="price">$29<span>/mo</span></div>
+          <ul>
+            <li>Daily signals</li>
+            <li>Telegram access</li>
+            <li>Basic education</li>
+          </ul>
+          <button type="button" class="btn btn-ghost">Choose Starter</button>
+        </div>
+        <div class="price-card featured">
+          <div class="ribbon">Most popular</div>
+          <h3>Pro</h3>
+          <div class="price">$79<span>/mo</span></div>
+          <ul>
+            <li>Everything in Starter</li>
+            <li>Copy trading access</li>
+            <li>Full education library</li>
+            <li>Weekly live Q&amp;A</li>
+          </ul>
+          <button type="button" class="btn btn-primary">Choose Pro</button>
+        </div>
+        <div class="price-card">
+          <h3>Managed</h3>
+          <div class="price">20%<span> profit split</span></div>
+          <ul>
+            <li>We trade your account</li>
+            <li>Min $200 account</li>
+            <li>Weekly reports</li>
+            <li>No upfront fee</li>
+          </ul>
+          <button type="button" class="btn btn-ghost">Apply Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Testimonials</span>
+        <h2>What our clients say</h2>
+      </div>
+
+      <div class="grid grid-3">
+        <blockquote class="quote">
+          <p>"The signals are clean and well explained. I finally stopped overtrading."</p>
+          <footer>— Brian K., Nairobi</footer>
+        </blockquote>
+        <blockquote class="quote">
+          <p>"Copy trading with LUKIE FX added a second income for me. Zero stress."</p>
+          <footer>— Amina W., Mombasa</footer>
+        </blockquote>
+        <blockquote class="quote">
+          <p>"The account management team is professional and transparent."</p>
+          <footer>— Daniel O., Kisumu</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Frequently asked questions</h2>
+      </div>
+
+      <div class="faq-list">
+        <details>
+          <summary>How do I receive signals?</summary>
+          <p>Signals are delivered instantly to a private Telegram channel and mirrored to WhatsApp on request.</p>
+        </details>
+        <details>
+          <summary>What is the minimum for account management?</summary>
+          <p>We require a minimum account size of $200 USD.</p>
+        </details>
+        <details>
+          <summary>Which brokers do you support?</summary>
+          <p>Any broker offering MT4 or MT5. We'll guide you through the setup.</p>
+        </details>
+        <details>
+          <summary>How are profits split on managed accounts?</summary>
+          <p>We take 20% of profits generated. You keep the rest. No upfront fees.</p>
+        </details>
+        <details>
+          <summary>Can I withdraw anytime?</summary>
+          <p>Yes. Your account stays in your name — you always retain full control of withdrawals.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACCOUNT MANAGEMENT FORM ============ -->
+  <section id="account" class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Account Management</span>
+        <h2>Submit your account details</h2>
+        <p>Fill the form below and our team will contact you to get started. It takes less than a minute.</p>
+      </div>
+
+      <form data-lfx-form="account_management" id="accountForm" class="account-form" novalidate>
+        <div class="form-row">
+          <label>Full Name
+            <input name="fullName" type="text" placeholder="John Doe" required>
+          </label>
+          <label>Email
+            <input name="email" type="email" placeholder="you@example.com" required>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>Phone / WhatsApp
+            <input name="phone" type="tel" placeholder="+254 7XX XXX XXX" required>
+          </label>
+          <label>Broker
+            <input name="broker" type="text" placeholder="e.g. Exness">
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>MT4/MT5 Account Number
+            <input name="accountNumber" type="text" placeholder="12345678">
+          </label>
+          <label>Account Size (USD)
+            <input name="accountSize" type="number" placeholder="500">
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>Platform
+            <select name="platform">
+              <option value="MT4">MT4</option>
+              <option value="MT5">MT5</option>
+              <option value="cTrader">cTrader</option>
+              <option value="Other">Other</option>
             </select>
-          </div>
-          <button class="tool-submit" id="calcSubmit">Calculate Position Size</button>
+          </label>
+          <label>Preferred Contact Method
+            <select name="contactMethod">
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Telegram">Telegram</option>
+              <option value="Email">Email</option>
+            </select>
+          </label>
+        </div>
 
-          <div class="tool-result" id="calcResult">
-            <div class="result-main">
-              <span>Position Size</span>
-              <b id="resultLots">0.00</b>
-              <span>standard lots</span>
-            </div>
-            <div class="result-row"><span>Mini lots</span><b id="resultMini">0.0</b></div>
-            <div class="result-row"><span>Micro lots</span><b id="resultMicro">0</b></div>
-            <div class="result-row"><span>Risk amount</span><b id="resultRisk">$0.00</b></div>
-          </div>
+        <label class="full">Anything else we should know?
+          <textarea name="notes" placeholder="Tell us about your goals or previous experience..."></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-block">Submit Account Details</button>
+        <p class="lfx-form-msg" hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Contact</span>
+        <h2>Get in touch</h2>
+        <p>We respond within a few hours, 24/5.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="contact-card">
+          <div class="card-icon">💬</div>
+          <h3>WhatsApp</h3>
+          <p><a href="https://wa.me/254114319611" target="_blank" rel="noopener">+254 114 319 611</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="card-icon">✈️</div>
+          <h3>Telegram</h3>
+          <p><a href="https://t.me/lukiefx" target="_blank" rel="noopener">@lukiefx</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="card-icon">✉️</div>
+          <h3>Email</h3>
+          <p><a href="mailto:support@lukiefx.com">support@lukiefx.com</a></p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="tool-card" data-reveal>
-        <div class="tool-head">
-          <div class="tool-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M3 20h18"/>
-              <rect x="4" y="12" width="3" height="8"/>
-              <rect x="9" y="8" width="3" height="12"/>
-              <rect x="14" y="4" width="3" height="16"/>
-            </svg>
-          </div>
-          <div>
-            <h3>Currency Strength Meter</h3>
-            <p>Live strength ranking of the 8 majors</p>
-          </div>
-        </div>
-        <div class="tool-body">
-          <div class="strength-list" id="strengthList">
-            <div style="text-align:center;padding:30px 0;color:var(--muted);font-size:.9rem">
-              Loading live data…
-            </div>
-          </div>
-          <p class="strength-note">
-            Stronger currencies are more likely to trend. Look for buys on the strongest vs sells on the weakest.
-          </p>
-        </div>
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="brand">LUKIE<span>FX</span></a>
+        <p>Trusted Forex Trading Partner. Nairobi, Kenya.</p>
       </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="section" id="plans" style="background:linear-gradient(180deg,transparent,rgba(var(--glow-rgb),.04),transparent)">
-  <div class="container">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">Membership</span>
-      <h2>Simple Plans, <span class="grad-gold">Serious Results</span></h2>
-      <p>Pick the level of support that matches your ambition. Upgrade or cancel anytime.</p>
-    </div>
-    <div class="plans">
-      <div class="plan" data-reveal>
-        <h3>Starter</h3>
-        <div class="price" data-edit="plan.starter.price" data-edit-label="Starter Plan — Price">$49<small>/month</small></div>
-        <p>Perfect for traders finding their footing.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> 3–5 signals per week</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Basic market analysis</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Community chat access</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Beginner video course</li>
-        </ul>
-        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Starter plan.">Choose Starter</a>
-      </div>
-      <div class="plan featured" data-reveal>
-        <h3>Professional</h3>
-        <div class="price" data-edit="plan.pro.price" data-edit-label="Professional Plan — Price">$129<small>/month</small></div>
-        <p>Our most popular plan for active traders.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> 15–20 premium signals weekly</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Daily live market breakdowns</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Copy trading access</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Risk management toolkit</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Priority support</li>
-        </ul>
-        <a href="#" class="btn btn-accent btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Professional plan.">Choose Professional</a>
-      </div>
-      <div class="plan" data-reveal>
-        <h3>VIP Elite</h3>
-        <div class="price" data-edit="plan.vip.price" data-edit-label="VIP Plan — Price">$299<small>/month</small></div>
-        <p>Full-service support for serious capital.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Unlimited VIP signals</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> 1-on-1 mentorship calls</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Custom strategy building</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Dedicated account manager</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Funded account fast-track</li>
-        </ul>
-        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the VIP Elite plan.">Choose VIP Elite</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="testimonials">
-  <div class="container">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">Testimonials</span>
-      <h2>Traders Who <span class="grad-gold">Trust LUKIE FX</span></h2>
-    </div>
-    <div style="max-width:880px;margin-inline:auto" data-reveal="scale">
-      <div class="slider">
-        <div class="slides" id="slides">
-          <div class="slide">
-            <div class="quote-mark">"</div>
-            <div class="stars">★★★★★</div>
-            <p>The signals are genuinely well-researched, not random alerts. My win rate improved noticeably within two months of joining LUKIE FX.</p>
-            <div class="who"><div class="avatar">DM</div><div><b>Daniel M.</b><small>Retail Trader · Nairobi</small></div></div>
-          </div>
-          <div class="slide">
-            <div class="quote-mark">"</div>
-            <div class="stars">★★★★★</div>
-            <p>What sold me was the mentorship. Having someone review my charts and correct my risk habits changed everything about how I trade.</p>
-            <div class="who"><div class="avatar">SA</div><div><b>Sofia A.</b><small>Part-time Trader · London</small></div></div>
-          </div>
-          <div class="slide">
-            <div class="quote-mark">"</div>
-            <div class="stars">★★★★★</div>
-            <p>Execution is fast, spreads are tight and support actually replies. After three years with other brokers, LUKIE FX is a clear step up.</p>
-            <div class="who"><div class="avatar">JK</div><div><b>James K.</b><small>Funded Trader · Dubai</small></div></div>
-          </div>
-        </div>
-      </div>
-      <div class="slider-nav" id="dots"></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="faq" style="background:linear-gradient(180deg,transparent,rgba(var(--glow-rgb),.04),transparent)">
-  <div class="container">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">FAQ</span>
-      <h2>Questions? <span class="grad-gold">We've Got Answers</span></h2>
-    </div>
-    <div class="faq" data-reveal>
-      <div class="faq-item"><button class="faq-q">What is LUKIE FX and how does it work? <i>+</i></button><div class="faq-a"><p>LUKIE FX is a trading education and market-analysis platform. We provide signals, copy trading, account management and mentorship. You connect your own brokerage account and apply the strategies we share — we never hold your funds.</p></div></div>
-      <div class="faq-item"><button class="faq-q">Do I need experience to get started? <i>+</i></button><div class="faq-a"><p>Not at all. Our Starter plan includes a beginner course that covers charts, order types and risk fundamentals. Most members start seeing consistency within 60–90 days of active practice.</p></div></div>
-      <div class="faq-item"><button class="faq-q">How much capital do I need to begin? <i>+</i></button><div class="faq-a"><p>You can begin practising with a demo account for free. For live trading we generally recommend starting with at least $200 so that proper risk management (1–2% per trade) remains practical.</p></div></div>
-      <div class="faq-item"><button class="faq-q">Are the signals sent in real time? <i>+</i></button><div class="faq-a"><p>Yes. Signals are pushed instantly to our private Telegram room and member dashboard, complete with entry price, stop-loss, take-profit and a short rationale for each setup.</p></div></div>
-      <div class="faq-item"><button class="faq-q">Can I cancel my membership anytime? <i>+</i></button><div class="faq-a"><p>Absolutely. All plans are month-to-month with no lock-in contract. You can cancel from your dashboard in one click and retain access until the end of your billing period.</p></div></div>
-      <div class="faq-item"><button class="faq-q">Is trading risky? <i>+</i></button><div class="faq-a"><p>Yes — trading leveraged instruments carries significant risk and can result in the loss of your capital. LUKIE FX provides education and analysis, not financial advice. Never trade money you cannot afford to lose.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section section--tight">
-  <div class="container">
-    <div class="cta-band" data-reveal="scale">
-      <h2 data-edit="cta.title" data-edit-label="CTA — Heading">Your Next Trade Could Be <span class="grad-gold">Your Best One</span></h2>
-      <p data-edit="cta.body" data-edit-label="CTA — Body Text">Join thousands of traders using LUKIE FX to approach the markets with discipline, data and confidence.</p>
-      <div class="hero-actions">
-        <a href="#" class="btn btn-accent" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to create a free account.">Get Started</a>
-        <a href="https://t.me/tradewithlukie" target="_blank" rel="noopener" class="btn btn-tg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.2-.5.4-.9.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L7.3 12.6l-4.4-1.4c-1-.3-1-1 .2-1.4l17.4-6.7c.8-.3 1.5.2 1.4 1.2z"/></svg>
-          Join Telegram
-        </a>
-        <a href="#plans" class="btn btn-ghost">Compare Plans</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a href="#home" class="logo" aria-label="Trade with LUKIE FX — home">
-          <span class="logo-icon" aria-hidden="true">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="lfxGoldF" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#ffd75e"/>
-                  <stop offset="50%" stop-color="#f5b301"/>
-                  <stop offset="100%" stop-color="#9a6800"/>
-                </linearGradient>
-                <linearGradient id="lfxSilverF" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#b8c2d0"/>
-                </linearGradient>
-              </defs>
-              <circle cx="60" cy="60" r="55" fill="none" stroke="url(#lfxGoldF)" stroke-width="1.8"/>
-              <path d="M 20 32 L 76 32 L 76 44 L 56 44 L 56 100 L 40 100 L 40 44 L 20 44 Z" fill="url(#lfxGoldF)"/>
-              <path d="M 66 46 L 80 46 L 80 88 L 104 88 L 104 100 L 66 100 Z" fill="url(#lfxSilverF)"/>
-              <g stroke-linecap="round">
-                <line x1="62" y1="58" x2="62" y2="80" stroke="#16a34a" stroke-width="1.4"/>
-                <rect x="59" y="62" width="5" height="14" fill="#16a34a"/>
-                <line x1="70" y1="54" x2="70" y2="76" stroke="#dc2626" stroke-width="1.4"/>
-                <rect x="67" y="58" width="5" height="14" fill="#dc2626"/>
-                <line x1="78" y1="50" x2="78" y2="72" stroke="#16a34a" stroke-width="1.4"/>
-                <rect x="75" y="54" width="5" height="14" fill="#16a34a"/>
-              </g>
-              <path d="M 25 95 Q 50 82 75 62 T 108 38" fill="none" stroke="url(#lfxGoldF)" stroke-width="3.2" stroke-linecap="round"/>
-              <path d="M 96 36 L 112 34 L 106 50 Z" fill="#ffe680"/>
-            </svg>
-          </span>
-          <span class="logo-divider" aria-hidden="true"></span>
-          <span class="logo-text">
-            <em>TRADE WITH</em>
-            <b>LUKIE <span class="fx">FX</span></b>
-            <small>LEARN · TRADE · GROW</small>
-          </span>
-        </a>
-        <p>Professional forex trading tools, signals and mentorship — built for traders who take the markets seriously.</p>
-
-        <div class="socials">
-          <a href="https://www.facebook.com/share/1AqEen1Lkt/" target="_blank" rel="noopener" aria-label="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
-          </a>
-          <a href="https://www.tiktok.com/@_lukie_glc?_r=1&_t=ZS-99mXXSnFdZY" target="_blank" rel="noopener" aria-label="TikTok">
-            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
-          </a>
-          <a href="https://www.instagram.com/l.ukie._?stkn=MWd3eGowM3NjYWhocQ==" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.2A6.6 6.6 0 1018.6 12 6.6 6.6 0 0012 5.4zm0 10.9A4.3 4.3 0 1116.3 12 4.3 4.3 0 0112 16.3zm6.9-11.1a1.5 1.5 0 11-1.5-1.5 1.5 1.5 0 011.5 1.5z"/></svg>
-          </a>
-          <a href="https://t.me/tradewithlukie" target="_blank" rel="noopener" aria-label="Telegram">
-            <svg viewBox="0 0 24 24"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.2-.5.4-.9.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L7.3 12.6l-4.4-1.4c-1-.3-1-1 .2-1.4l17.4-6.7c.8-.3 1.5.2 1.4 1.2z"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="foot-col">
+      <div class="footer-links">
         <h4>Company</h4>
-        <ul>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#plans">Pricing</a></li>
-          <li><a href="#" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to get in touch.">Contact</a></li>
-        </ul>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
       </div>
-      <div class="foot-col">
-        <h4>Trading</h4>
-        <ul>
-          <li><a href="#markets">Markets</a></li>
-          <li><a href="#tools">Free Tools</a></li>
-          <li><a href="#services">Signals</a></li>
-          <li><a href="#services">Copy Trading</a></li>
-        </ul>
-      </div>
-      <div class="foot-col">
-        <h4>Legal &amp; Support</h4>
-        <ul>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#" data-page="help">Help Center</a></li>
-          <li><a href="#" data-page="privacy">Privacy Policy</a></li>
-          <li><a href="#" data-page="terms">Terms of Service</a></li>
-          <li><a href="#" data-page="risk">Risk Disclosure</a></li>
-          <li><a href="#" data-page="refund">Refund Policy</a></li>
-        </ul>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Risk Disclosure</a>
       </div>
     </div>
-    <div class="risk" data-edit="footer.risk" data-edit-label="Footer — Risk Warning">
-      <strong style="color:var(--muted)">Risk Warning:</strong> Trading foreign exchange and CFDs on margin carries a high level of risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade, you should carefully consider your investment objectives, level of experience and risk appetite. You could sustain a loss of some or all of your initial investment. LUKIE FX provides educational content and market analysis only and does not provide financial advice.
+    <div class="container footer-bottom">
+      <p>&copy; <span id="year"></span> LUKIE FX. All rights reserved.</p>
+      <button type="button" id="adminOpenBtn" class="admin-link">Admin</button>
     </div>
-    <div class="foot-bottom">
-      <span>© <span id="year"></span> LUKIE FX. All rights reserved. Registered in Nairobi, Kenya.</span>
-      <span>
-        Built with precision for traders worldwide.
-        · <a href="#" data-admin-open style="color:var(--accent-gold);font-weight:700;opacity:.7">Admin</a>
-      </span>
+  </footer>
+
+  <!-- ============ ADMIN PANEL ============ -->
+  <div id="adminPanel" class="lfx-admin" aria-hidden="true">
+    <div class="lfx-admin__bar">
+      <h2>Admin Panel</h2>
+      <button type="button" data-admin-close aria-label="Close admin panel">×</button>
+      <button type="button" data-admin-logout>Log out</button>
+    </div>
+
+    <div id="adminLoginView" class="lfx-admin__login">
+      <form id="adminLoginForm">
+        <h3>Enter Admin Password</h3>
+        <input type="password" placeholder="Password" autocomplete="current-password">
+        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        <p id="adminLoginError" class="lfx-error" hidden></p>
+      </form>
+    </div>
+
+    <div id="adminPanelView" class="lfx-admin__content" hidden>
+      <section class="lfx-admin-submissions">
+        <h3>Submissions <span id="lfxUnreadBadge" class="badge" hidden>0</span></h3>
+        <div id="lfxSubmissions" class="lfx-sub-list"></div>
+      </section>
     </div>
   </div>
-</footer>
 
-<button class="to-top" id="toTop" aria-label="Back to top">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-</button>
-
-<a href="#" id="waFloat" class="wa" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.4zM12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1112 20.2z"/></svg>
-</a>
-
-<div class="page-overlay" id="pageOverlay" role="dialog" aria-modal="true">
-  <div id="pageOverlayContent"></div>
-</div>
-
-<script src="js/config.js"></script>
-<script src="js/theme.js"></script>
-<script src="js/nav.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/market.js"></script>
-<script src="js/pages.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/tools.js"></script>
-<script src="js/admin.js"></script>
-<script src="js/app.js"></script>
+  <!-- ============ SCRIPTS ============ -->
+  <script src="js/store.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
