@@ -1,7 +1,6 @@
 /**
  * LUKIE FX — Admin Panel
- * Route-aware: opens on #admin.
- * Now supports show/hide for passwords in submission viewer.
+ * Route-aware: opens on #admin, closes via back button or X.
  */
 (function(){
   const ADMIN_PASSWORD = 'Lukiefxcx5';
@@ -10,11 +9,8 @@
   const STORAGE_AUTH     = 'lfx_admin_auth';
   const MAX_SUBMISSIONS  = 500;
 
-  const EYE_OPEN = '<svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
-  const EYE_CLOSED = '<svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 19c-7 0-11-7-11-7a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A10.94 10.94 0 0112 4c7 0 11 7 11 7a18.45 18.45 0 01-2.16 3.19"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
-
   /* ============================================================
-     STORAGE
+     STORAGE HELPERS
   ============================================================ */
   function getSubmissions(){
     try { return JSON.parse(localStorage.getItem(STORAGE_SUBS) || '[]'); }
@@ -44,7 +40,7 @@
   }
 
   /* ============================================================
-     APPLY OVERRIDES
+     APPLY CONTENT OVERRIDES ON PAGE LOAD
   ============================================================ */
   function applyContentOverrides(){
     const overrides = getOverrides();
@@ -110,7 +106,7 @@
   }
 
   /* ============================================================
-     OVERLAY
+     UI — ADMIN OVERLAY
   ============================================================ */
   let adminOverlay = null;
   let currentTab = 'submissions';
@@ -134,13 +130,14 @@
     if (isLoggedIn()) renderDashboard();
     else renderLogin();
   }
+
   function closeAdminVisual(){
     if (!adminOverlay) return;
     adminOverlay.classList.remove('open');
     document.body.style.overflow = '';
   }
 
-  /* ---------- LOGIN ---------- */
+  /* ---------- LOGIN VIEW ---------- */
   function renderLogin(){
     const inner = document.getElementById('adminInner');
     inner.innerHTML = `
@@ -155,13 +152,7 @@
         <h1>Admin Login</h1>
         <p>Enter the admin password to access the dashboard</p>
         <form id="adminLoginForm" autocomplete="off">
-          <div class="password-wrapper" style="margin-bottom:0">
-            <input type="password" id="adminPass" placeholder="Password" autofocus required />
-            <button type="button" class="password-toggle" data-pw-target="adminPass" aria-label="Show password">
-              ${EYE_OPEN}
-              ${EYE_CLOSED}
-            </button>
-          </div>
+          <input type="password" id="adminPass" placeholder="Password" autofocus required />
           <div class="admin-login-error" id="adminLoginError">Wrong password. Try again.</div>
           <button type="submit" class="admin-btn admin-btn-primary">Sign In</button>
         </form>
@@ -171,17 +162,6 @@
       if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
       else closeAdminVisual();
     };
-    // Wire pw toggle
-    inner.querySelectorAll('.password-toggle').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const input = document.getElementById(btn.dataset.pwTarget);
-        if (!input) return;
-        const showing = input.type === 'text';
-        input.type = showing ? 'password' : 'text';
-        btn.classList.toggle('showing', !showing);
-      });
-    });
-
     const form = inner.querySelector('#adminLoginForm');
     const errorEl = inner.querySelector('#adminLoginError');
     const passInput = inner.querySelector('#adminPass');
@@ -198,7 +178,7 @@
     });
   }
 
-  /* ---------- DASHBOARD ---------- */
+  /* ---------- DASHBOARD VIEW ---------- */
   function renderDashboard(){
     const inner = document.getElementById('adminInner');
     const subs = getSubmissions();
@@ -246,7 +226,6 @@
     else if (currentTab === 'settings') renderSettingsTab(body);
   }
 
-  /* ---------- SUBMISSIONS ---------- */
   function renderSubmissionsTab(container){
     const subs = getSubmissions();
     if (!subs.length){
@@ -258,28 +237,12 @@
         </div>`;
       return;
     }
-
     const rows = subs.map(sub => {
       const date = new Date(sub.timestamp);
       const dateStr = date.toLocaleDateString() + ' · ' + date.toLocaleTimeString();
       const fields = Object.entries(sub.data).map(([k, v]) => {
         const label = k.replace(/^onb_|^reg_|^mg_/, '').replace(/_/g, ' ');
-        const isPassword = /password/i.test(k);
-        const valStr = String(v);
-
-        if (isPassword){
-          return `<div class="admin-field">
-            <span class="admin-field-key">${escapeHtml(label)}</span>
-            <span class="admin-field-val">
-              <span class="pw-value" data-real="${escapeHtml(valStr)}" data-visible="false">••••••••</span>
-              <button type="button" class="pw-toggle-btn" data-pw-toggle aria-label="Show password" title="Show / Hide">
-                ${EYE_OPEN}
-                ${EYE_CLOSED}
-              </button>
-            </span>
-          </div>`;
-        }
-        return `<div class="admin-field"><span class="admin-field-key">${escapeHtml(label)}</span><span class="admin-field-val">${escapeHtml(valStr)}</span></div>`;
+        return `<div class="admin-field"><span class="admin-field-key">${escapeHtml(label)}</span><span class="admin-field-val">${escapeHtml(String(v))}</span></div>`;
       }).join('');
       return `
         <div class="admin-sub-card">
@@ -300,27 +263,6 @@
         </div>
       </div>
       <div class="admin-subs-list">${rows}</div>`;
-
-    // Wire password toggle buttons inside submissions
-    container.querySelectorAll('[data-pw-toggle]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const wrapper = btn.closest('.admin-field-val');
-        const valEl = wrapper.querySelector('.pw-value');
-        if (!valEl) return;
-        const visible = valEl.dataset.visible === 'true';
-        if (visible){
-          valEl.textContent = '••••••••';
-          valEl.dataset.visible = 'false';
-          btn.classList.remove('showing');
-          btn.setAttribute('aria-label', 'Show password');
-        } else {
-          valEl.textContent = valEl.dataset.real;
-          valEl.dataset.visible = 'true';
-          btn.classList.add('showing');
-          btn.setAttribute('aria-label', 'Hide password');
-        }
-      });
-    });
 
     const exportBtn = container.querySelector('#exportSubsBtn');
     if (exportBtn){
@@ -345,7 +287,6 @@
     }
   }
 
-  /* ---------- CONTENT ---------- */
   function renderContentTab(container){
     const editable = [];
     document.querySelectorAll('[data-edit]').forEach(el => {
@@ -425,7 +366,6 @@
     }
   }
 
-  /* ---------- SETTINGS ---------- */
   function renderSettingsTab(container){
     const config = (window.LFX && window.LFX.CONFIG) || {};
     container.innerHTML = `
@@ -488,8 +428,11 @@
     document.querySelectorAll('[data-admin-open]').forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
-        if (LFX.router) LFX.router.navigate({ page: 'admin' }, 'admin');
-        else openAdmin();
+        if (LFX.router){
+          LFX.router.navigate({ page: 'admin' }, 'admin');
+        } else {
+          openAdmin();
+        }
       });
     });
 
@@ -504,7 +447,10 @@
   window.LFX = window.LFX || {};
   LFX.admin = {
     init,
-    open: () => { if (LFX.router) LFX.router.navigate({ page: 'admin' }, 'admin'); else openAdmin(); },
+    open: () => {
+      if (LFX.router) LFX.router.navigate({ page: 'admin' }, 'admin');
+      else openAdmin();
+    },
     close: closeAdminVisual
   };
 })();
