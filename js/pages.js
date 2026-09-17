@@ -1,10 +1,6 @@
 /**
  * LUKIE FX — Page Overlay System + URL Router
  * Back / forward / refresh work correctly.
- *
- * ⚠️ history.pushState / replaceState are wrapped in try/catch so that
- * on environments where they throw (some older browsers, local file://),
- * the site falls back to plain hash navigation instead of breaking.
  */
 (function(){
   const { CONFIG, $, $$ } = LFX;
@@ -278,8 +274,6 @@
 
   /* ============================================================
      ONBOARDING FORM — fields builder
-     Supports: text, email, tel, password (with toggle), textarea
-     Also supports: digitsOnly flag for numeric-only inputs
   ============================================================ */
   function buildFieldHtml(f){
     const optional = f.optional ? ' <span class="optional">(optional)</span>' : '';
@@ -288,7 +282,6 @@
       ? ' inputmode="numeric" pattern="[0-9]*" title="Please enter only digits"'
       : '';
 
-    // TEXTAREA
     if (f.type === 'textarea'){
       return `<div class="form-field">
         <label for="${f.id}">${f.label}${optional}</label>
@@ -296,7 +289,6 @@
       </div>`;
     }
 
-    // PASSWORD (with show/hide toggle button)
     if (f.type === 'password'){
       return `<div class="form-field">
         <label for="${f.id}">${f.label}${optional}</label>
@@ -310,7 +302,6 @@
       </div>`;
     }
 
-    // DEFAULT (text, email, tel, etc.)
     return `<div class="form-field">
       <label for="${f.id}">${f.label}${optional}</label>
       <input type="${f.type}" id="${f.id}" name="${f.id}" placeholder="${f.placeholder}" ${required}${digitAttrs} />
@@ -332,9 +323,8 @@
               <input type="checkbox" id="onb_confirm" name="onb_confirm" value="yes" required />
               <label for="onb_confirm">I confirm the account details above are mine and accurate, I understand trading involves risk of loss, I will not interfere with trades on this account, and I agree to the <a href="#" data-page="terms">Terms &amp; Conditions</a>, <a href="#" data-page="privacy">Privacy Policy</a> and <a href="#" data-page="risk">Risk Disclaimer</a>.</label>
             </div>
-            <button type="submit" class="form-submit">Submit account details</button>
+            <button type="submit" class="form-submit" id="onbSubmit" disabled>Submit account details</button>
             <div class="form-success" id="onbSuccess">✅ Thanks! We've received your details. Our team will reach out within 24 hours to link your account.</div>
-            <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-top:16px">Your details are sent securely. Make sure trading is enabled and the password is the investor / main password we need to link.</p>
           </form>
         </div>
       </div>
@@ -344,7 +334,20 @@
   function bindOnboardingForm(container){
     const form = container.querySelector('#onbForm');
     const success = container.querySelector('#onbSuccess');
+    const confirmBox = form ? form.querySelector('#onb_confirm') : null;
+    const submitBtn = form ? form.querySelector('#onbSubmit') : null;
+
     if (!form) return;
+
+    // ---- Submit button enabled only when checkbox is ticked ----
+    if (confirmBox && submitBtn){
+      const updateSubmitState = () => {
+        submitBtn.disabled = !confirmBox.checked;
+      };
+      confirmBox.addEventListener('change', updateSubmitState);
+      // Set initial state (in case it's ever pre-checked)
+      updateSubmitState();
+    }
 
     // Apply digits-only restriction to any input with inputmode="numeric"
     form.querySelectorAll('input[inputmode="numeric"]').forEach(input => {
@@ -356,18 +359,16 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
 
-      // ---- Confirm checkbox check ----
-      const confirmBox = form.querySelector('#onb_confirm');
+      // Extra safety: block submit if checkbox isn't ticked
       if (confirmBox && !confirmBox.checked){
         alert('Please tick the confirmation box before submitting.');
         confirmBox.focus();
         return;
       }
 
-      // ---- Standard validity check ----
+      // Standard validity check
       if (!form.checkValidity()){ form.reportValidity(); return; }
 
-      const submitBtn = form.querySelector('.form-submit');
       const originalText = submitBtn.textContent;
       submitBtn.textContent = 'Submitting…';
       submitBtn.disabled = true;
@@ -376,6 +377,9 @@
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
         form.reset();
+        // After reset, re-disable the button (since checkbox is now unticked)
+        if (confirmBox) confirmBox.checked = false;
+        if (submitBtn) submitBtn.disabled = true;
         success.classList.add('show');
         setTimeout(() => success.classList.remove('show'), 8000);
       }, 1200);
@@ -798,7 +802,6 @@
      EVENT DELEGATION
   ============================================================ */
   document.addEventListener('click', e => {
-    // 1. [data-page] buttons (login / register / legal)
     const pageEl = e.target.closest('[data-page]');
     if (pageEl){
       e.preventDefault();
@@ -809,7 +812,6 @@
       return;
     }
 
-    // 2. Service cards (any click inside a .card[data-service])
     const card = e.target.closest('.card[data-service]');
     if (card){
       e.preventDefault();
