@@ -139,46 +139,75 @@
   }
 
   // ==========================================
-  // WHATSAPP FLOAT BUTTON
-  // Wires the bottom-right floating WhatsApp icon to the
-  // configured number so it actually opens WhatsApp.
+  // HELPER — build a WhatsApp URL from config
+  // ==========================================
+  function getWhatsAppNumber(){
+    const config = (window.LFX && window.LFX.CONFIG) || {};
+    const raw = config.WHATSAPP_NUMBER || config.PHONE_DISPLAY || '';
+    return String(raw).replace(/[^0-9]/g, '');
+  }
+
+  // ==========================================
+  // WHATSAPP FLOAT BUTTON (bottom-right)
+  // Uses capture-phase click listener so the router
+  // cannot hijack the click and mangle the URL.
   // ==========================================
   function initWhatsAppFloat(){
     const wa = document.getElementById('waFloat');
     if (!wa) return;
 
-    const config = (window.LFX && window.LFX.CONFIG) || {};
-    const rawNumber = config.WHATSAPP_NUMBER || config.PHONE_DISPLAY || '';
-    const number = String(rawNumber).replace(/[^0-9]/g, '');
-
+    const number = getWhatsAppNumber();
     if (!number){
       console.warn('WhatsApp float: no number found in LFX.CONFIG');
       return;
     }
 
-    const message = encodeURIComponent('Hi LUKIE FX, I would like to get in touch.');
-    wa.href = 'https://wa.me/' + number + '?text=' + message;
+    const message = 'Hi LUKIE FX, I would like to get in touch.';
+    const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(message);
+
+    // Set href for right-click "Open in new tab" and accessibility
+    wa.href = url;
     wa.target = '_blank';
     wa.rel = 'noopener';
+
+    // 🔒 CAPTURE PHASE — runs before any router/hash handler.
+    // Without this, the router converts the click into a hash
+    // navigation like  #https://wa.me/...  which breaks everything.
+    wa.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      window.open(url, '_blank', 'noopener');
+    }, true);
+
+    console.log('✅ WhatsApp float wired up:', url);
   }
 
   // ==========================================
-  // ALSO WIRE UP [data-action="whatsapp"] LINKS
-  // (Contact, Pay & Get Started, etc.)
+  // WHATSAPP ACTION LINKS — any element with
+  // [data-action="whatsapp"] (Contact, Pay & Get
+  // Started, Ask a Question, etc.)
   // ==========================================
   function initWhatsAppLinks(){
-    const config = (window.LFX && window.LFX.CONFIG) || {};
-    const rawNumber = config.WHATSAPP_NUMBER || config.PHONE_DISPLAY || '';
-    const number = String(rawNumber).replace(/[^0-9]/g, '');
-    if (!number) return;
+    const number = getWhatsAppNumber();
+    if (!number){
+      console.warn('WhatsApp links: no number found in LFX.CONFIG');
+      return;
+    }
 
     document.querySelectorAll('[data-action="whatsapp"]').forEach(el => {
+      // Skip if already wired
+      if (el.dataset.waWired === '1') return;
+      el.dataset.waWired = '1';
+
       el.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
         const msg = el.getAttribute('data-message') || 'Hi LUKIE FX, I would like to get in touch.';
         const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(msg);
         window.open(url, '_blank', 'noopener');
-      });
+      }, true);
     });
   }
 
@@ -202,22 +231,31 @@
       LFX.router?.init?.();
 
       // ==========================================
-      // ENFORCE DIGITS ONLY (MT5 & Phone)
+      // ENFORCE DIGITS ONLY (MT5 & Phone inputs
+      // that exist statically on the page)
       // ==========================================
       ['mt5Account', 'phoneNumber'].forEach(id => {
           const input = document.getElementById(id);
           if (input) {
               input.addEventListener('input', function() {
-                  this.value = this.value.replace(/[^0-9]/g, ''); // Blocks non-numbers
+                  this.value = this.value.replace(/[^0-9]/g, '');
               });
           }
       });
 
       // ==========================================
-      // WIRE UP WHATSAPP
+      // WIRE UP WHATSAPP (float + action links)
       // ==========================================
       initWhatsAppFloat();
       initWhatsAppLinks();
+
+      // Re-wire WhatsApp links whenever the page overlay content
+      // is (re)rendered — e.g. when a service page opens.
+      const overlayEl = document.getElementById('pageOverlayContent');
+      if (overlayEl && window.MutationObserver){
+        const mo = new MutationObserver(() => initWhatsAppLinks());
+        mo.observe(overlayEl, { childList: true, subtree: true });
+      }
 
       const hidePreloader = () => {
         const pre = document.getElementById('preloader');
