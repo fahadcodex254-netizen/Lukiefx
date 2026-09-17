@@ -10,6 +10,23 @@
   const MAX_SUBMISSIONS  = 500;
 
   /* ============================================================
+     GLOBAL PASSWORD TOGGLE (safe fallback if not yet defined)
+  ============================================================ */
+  if (typeof window.togglePassword !== 'function'){
+    window.togglePassword = function(inputId, button){
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password'){
+        input.type = 'text';
+        button.classList.add('showing');
+      } else {
+        input.type = 'password';
+        button.classList.remove('showing');
+      }
+    };
+  }
+
+  /* ============================================================
      STORAGE HELPERS
   ============================================================ */
   function getSubmissions(){
@@ -68,8 +85,22 @@
   }
   function logout(){
     try { sessionStorage.removeItem(STORAGE_AUTH); } catch(e){}
-    closeAdminVisual(); // ALWAYS close the panel first
-    if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
+    forceCloseAdmin();
+  }
+
+  /* ============================================================
+     FORCE CLOSE — direct DOM removal, no router dependency
+  ============================================================ */
+  function forceCloseAdmin(){
+    if (!adminOverlay) return;
+    adminOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    // Also try to update URL via router (wrapped in try/catch)
+    try {
+      if (window.LFX && LFX.router && typeof LFX.router.navigate === 'function'){
+        LFX.router.navigate({ page: 'home' }, '');
+      }
+    } catch(err){ /* silently ignore */ }
   }
 
   /* ============================================================
@@ -120,7 +151,70 @@
     adminOverlay.setAttribute('aria-modal', 'true');
     adminOverlay.innerHTML = '<div class="admin-inner" id="adminInner"></div>';
     document.body.appendChild(adminOverlay);
+
+    /* ========================================================
+       GLOBAL EVENT DELEGATION on the overlay.
+       Works even if buttons are re-rendered dynamically.
+    ======================================================== */
+    adminOverlay.addEventListener('click', (e) => {
+      // X Close Button (any .admin-close in the overlay)
+      if (e.target.closest('.admin-close')){
+        e.preventDefault();
+        e.stopPropagation();
+        forceCloseAdmin();
+        return;
+      }
+      // Logout Button
+      if (e.target.closest('#adminLogoutBtn')){
+        e.preventDefault();
+        e.stopPropagation();
+        logout();
+        return;
+      }
+      // Password toggle (eye icons) — for admin login AND submissions viewer
+      const toggle = e.target.closest('.password-toggle, .pw-toggle-btn');
+      if (toggle){
+        e.preventDefault();
+        e.stopPropagation();
+        handlePasswordToggle(toggle);
+        return;
+      }
+    }, true); // capture phase - fires before other handlers
+
     return adminOverlay;
+  }
+
+  function handlePasswordToggle(button){
+    // Case 1: Inline password toggle on admin login (uses window.togglePassword logic)
+    const wrapper = button.closest('.password-wrapper');
+    if (wrapper){
+      const input = wrapper.querySelector('input');
+      if (!input) return;
+      if (input.type === 'password'){
+        input.type = 'text';
+        button.classList.add('showing');
+      } else {
+        input.type = 'password';
+        button.classList.remove('showing');
+      }
+      return;
+    }
+
+    // Case 2: Password reveal in submissions viewer (.pw-toggle-btn)
+    const valueEl = button.parentElement.querySelector('.pw-value');
+    if (!valueEl) return;
+    const isVisible = valueEl.getAttribute('data-visible') === 'true';
+    if (isVisible){
+      valueEl.textContent = '••••••••';
+      valueEl.setAttribute('data-visible', 'false');
+      button.classList.remove('showing');
+      button.setAttribute('aria-label', 'Show password');
+    } else {
+      valueEl.textContent = valueEl.getAttribute('data-pw') || '';
+      valueEl.setAttribute('data-visible', 'true');
+      button.classList.add('showing');
+      button.setAttribute('aria-label', 'Hide password');
+    }
   }
 
   function openAdmin(){
@@ -152,16 +246,20 @@
         <h1>Admin Login</h1>
         <p>Enter the admin password to access the dashboard</p>
         <form id="adminLoginForm" autocomplete="off">
-          <input type="password" id="adminPass" placeholder="Password" autofocus required />
+          <div class="password-wrapper">
+            <input type="password" id="adminPass" placeholder="Password" autofocus required />
+            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+              <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+            </button>
+          </div>
           <div class="admin-login-error" id="adminLoginError">Wrong password. Try again.</div>
           <button type="submit" class="admin-btn admin-btn-primary">Sign In</button>
         </form>
       </div>
     `;
-    inner.querySelector('.admin-close').onclick = () => {
-      closeAdminVisual(); // ALWAYS close the panel first
-      if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
-    };
+    // Close button handled by delegation in ensureOverlay()
+
     const form = inner.querySelector('#adminLoginForm');
     const errorEl = inner.querySelector('#adminLoginError');
     const passInput = inner.querySelector('#adminPass');
@@ -206,12 +304,8 @@
       </nav>
       <div class="admin-body" id="adminBody"></div>
     `;
+    // Close + Logout buttons handled by delegation in ensureOverlay()
 
-    inner.querySelector('.admin-close').onclick = () => {
-      closeAdminVisual(); // ALWAYS close the panel first
-      if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
-    };
-    inner.querySelector('#adminLogoutBtn').onclick = logout;
     inner.querySelectorAll('.admin-tab').forEach(tab => {
       tab.onclick = () => { currentTab = tab.dataset.tab; renderDashboard(); };
     });
@@ -243,14 +337,12 @@
       const date = new Date(sub.timestamp);
       const dateStr = date.toLocaleDateString() + ' · ' + date.toLocaleTimeString();
       const fields = Object.entries(sub.data).map(([k, v]) => {
-        // Format the label: remove prefixes, handle snake_case AND camelCase
         const label = k
           .replace(/^onb_|^reg_|^mg_/, '')
           .replace(/_/g, ' ')
           .replace(/([a-z])([A-Z])/g, '$1 $2')
           .replace(/\b\w/g, c => c.toUpperCase());
 
-        // Detect password fields so we can mask them with a reveal toggle
         const isPassword = /password|pass/i.test(k);
 
         if (isPassword){
@@ -289,8 +381,7 @@
       </div>
       <div class="admin-subs-list">${rows}</div>`;
 
-    // Bind password reveal toggles
-    bindPasswordToggles(container);
+    // (Password toggles are handled by delegation in ensureOverlay)
 
     const exportBtn = container.querySelector('#exportSubsBtn');
     if (exportBtn){
@@ -313,28 +404,6 @@
         }
       };
     }
-  }
-
-  /* ---------- PASSWORD REVEAL IN SUBMISSIONS ---------- */
-  function bindPasswordToggles(container){
-    container.querySelectorAll('[data-pw-toggle]').forEach(btn => {
-      btn.onclick = () => {
-        const valueEl = btn.parentElement.querySelector('.pw-value');
-        if (!valueEl) return;
-        const isVisible = valueEl.getAttribute('data-visible') === 'true';
-        if (isVisible){
-          valueEl.textContent = '••••••••';
-          valueEl.setAttribute('data-visible', 'false');
-          btn.classList.remove('showing');
-          btn.setAttribute('aria-label', 'Show password');
-        } else {
-          valueEl.textContent = valueEl.getAttribute('data-pw') || '';
-          valueEl.setAttribute('data-visible', 'true');
-          btn.classList.add('showing');
-          btn.setAttribute('aria-label', 'Hide password');
-        }
-      };
-    });
   }
 
   function renderContentTab(container){
@@ -488,8 +557,7 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && adminOverlay && adminOverlay.classList.contains('open')){
-        closeAdminVisual(); // ALWAYS close the panel first
-        if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
+        forceCloseAdmin();
       }
     });
   }
@@ -501,6 +569,6 @@
       if (LFX.router) LFX.router.navigate({ page: 'admin' }, 'admin');
       else openAdmin();
     },
-    close: closeAdminVisual
+    close: forceCloseAdmin
   };
 })();
