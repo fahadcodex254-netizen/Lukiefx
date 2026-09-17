@@ -3,6 +3,21 @@
  */
 (function(){
 
+  // ==========================================
+  // 1. PASSWORD SHOW/HIDE TOGGLE (Global)
+  // ==========================================
+  window.togglePassword = function(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === "password") {
+        input.type = "text";
+        button.classList.add('showing'); // Shows the closed eye icon
+    } else {
+        input.type = "password";
+        button.classList.remove('showing'); // Shows the open eye icon
+    }
+  };
+
   function startPreloaderChart(){
     const canvas = document.getElementById('preloaderChart');
     if (!canvas) return () => {};
@@ -141,6 +156,18 @@
 
       // Initialize the router AFTER all modules have registered their routes
       LFX.router?.init?.();
+
+      // ==========================================
+      // 2. ENFORCE DIGITS ONLY (MT5 & Phone)
+      // ==========================================
+      ['mt5Account', 'phoneNumber'].forEach(id => {
+          const input = document.getElementById(id);
+          if (input) {
+              input.addEventListener('input', function() {
+                  this.value = this.value.replace(/[^0-9]/g, ''); // Blocks non-numbers
+              });
+          }
+      });
 
       const hidePreloader = () => {
         const pre = document.getElementById('preloader');
