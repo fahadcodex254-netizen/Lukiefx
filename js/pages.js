@@ -13,9 +13,6 @@
   const overlay = $('#pageOverlay');
   const overlayContent = $('#pageOverlayContent');
 
-  /* Account Management notification number */
-  const NOTIFY_WHATSAPP = '254101461845';
-
   /* ============================================================
      ROUTER
   ============================================================ */
