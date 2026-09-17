@@ -157,7 +157,7 @@ h3{font-size:1.18rem}
 .nav-cta{display:flex;align-items:center;gap:10px}
 .nav-cta .btn{padding:11px 20px;font-size:.85rem}
 
-/* Nav admin button — subtle, hides on tablet */
+/* Nav admin button */
 .nav-admin-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;font-size:.85rem;color:var(--muted)}
 .nav-admin-btn:hover{color:var(--gold);border-color:var(--gold)}
 .nav-admin-btn svg{width:14px;height:14px;opacity:.85}
@@ -180,7 +180,7 @@ h3{font-size:1.18rem}
 .overlay.show{opacity:1;visibility:visible}
 
 /* ============================================================
-   6. PRELOADER — TL monogram stacked above captions
+   6. PRELOADER
 ============================================================ */
 #preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:grid;place-items:center;overflow:hidden;transition:opacity .7s ease,visibility .7s ease}
 #preloader.hide{opacity:0;visibility:hidden}
@@ -310,7 +310,7 @@ h3{font-size:1.18rem}
 .ticker-wrap .tradingview-widget-container__widget{height:52px;width:100%}
 
 /* ============================================================
-   8. HERO — single column
+   8. HERO
 ============================================================ */
 .hero{position:relative;padding:96px 0 100px;overflow:hidden}
 .hero-single{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:800px;margin-inline:auto}
@@ -360,7 +360,7 @@ h3{font-size:1.18rem}
 .card-cta svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* ============================================================
-   11. ABOUT — single column
+   11. ABOUT
 ============================================================ */
 .about-single{max-width:820px;margin-inline:auto;text-align:center}
 .about-single h2{margin-bottom:8px}
@@ -604,7 +604,49 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 .form-checkbox a{color:var(--gold);text-decoration:underline}
 
 /* ============================================================
-   21. REVEAL ANIMATIONS
+   21. PASSWORD FIELD — show / hide toggle
+============================================================ */
+.password-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.password-wrapper input{
+  width:100%;
+  padding-right:52px !important;
+}
+.password-toggle{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  background:transparent;
+  border:1px solid transparent;
+  color:var(--muted);
+  transition:.25s;
+}
+.password-toggle:hover{
+  background:rgba(var(--glow-rgb),.1);
+  border-color:rgba(var(--glow-rgb),.25);
+  color:var(--gold);
+}
+.password-toggle svg{
+  width:17px;
+  height:17px;
+  display:block;
+}
+.password-toggle .eye-closed{display:none}
+.password-toggle.showing .eye-open{display:none}
+.password-toggle.showing .eye-closed{display:block}
+
+/* ============================================================
+   22. REVEAL ANIMATIONS
 ============================================================ */
 [data-reveal]{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 [data-reveal].in{opacity:1;transform:none}
@@ -614,7 +656,7 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 /* ============================================================
-   22. LIGHT-MODE FIXES
+   23. LIGHT-MODE FIXES
 ============================================================ */
 [data-theme="light"] .ticker-wrap{background:rgba(10,24,54,.03);border-color:rgba(10,24,54,.1)}
 [data-theme="light"] #preloader{background:#f4f7fc}
@@ -623,7 +665,7 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 [data-theme="light"] .nav-links a:hover{color:#2563eb}
 
 /* ============================================================
-   23. ADMIN PANEL
+   24. ADMIN PANEL
 ============================================================ */
 .admin-overlay{position:fixed;inset:0;z-index:2000;background:rgba(4,9,26,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease;overflow-y:auto}
 .admin-overlay.open{opacity:1;visibility:visible}
@@ -643,8 +685,16 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 .admin-login input:focus{border-color:var(--accent-gold);box-shadow:0 0 0 4px rgba(245,179,1,.15)}
 .admin-login-error{display:none;padding:9px 12px;border-radius:9px;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.4);color:var(--red);font-size:.82rem;font-weight:600}
 .admin-login-error.show{display:block}
-.admin-login-hint{margin-top:18px;font-size:.74rem;color:var(--muted);opacity:.75}
-.admin-login-hint code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:5px;color:var(--accent-gold);font-family:monospace;font-size:.9em}
+
+/* Admin login — password wrapper override (left-aligned) */
+.admin-login .password-wrapper{width:100%;margin-bottom:0}
+.admin-login .password-wrapper input{
+  padding:14px 52px 14px 16px;
+  text-align:left;
+}
+.admin-login .password-toggle{
+  right:8px;
+}
 
 .admin-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-radius:16px;background:linear-gradient(135deg,rgba(245,179,1,.1),rgba(255,255,255,.02));border:1px solid rgba(245,179,1,.25);margin-bottom:20px}
 .admin-brand{display:flex;align-items:center;gap:14px}
@@ -690,6 +740,52 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 .admin-field-key{color:var(--muted);text-transform:capitalize;font-weight:600;font-size:.8rem;letter-spacing:.02em}
 .admin-field-val{color:var(--txt);word-break:break-word}
 
+/* Password reveal inside admin submission viewer */
+.admin-field-val{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.pw-value{
+  font-family:'Space Grotesk',ui-monospace,monospace;
+  color:var(--txt);
+  word-break:break-all;
+  letter-spacing:.08em;
+  background:rgba(255,255,255,.04);
+  padding:3px 9px;
+  border-radius:6px;
+  border:1px solid var(--line);
+}
+.pw-value[data-visible="true"]{
+  letter-spacing:0;
+  background:rgba(245,179,1,.08);
+  border-color:rgba(245,179,1,.35);
+  color:var(--accent-gold);
+}
+.pw-toggle-btn{
+  width:28px;
+  height:28px;
+  border-radius:7px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  color:var(--muted);
+  transition:.25s;
+  flex-shrink:0;
+}
+.pw-toggle-btn:hover{
+  background:rgba(245,179,1,.12);
+  border-color:rgba(245,179,1,.4);
+  color:var(--accent-gold);
+}
+.pw-toggle-btn svg{width:14px;height:14px;display:block}
+.pw-toggle-btn .eye-closed{display:none}
+.pw-toggle-btn.showing .eye-open{display:none}
+.pw-toggle-btn.showing .eye-closed{display:block}
+
 .admin-info-banner{padding:14px 18px;border-radius:12px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);color:var(--muted);font-size:.86rem;line-height:1.6;margin-bottom:22px}
 .admin-info-banner strong{color:var(--txt)}
 .admin-info-banner code{background:rgba(255,255,255,.08);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:.9em;color:var(--accent-gold)}
@@ -717,7 +813,7 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 .admin-danger-zone p{color:var(--muted);font-size:.86rem;margin-bottom:16px}
 
 /* ============================================================
-   24. RESPONSIVE
+   25. RESPONSIVE
 ============================================================ */
 @media (max-width:1024px){
   .foot-grid{grid-template-columns:1fr 1fr;gap:36px}
@@ -790,6 +886,9 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
   .form-row-2{grid-template-columns:1fr}
   .form-submit{padding:15px 20px;font-size:.96rem}
   .form-divider{font-size:.64rem;margin:24px 0 18px}
+  .password-toggle{width:34px;height:34px;right:6px}
+  .password-toggle svg{width:15px;height:15px}
+  .password-wrapper input{padding-right:46px !important}
   .card{padding:28px 24px 24px}
   .card-icon{width:48px;height:48px;margin-bottom:18px}
   .card-icon svg{width:22px;height:22px}
@@ -849,6 +948,9 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
   .admin-login{margin-top:8vh;padding:32px 24px 28px}
   .admin-login h1{font-size:1.3rem}
   .admin-sub-toolbar{flex-direction:column;align-items:flex-start}
+  .pw-value{font-size:.82rem}
+  .pw-toggle-btn{width:26px;height:26px}
+  .pw-toggle-btn svg{width:13px;height:13px}
 }
 @media (max-width:400px){
   h1{font-size:1.85rem}
@@ -881,7 +983,7 @@ footer{border-top:1px solid var(--line);padding:70px 0 0;margin-top:110px;backgr
 }
 
 /* ============================================================
-   25. PRINT
+   26. PRINT
 ============================================================ */
 @media print{
   .nav,.wa,.to-top,.theme-toggle{display:none}
