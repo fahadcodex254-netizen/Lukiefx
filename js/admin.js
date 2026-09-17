@@ -226,6 +226,7 @@
     else if (currentTab === 'settings') renderSettingsTab(body);
   }
 
+  /* ---------- SUBMISSIONS TAB ---------- */
   function renderSubmissionsTab(container){
     const subs = getSubmissions();
     if (!subs.length){
@@ -237,13 +238,37 @@
         </div>`;
       return;
     }
+
     const rows = subs.map(sub => {
       const date = new Date(sub.timestamp);
       const dateStr = date.toLocaleDateString() + ' · ' + date.toLocaleTimeString();
       const fields = Object.entries(sub.data).map(([k, v]) => {
-        const label = k.replace(/^onb_|^reg_|^mg_/, '').replace(/_/g, ' ');
+        // Format the label: remove prefixes, handle snake_case AND camelCase
+        const label = k
+          .replace(/^onb_|^reg_|^mg_/, '')
+          .replace(/_/g, ' ')
+          .replace(/([a-z])([A-Z])/g, '$1 $2')
+          .replace(/\b\w/g, c => c.toUpperCase());
+
+        // Detect password fields so we can mask them with a reveal toggle
+        const isPassword = /password|pass/i.test(k);
+
+        if (isPassword){
+          return `<div class="admin-field">
+            <span class="admin-field-key">${escapeHtml(label)}</span>
+            <span class="admin-field-val">
+              <span class="pw-value" data-visible="false" data-pw="${escapeHtml(String(v))}">••••••••</span>
+              <button type="button" class="pw-toggle-btn" data-pw-toggle aria-label="Show password">
+                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </span>
+          </div>`;
+        }
+
         return `<div class="admin-field"><span class="admin-field-key">${escapeHtml(label)}</span><span class="admin-field-val">${escapeHtml(String(v))}</span></div>`;
       }).join('');
+
       return `
         <div class="admin-sub-card">
           <div class="admin-sub-head">
@@ -263,6 +288,9 @@
         </div>
       </div>
       <div class="admin-subs-list">${rows}</div>`;
+
+    // Bind password reveal toggles
+    bindPasswordToggles(container);
 
     const exportBtn = container.querySelector('#exportSubsBtn');
     if (exportBtn){
@@ -285,6 +313,28 @@
         }
       };
     }
+  }
+
+  /* ---------- PASSWORD REVEAL IN SUBMISSIONS ---------- */
+  function bindPasswordToggles(container){
+    container.querySelectorAll('[data-pw-toggle]').forEach(btn => {
+      btn.onclick = () => {
+        const valueEl = btn.parentElement.querySelector('.pw-value');
+        if (!valueEl) return;
+        const isVisible = valueEl.getAttribute('data-visible') === 'true';
+        if (isVisible){
+          valueEl.textContent = '••••••••';
+          valueEl.setAttribute('data-visible', 'false');
+          btn.classList.remove('showing');
+          btn.setAttribute('aria-label', 'Show password');
+        } else {
+          valueEl.textContent = valueEl.getAttribute('data-pw') || '';
+          valueEl.setAttribute('data-visible', 'true');
+          btn.classList.add('showing');
+          btn.setAttribute('aria-label', 'Hide password');
+        }
+      };
+    });
   }
 
   function renderContentTab(container){
