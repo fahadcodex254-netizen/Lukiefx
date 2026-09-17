@@ -138,6 +138,50 @@
     container.appendChild(script);
   }
 
+  // ==========================================
+  // WHATSAPP FLOAT BUTTON
+  // Wires the bottom-right floating WhatsApp icon to the
+  // configured number so it actually opens WhatsApp.
+  // ==========================================
+  function initWhatsAppFloat(){
+    const wa = document.getElementById('waFloat');
+    if (!wa) return;
+
+    const config = (window.LFX && window.LFX.CONFIG) || {};
+    const rawNumber = config.WHATSAPP_NUMBER || config.PHONE_DISPLAY || '';
+    const number = String(rawNumber).replace(/[^0-9]/g, '');
+
+    if (!number){
+      console.warn('WhatsApp float: no number found in LFX.CONFIG');
+      return;
+    }
+
+    const message = encodeURIComponent('Hi LUKIE FX, I would like to get in touch.');
+    wa.href = 'https://wa.me/' + number + '?text=' + message;
+    wa.target = '_blank';
+    wa.rel = 'noopener';
+  }
+
+  // ==========================================
+  // ALSO WIRE UP [data-action="whatsapp"] LINKS
+  // (Contact, Pay & Get Started, etc.)
+  // ==========================================
+  function initWhatsAppLinks(){
+    const config = (window.LFX && window.LFX.CONFIG) || {};
+    const rawNumber = config.WHATSAPP_NUMBER || config.PHONE_DISPLAY || '';
+    const number = String(rawNumber).replace(/[^0-9]/g, '');
+    if (!number) return;
+
+    document.querySelectorAll('[data-action="whatsapp"]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const msg = el.getAttribute('data-message') || 'Hi LUKIE FX, I would like to get in touch.';
+        const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(msg);
+        window.open(url, '_blank', 'noopener');
+      });
+    });
+  }
+
   function boot(){
     const LFX = window.LFX || {};
     try {
@@ -158,7 +202,7 @@
       LFX.router?.init?.();
 
       // ==========================================
-      // 2. ENFORCE DIGITS ONLY (MT5 & Phone)
+      // ENFORCE DIGITS ONLY (MT5 & Phone)
       // ==========================================
       ['mt5Account', 'phoneNumber'].forEach(id => {
           const input = document.getElementById(id);
@@ -168,6 +212,12 @@
               });
           }
       });
+
+      // ==========================================
+      // WIRE UP WHATSAPP
+      // ==========================================
+      initWhatsAppFloat();
+      initWhatsAppLinks();
 
       const hidePreloader = () => {
         const pre = document.getElementById('preloader');
