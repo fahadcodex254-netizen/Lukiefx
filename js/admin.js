@@ -3,7 +3,7 @@
  * Route-aware: opens on #admin, closes via back button or X.
  */
 (function(){
-  const ADMIN_PASSWORD = 'lukie2026';
+  const ADMIN_PASSWORD = 'Lukiefxcx5';
   const STORAGE_SUBS     = 'lfx_submissions';
   const STORAGE_CONTENT  = 'lfx_content_overrides';
   const STORAGE_AUTH     = 'lfx_admin_auth';
@@ -68,8 +68,8 @@
   }
   function logout(){
     try { sessionStorage.removeItem(STORAGE_AUTH); } catch(e){}
-    // Go back to home — router will close the overlay
-    LFX.router.navigate({ page: 'home' }, '');
+    if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
+    else closeAdminVisual();
   }
 
   /* ============================================================
@@ -156,11 +156,11 @@
           <div class="admin-login-error" id="adminLoginError">Wrong password. Try again.</div>
           <button type="submit" class="admin-btn admin-btn-primary">Sign In</button>
         </form>
-        <p class="admin-login-hint">Default password: <code>lukie2026</code> — change it in <code>js/admin.js</code></p>
       </div>
     `;
     inner.querySelector('.admin-close').onclick = () => {
-      LFX.router.navigate({ page: 'home' }, '');
+      if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
+      else closeAdminVisual();
     };
     const form = inner.querySelector('#adminLoginForm');
     const errorEl = inner.querySelector('#adminLoginError');
@@ -208,7 +208,8 @@
     `;
 
     inner.querySelector('.admin-close').onclick = () => {
-      LFX.router.navigate({ page: 'home' }, '');
+      if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
+      else closeAdminVisual();
     };
     inner.querySelector('#adminLogoutBtn').onclick = logout;
     inner.querySelectorAll('.admin-tab').forEach(tab => {
@@ -420,14 +421,10 @@
     applyContentOverrides();
     interceptForms();
 
-    // Register the admin route with the router
     if (LFX.router){
-      LFX.router.register('admin', () => {
-        openAdmin();
-      });
+      LFX.router.register('admin', () => { openAdmin(); });
     }
 
-    // Bind all [data-admin-open] triggers to navigate to #admin
     document.querySelectorAll('[data-admin-open]').forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -439,14 +436,21 @@
       });
     });
 
-    // Close admin on ESC → navigate home
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && adminOverlay && adminOverlay.classList.contains('open')){
-        LFX.router.navigate({ page: 'home' }, '');
+        if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
+        else closeAdminVisual();
       }
     });
   }
 
   window.LFX = window.LFX || {};
-  LFX.admin = { init, open: () => LFX.router.navigate({ page: 'admin' }, 'admin'), close: closeAdminVisual };
+  LFX.admin = {
+    init,
+    open: () => {
+      if (LFX.router) LFX.router.navigate({ page: 'admin' }, 'admin');
+      else openAdmin();
+    },
+    close: closeAdminVisual
+  };
 })();
