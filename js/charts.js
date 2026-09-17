@@ -1,5 +1,7 @@
 /**
  * LUKIE FX — Canvas Charts
+ * Only the hero candlestick chart is created.
+ * The About section chart has been removed.
  */
 (function(){
   const cssVar = LFX.cssVar;
@@ -74,7 +76,10 @@
       ctx.lineWidth = 1;
       for (let i = 0; i <= 4; i++){
         const gy = pad.t + (i / 4) * (H - pad.t - pad.b);
-        ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, gy);
+        ctx.lineTo(W, gy);
+        ctx.stroke();
       }
 
       candles.forEach((c, i) => {
@@ -83,8 +88,13 @@
         const color = bull ? cBull : cBear;
         ctx.strokeStyle = color;
         ctx.fillStyle = color;
-        ctx.beginPath(); ctx.moveTo(x, y(c.high)); ctx.lineTo(x, y(c.low));
-        ctx.lineWidth = 1.2; ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(x, y(c.high));
+        ctx.lineTo(x, y(c.low));
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
         const yo = y(c.open), yc = y(c.close);
         const top = Math.min(yo, yc);
         const hgt = Math.max(1.6, Math.abs(yc - yo));
@@ -129,15 +139,22 @@
     window.addEventListener('lfx:themechange', () => setTimeout(draw, 50));
     intervalId = setInterval(nextCandle, speed);
 
-    return { redraw: draw, resize, destroy(){ clearInterval(intervalId); } };
+    return {
+      redraw: draw,
+      resize,
+      destroy(){ clearInterval(intervalId); }
+    };
   }
 
+  /* Sparkline renderer (used by market.js) */
   function drawSparkline(canvas, points, isUp){
     if (!canvas || !points || points.length < 2) return;
     const dpr = window.devicePixelRatio || 1;
     const W = 110, H = 34;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
@@ -179,8 +196,8 @@
     createChart,
     drawSparkline,
     init(){
-      createChart('heroChart',  { count: 38, speed: 1500 });
-      createChart('aboutChart', { count: 46, speed: 1900 });
+      // Only the hero chart is initialized now.
+      createChart('heroChart', { count: 38, speed: 1500 });
     }
   };
 })();
