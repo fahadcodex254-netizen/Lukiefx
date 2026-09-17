@@ -1,10 +1,11 @@
 /* =============================================================
    LUKIE FX — admin.js
-   Handles: login, submissions viewer, close button, logout.
+   Login, submissions viewer, close button, logout button.
    ============================================================= */
 (function () {
-  const ADMIN_PASSWORD = 'Lukiefxcx5';
-  const SESSION_KEY    = 'lfx_admin_session';
+  const CFG = window.LFX_CONFIG || {};
+  const ADMIN_PASSWORD = (CFG.ADMIN && CFG.ADMIN.password) || 'Lukiefxcx5';
+  const SESSION_KEY    = (CFG.ADMIN && CFG.ADMIN.sessionKey) || 'lfx_admin_session';
 
   const $   = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g,
@@ -20,7 +21,9 @@
     login:              'Login attempt'
   };
 
-  /* ---------- submissions rendering ---------- */
+  /* -----------------------------------------------------------
+     Render submissions list
+     ----------------------------------------------------------- */
   function renderSubmissions() {
     const wrap  = $('lfxSubmissions');
     const badge = $('lfxUnreadBadge');
@@ -52,20 +55,26 @@
             `<dt>${esc(prettyKey(k))}</dt><dd>${esc(v)}</dd>`).join('')}
         </dl>
         <footer>
-          <select data-status="${item.id}">
-            ${['new','contacted','done'].map(s =>
-              `<option value="${s}" ${item.status === s ? 'selected' : ''}>${s}</option>`
-            ).join('')}
-          </select>
+          <label class="lfx-sub-status">
+            Status:
+            <select data-status="${item.id}">
+              ${['new','contacted','done'].map(s =>
+                `<option value="${s}" ${item.status === s ? 'selected' : ''}>${s}</option>`
+              ).join('')}
+            </select>
+          </label>
         </footer>
       </article>
     `).join('');
   }
 
-  /* ---------- panel open / close / logout ---------- */
+  /* -----------------------------------------------------------
+     Panel open / close / logout
+     ----------------------------------------------------------- */
   function openAdmin() {
     const panel = $('adminPanel');
     if (!panel) return;
+
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
     document.body.classList.add('lfx-admin-open');
@@ -80,9 +89,25 @@
     if (window.LFXStore) LFXStore.markAllRead();
   }
 
+  function showLogin() {
+    const panel = $('adminPanel');
+    if (!panel) return;
+
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lfx-admin-open');
+    document.body.style.overflow = 'hidden';
+
+    const loginV = $('adminLoginView');
+    const panelV = $('adminPanelView');
+    if (loginV) loginV.hidden = false;
+    if (panelV) panelV.hidden = true;
+  }
+
   function closeAdmin() {
     const panel = $('adminPanel');
     if (!panel) return;
+
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('lfx-admin-open');
@@ -114,51 +139,71 @@
     }
 
     const err = $('adminLoginError');
-    if (err) err.hidden = true;
+    if (err) { err.hidden = true; err.textContent = ''; }
   }
 
-  window.LFXAdmin = { openAdmin, closeAdmin, logout, renderSubmissions, SESSION_KEY };
+  /* -----------------------------------------------------------
+     Public API
+     ----------------------------------------------------------- */
+  window.LFXAdmin = {
+    openAdmin, showLogin, closeAdmin, logout,
+    renderSubmissions, SESSION_KEY
+  };
 
-  /* ---------- login handling ---------- */
+  /* -----------------------------------------------------------
+     Login submit (capture so it wins over app.js's form handler)
+     ----------------------------------------------------------- */
   document.addEventListener('submit', (e) => {
     if (e.target.id !== 'adminLoginForm') return;
     e.preventDefault();
+    e.stopPropagation();
 
     const input = e.target.querySelector('input[type="password"]');
     const err   = $('adminLoginError');
 
     if (input && input.value === ADMIN_PASSWORD) {
       sessionStorage.setItem(SESSION_KEY, '1');
-      if (err) err.hidden = true;
+      if (err) { err.hidden = true; err.textContent = ''; }
       openAdmin();
     } else {
       if (err) {
         err.hidden = false;
         err.textContent = 'Incorrect password. Try again.';
       }
-      if (input) input.value = '';
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
     }
   }, true);
 
-  /* ---------- delegated UI events ---------- */
+  /* -----------------------------------------------------------
+     Delegated UI events
+     ----------------------------------------------------------- */
   document.addEventListener('click', (e) => {
     if (e.target.closest('[data-admin-close]')) {
       e.preventDefault();
       closeAdmin();
       return;
     }
+
     if (e.target.closest('[data-admin-logout]')) {
       e.preventDefault();
       logout();
       return;
     }
+
     const del = e.target.closest('[data-del]');
-    if (del && window.LFXStore) LFXStore.remove(del.dataset.del);
+    if (del && window.LFXStore) {
+      LFXStore.remove(del.dataset.del);
+    }
   });
 
   document.addEventListener('change', (e) => {
     const sel = e.target.closest('[data-status]');
-    if (sel && window.LFXStore) LFXStore.setStatus(sel.dataset.status, sel.value);
+    if (sel && window.LFXStore) {
+      LFXStore.setStatus(sel.dataset.status, sel.value);
+    }
   });
 
   document.addEventListener('keydown', (e) => {
@@ -170,7 +215,9 @@
 
   window.addEventListener('lfx:submissions-changed', renderSubmissions);
 
-  /* ---------- auto-open if session exists ---------- */
+  /* -----------------------------------------------------------
+     Auto-open if session already exists
+     ----------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem(SESSION_KEY)) {
       openAdmin();
