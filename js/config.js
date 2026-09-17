@@ -13,7 +13,7 @@ LFX.CONFIG = {
   /* === COMPANY === */
   COMPANY_NAME:       'LUKIE FX',
   COMPANY_ADDRESS:    'Nairobi, Kenya',
-  REGULATORY_LICENSE: 'LFX-KE-2026-001',   /* ⚠️ Replace with your real license number when issued */
+  REGULATORY_LICENSE: '',                    /* Leave empty until you have a real license */
   SUPPORT_HOURS:      'Monday – Friday · 24 hours',
   EFFECTIVE_DATE:     'September 17, 2026',
 
