@@ -1,5 +1,7 @@
 /**
  * LUKIE FX — Navigation
+ * Handles sticky nav, scroll progress, mobile menu, active link tracking,
+ * AND routes all anchor clicks through the router so back/forward work.
  */
 (function(){
   const $  = LFX.$;
@@ -21,7 +23,11 @@
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    if (toTop) toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    if (toTop) toTop.addEventListener('click', () => {
+      // Route to home / top — this also closes any overlay
+      LFX.router.navigate({ page: 'home' }, '');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     onScroll();
   }
 
@@ -58,17 +64,28 @@
     });
   }
 
+  /**
+   * Anchor links (#about, #tools, etc.) go through the router so that
+   * pressing the browser back button after clicking them returns
+   * to the previous anchor correctly.
+   */
   function initSmoothAnchors(){
     $$('a[href^="#"]').forEach(link => {
       link.addEventListener('click', e => {
         const id = link.getAttribute('href');
         if (id === '#' || id.length < 2) return;
-        if (link.dataset.action || link.dataset.page) return;
-        const target = document.querySelector(id);
-        if (!target) return;
+
+        // Skip links handled by the router / other modules
+        if (link.dataset.action || link.dataset.page || link.dataset.adminOpen) return;
+
+        // Skip route-based hashes (services, legal, etc.) — those are
+        // handled by the router via data attributes elsewhere.
+        const hash = id.slice(1);
+        if (hash.startsWith('service/') || hash.startsWith('legal/')) return;
+        if (hash === 'register' || hash === 'login' || hash === 'admin') return;
+
         e.preventDefault();
-        const top = target.getBoundingClientRect().top + window.scrollY - 84;
-        window.scrollTo({ top, behavior: 'smooth' });
+        LFX.router.navigate({ page: 'anchor', id: hash }, hash);
       });
     });
   }
@@ -81,13 +98,6 @@
     if (y) y.textContent = new Date().getFullYear();
   }
 
-  function initDismissNotice(){
-    const btn = document.querySelector('[data-dismiss-notice]');
-    const notice = document.getElementById('configNotice');
-    if (!btn || !notice) return;
-    btn.addEventListener('click', () => notice.classList.add('hidden'));
-  }
-
   window.LFX = window.LFX || {};
   LFX.nav = {
     init(){
@@ -95,7 +105,6 @@
       initMobileMenu();
       initSmoothAnchors();
       initPreloaderAndYear();
-      initDismissNotice();
     }
   };
 })();
