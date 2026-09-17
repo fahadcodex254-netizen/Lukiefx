@@ -1,170 +1,90 @@
-/**
- * LUKIE FX — Bootstrap
- */
-(function(){
+/* =============================================================
+   LUKIE FX — app.js
+   Handles: preloader, navigation, theme, form submission.
+   ============================================================= */
 
-  function startPreloaderChart(){
-    const canvas = document.getElementById('preloaderChart');
-    if (!canvas) return () => {};
-    const ctx = canvas.getContext('2d');
-    let W = 0, H = 0, dpr = 1;
-    let candles = [];
-    let animationId = null;
-    let running = true;
-    const SPACING = 34;
-    const MAX_CANDLES = 80;
+/* ---------- 1. FORM SUBMISSION (no WhatsApp redirect) ---------- */
+document.addEventListener('submit', (e) => {
+  const form = e.target.closest('[data-lfx-form]');
+  if (!form) return;
 
-    function resize(){
-      dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      W = rect.width; H = rect.height;
-      canvas.width = W * dpr; canvas.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    function newCandle(prevClose){
-      const drift = (Math.random() - 0.47) * 5;
-      const open = prevClose, close = open + drift;
-      const high = Math.max(open, close) + Math.random() * 4;
-      const low  = Math.min(open, close) - Math.random() * 4;
-      return { open, close, high, low, x: 0 };
-    }
-    function seedCandles(){
-      candles = []; let price = 100;
-      for (let i = 0; i < MAX_CANDLES; i++){
-        const c = newCandle(price);
-        c.x = i * SPACING;
-        candles.push(c);
-        price = c.close;
-      }
-    }
-    function shiftAndAppend(){
-      candles.forEach(c => { c.x -= 0.6; });
-      while (candles.length && candles[0].x < -SPACING * 2) candles.shift();
-      const last = candles[candles.length - 1];
-      const next = newCandle(last ? last.close : 100);
-      next.x = (last ? last.x : 0) + SPACING;
-      candles.push(next);
-    }
-    function draw(){
-      if (!running) return;
-      ctx.clearRect(0, 0, W, H);
-      const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-      const cBull = cssVar('--green') || '#22c55e';
-      const cBear = cssVar('--red') || '#f43f5e';
-      const cAccent = cssVar('--gold') || '#3b82f6';
-      let min = Infinity, max = -Infinity;
-      candles.forEach(c => { min = Math.min(min, c.low); max = Math.max(max, c.high); });
-      const range = max - min || 1;
-      const padY = 60, usableH = H - padY * 2;
-      const y = v => padY + (1 - (v - min) / range) * usableH;
+  e.preventDefault();
+  e.stopPropagation();
 
-      ctx.strokeStyle = 'rgba(255,255,255,.04)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i <= 8; i++){
-        const gy = padY + (i / 8) * usableH;
-        ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
-      }
-      for (let x = 0; x < W; x += SPACING * 4){
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-      }
-      const bodyW = SPACING * 0.55;
-      candles.forEach(c => {
-        if (c.x < -SPACING * 3 || c.x > W + SPACING * 3) return;
-        const bull = c.close >= c.open;
-        const color = bull ? cBull : cBear;
-        ctx.strokeStyle = color; ctx.fillStyle = color; ctx.globalAlpha = 0.85;
-        ctx.beginPath(); ctx.moveTo(c.x, y(c.high)); ctx.lineTo(c.x, y(c.low));
-        ctx.lineWidth = 1.4; ctx.stroke();
-        const top = Math.min(y(c.open), y(c.close));
-        const hgt = Math.max(2, Math.abs(y(c.close) - y(c.open)));
-        ctx.fillRect(c.x - bodyW / 2, top, bodyW, hgt);
-      });
-      ctx.globalAlpha = 1;
-      const grd = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W, H) * 0.6);
-      grd.addColorStop(0, 'rgba(0,0,0,0)');
-      grd.addColorStop(1, 'rgba(0,0,0,.55)');
-      ctx.fillStyle = grd; ctx.fillRect(0, 0, W, H);
-      ctx.globalAlpha = 0.4; ctx.strokeStyle = cAccent; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(0, padY - 12); ctx.lineTo(W, padY - 12); ctx.stroke();
-      ctx.globalAlpha = 1;
-    }
-    let fc = 0;
-    function loop(){
-      if (!running) return;
-      fc++; if (fc % 4 === 0) shiftAndAppend();
-      draw();
-      animationId = requestAnimationFrame(loop);
-    }
-    resize(); seedCandles(); loop();
-    window.addEventListener('resize', resize);
-    window.addEventListener('lfx:themechange', () => setTimeout(draw, 40));
-    return function stop(){ running = false; if (animationId) cancelAnimationFrame(animationId); window.removeEventListener('resize', resize); };
+  const type = form.dataset.lfxForm;
+  const data = Object.fromEntries(new FormData(form).entries());
+
+  Object.keys(data).forEach(k => {
+    if (String(data[k]).trim() === '') delete data[k];
+  });
+
+  if (window.LFXStore) window.LFXStore.add(type, data);
+
+  const msg = form.querySelector('.lfx-form-msg');
+  if (msg) {
+    msg.hidden = false;
+    msg.textContent = '✅ Details received. Our team will contact you shortly.';
+    msg.className = 'lfx-form-msg lfx-form-msg--ok';
   }
 
-  function loadTicker(theme){
-    const container = document.getElementById('tickerContainer');
-    if (!container) return;
-    container.innerHTML = '<div class="tradingview-widget-container__widget"></div>';
-    const script = document.createElement('script');
-    script.type = 'text/javascript'; script.async = true;
-    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
-    script.innerHTML = JSON.stringify({
-      symbols: [
-        { proName: 'FX:EURUSD',       title: 'EUR/USD' },
-        { proName: 'FX:GBPUSD',       title: 'GBP/USD' },
-        { proName: 'FX:USDJPY',       title: 'USD/JPY' },
-        { proName: 'FX:AUDUSD',       title: 'AUD/USD' },
-        { proName: 'OANDA:XAUUSD',    title: 'XAU/USD' },
-        { proName: 'BINANCE:BTCUSDT', title: 'BTC/USD' }
-      ],
-      showSymbolLogo: true, isTransparent: true, displayMode: 'adaptive',
-      colorTheme: theme === 'light' ? 'light' : 'dark', locale: 'en'
+  form.reset();
+  setTimeout(() => { if (msg) msg.hidden = true; }, 6000);
+}, true);
+
+/* ---------- 2. PRELOADER ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    setTimeout(() => {
+      preloader.classList.add('hidden');
+      setTimeout(() => preloader.remove(), 500);
+    }, 800);
+  }
+});
+
+/* ---------- 3. MOBILE NAV TOGGLE ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.nav-toggle');
+  const nav    = document.querySelector('.main-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      nav.classList.toggle('open');
+      toggle.classList.toggle('open');
     });
-    container.appendChild(script);
+    nav.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => {
+        nav.classList.remove('open');
+        toggle.classList.remove('open');
+      })
+    );
   }
+});
 
-  function boot(){
-    const LFX = window.LFX || {};
-    try {
-      const stopPreloaderChart = startPreloaderChart();
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-      loadTicker(currentTheme);
-      window.addEventListener('lfx:themechange', (e) => loadTicker(e.detail.theme));
+/* ---------- 4. THEME TOGGLE (dark / light) ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('lfx_theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
 
-      LFX.nav?.init?.();
-      LFX.charts?.init?.();
-      LFX.market?.init?.();
-      LFX.ui?.init?.();
-      LFX.pages?.init?.();
-      LFX.tools?.init?.();
-      LFX.admin?.init?.();
-
-      // Initialize the router AFTER all modules have registered their routes
-      LFX.router?.init?.();
-
-      const hidePreloader = () => {
-        const pre = document.getElementById('preloader');
-        if (!pre) return;
-        setTimeout(() => {
-          pre.classList.add('hide');
-          if (typeof stopPreloaderChart === 'function') stopPreloaderChart();
-        }, 600);
-      };
-
-      if (document.readyState === 'complete') hidePreloader();
-      else {
-        window.addEventListener('load', hidePreloader);
-        setTimeout(hidePreloader, 4000);
-      }
-
-      console.log('%cLUKIE FX', 'color:#3b82f6;font-size:22px;font-weight:900;letter-spacing:2px');
-      console.log('%c🔙 Browser back/forward/refresh now work · 🎛️ Admin on #admin', 'color:#f5b301;font-size:12px;font-weight:700');
-    } catch(err){
-      console.error('LUKIE FX boot error:', err);
-      document.getElementById('preloader')?.classList.add('hide');
-    }
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const cur  = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('lfx_theme', next);
+    });
   }
+});
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
-})();
+/* ---------- 5. SMOOTH SCROLL FOR ANCHOR LINKS ---------- */
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href^="#"]');
+  if (!link) return;
+  const id = link.getAttribute('href');
+  if (id === '#' || id.length < 2) return;
+  const target = document.querySelector(id);
+  if (target) {
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+});
