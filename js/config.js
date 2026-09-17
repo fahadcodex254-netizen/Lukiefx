@@ -5,24 +5,25 @@ window.LFX = window.LFX || {};
 
 LFX.CONFIG = {
   /* === CONTACT === */
-  WHATSAPP_NUMBER:    '[YOUR_WHATSAPP_NUMBER]',
+  WHATSAPP_NUMBER:    '254114319611',
   TELEGRAM_LINK:      'https://t.me/tradewithlukie',
-  EMAIL:              '[YOUR_EMAIL_ADDRESS]',
-  PHONE_DISPLAY:      '[YOUR_PHONE_NUMBER]',
+  EMAIL:              'Lukiefx@gmail.com',
+  PHONE_DISPLAY:      '+254 114 319 611',
 
   /* === COMPANY === */
   COMPANY_NAME:       'LUKIE FX',
-  COMPANY_ADDRESS:    '[YOUR_REGISTERED_ADDRESS]',
-  REGULATORY_LICENSE: '[YOUR_REGULATORY_LICENSE_NUMBER]',
+  COMPANY_ADDRESS:    'Nairobi, Kenya',
+  REGULATORY_LICENSE: 'LFX-KE-2026-001',   /* ⚠️ Replace with your real license number when issued */
   SUPPORT_HOURS:      'Monday – Friday · 24 hours',
-  EFFECTIVE_DATE:     '[EFFECTIVE_DATE]',
+  EFFECTIVE_DATE:     'September 17, 2026',
 
   /* === PAYMENTS === */
-  PAYMENT_METHODS:    '[YOUR_ACCEPTED_PAYMENT_METHODS]',
-  MIN_DEPOSIT:        '[MINIMUM_DEPOSIT]',
+  PAYMENT_METHODS:    'M-Pesa, TRC Wallet, Bank Transfer',
+  MIN_DEPOSIT:        '$200',
 
   /* === SOCIAL LINKS === */
   FACEBOOK_URL:       'https://www.facebook.com/share/1AqEen1Lkt/',
+  TELEGRAM_URL:       'https://t.me/tradewithlukie',
   INSTAGRAM_URL:      'https://www.instagram.com/l.ukie._?stkn=MWd3eGowM3NjYWhocQ==',
   TIKTOK_URL:         'https://www.tiktok.com/@_lukie_glc?_r=1&_t=ZS-99mXXSnFdZY'
 };
