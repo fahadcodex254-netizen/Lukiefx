@@ -68,8 +68,8 @@
   }
   function logout(){
     try { sessionStorage.removeItem(STORAGE_AUTH); } catch(e){}
+    closeAdminVisual(); // ALWAYS close the panel first
     if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
-    else closeAdminVisual();
   }
 
   /* ============================================================
@@ -159,8 +159,8 @@
       </div>
     `;
     inner.querySelector('.admin-close').onclick = () => {
+      closeAdminVisual(); // ALWAYS close the panel first
       if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
-      else closeAdminVisual();
     };
     const form = inner.querySelector('#adminLoginForm');
     const errorEl = inner.querySelector('#adminLoginError');
@@ -208,8 +208,8 @@
     `;
 
     inner.querySelector('.admin-close').onclick = () => {
+      closeAdminVisual(); // ALWAYS close the panel first
       if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
-      else closeAdminVisual();
     };
     inner.querySelector('#adminLogoutBtn').onclick = logout;
     inner.querySelectorAll('.admin-tab').forEach(tab => {
@@ -488,8 +488,8 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && adminOverlay && adminOverlay.classList.contains('open')){
+        closeAdminVisual(); // ALWAYS close the panel first
         if (LFX.router) LFX.router.navigate({ page: 'home' }, '');
-        else closeAdminVisual();
       }
     });
   }
