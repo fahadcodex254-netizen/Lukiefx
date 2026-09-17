@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<!-- Preloader with TL monogram + captions -->
+<!-- Preloader -->
 <div id="preloader">
   <canvas id="preloaderChart"></canvas>
   <div class="preloader-content">
@@ -149,9 +149,9 @@
 <section class="hero" id="home">
   <div class="container hero-single">
     <div data-reveal>
-      <span class="eyebrow">Trusted Forex Trading Partner</span>
-      <h1>Trade Smarter.<br /><span class="grad-gold">Profit Faster.</span></h1>
-      <p class="lead">LUKIE FX gives you institutional-grade tools, real-time market intelligence and expert-guided strategies — so you can trade the world's markets with clarity and confidence.</p>
+      <span class="eyebrow" data-edit="hero.eyebrow" data-edit-label="Hero — Eyebrow Badge">Trusted Forex Trading Partner</span>
+      <h1 data-edit="hero.title" data-edit-label="Hero — Main Heading">Trade Smarter.<br /><span class="grad-gold">Profit Faster.</span></h1>
+      <p class="lead" data-edit="hero.lead" data-edit-label="Hero — Lead Paragraph">LUKIE FX gives you institutional-grade tools, real-time market intelligence and expert-guided strategies — so you can trade the world's markets with clarity and confidence.</p>
       <div class="hero-actions">
         <a href="#tools" class="btn btn-accent">
           Try Free Tools
@@ -186,8 +186,8 @@
   <div class="container">
     <div class="about-single" data-reveal="left">
       <span class="eyebrow">About LUKIE FX</span>
-      <h2>Built For Traders Who <span class="grad-gold">Refuse To Settle</span></h2>
-      <p style="color:var(--muted);margin-top:18px">LUKIE FX was founded on a simple belief: world-class trading tools shouldn't be reserved for institutions. We combine deep market research, transparent execution and hands-on mentorship to give every trader a genuine edge.</p>
+      <h2 data-edit="about.title" data-edit-label="About — Heading">Built For Traders Who <span class="grad-gold">Refuse To Settle</span></h2>
+      <p style="color:var(--muted);margin-top:18px" data-edit="about.body" data-edit-label="About — Body Text">LUKIE FX was founded on a simple belief: world-class trading tools shouldn't be reserved for institutions. We combine deep market research, transparent execution and hands-on mentorship to give every trader a genuine edge.</p>
       <ul class="about-list">
         <li><span class="check">✓</span><span><strong>Transparent Pricing</strong> — no hidden spreads, no surprise fees. Ever.</span></li>
         <li><span class="check">✓</span><span><strong>Lightning Execution</strong> — orders filled in under 30 milliseconds.</span></li>
@@ -385,7 +385,7 @@
     <div class="plans">
       <div class="plan" data-reveal>
         <h3>Starter</h3>
-        <div class="price">$49<small>/month</small></div>
+        <div class="price" data-edit="plan.starter.price" data-edit-label="Starter Plan — Price">$49<small>/month</small></div>
         <p>Perfect for traders finding their footing.</p>
         <ul>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> 3–5 signals per week</li>
@@ -393,11 +393,11 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Community chat access</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Beginner video course</li>
         </ul>
-        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Starter plan ($49/month).">Choose Starter</a>
+        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Starter plan.">Choose Starter</a>
       </div>
       <div class="plan featured" data-reveal>
         <h3>Professional</h3>
-        <div class="price">$129<small>/month</small></div>
+        <div class="price" data-edit="plan.pro.price" data-edit-label="Professional Plan — Price">$129<small>/month</small></div>
         <p>Our most popular plan for active traders.</p>
         <ul>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> 15–20 premium signals weekly</li>
@@ -406,11 +406,11 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Risk management toolkit</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Priority support</li>
         </ul>
-        <a href="#" class="btn btn-accent btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Professional plan ($129/month).">Choose Professional</a>
+        <a href="#" class="btn btn-accent btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the Professional plan.">Choose Professional</a>
       </div>
       <div class="plan" data-reveal>
         <h3>VIP Elite</h3>
-        <div class="price">$299<small>/month</small></div>
+        <div class="price" data-edit="plan.vip.price" data-edit-label="VIP Plan — Price">$299<small>/month</small></div>
         <p>Full-service support for serious capital.</p>
         <ul>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Unlimited VIP signals</li>
@@ -419,7 +419,7 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Dedicated account manager</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Funded account fast-track</li>
         </ul>
-        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the VIP Elite plan ($299/month).">Choose VIP Elite</a>
+        <a href="#" class="btn btn-ghost btn-block" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to subscribe to the VIP Elite plan.">Choose VIP Elite</a>
       </div>
     </div>
   </div>
@@ -479,8 +479,8 @@
 <section class="section section--tight">
   <div class="container">
     <div class="cta-band" data-reveal="scale">
-      <h2>Your Next Trade Could Be <span class="grad-gold">Your Best One</span></h2>
-      <p>Join thousands of traders using LUKIE FX to approach the markets with discipline, data and confidence.</p>
+      <h2 data-edit="cta.title" data-edit-label="CTA — Heading">Your Next Trade Could Be <span class="grad-gold">Your Best One</span></h2>
+      <p data-edit="cta.body" data-edit-label="CTA — Body Text">Join thousands of traders using LUKIE FX to approach the markets with discipline, data and confidence.</p>
       <div class="hero-actions">
         <a href="#" class="btn btn-accent" data-action="whatsapp" data-message="Hi LUKIE FX, I'd like to create a free account.">Get Started</a>
         <a href="https://t.me/tradewithlukie" target="_blank" rel="noopener" class="btn btn-tg">
@@ -539,15 +539,12 @@
           <a href="https://www.facebook.com/share/1AqEen1Lkt/" target="_blank" rel="noopener" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
           </a>
-
           <a href="https://www.tiktok.com/@_lukie_glc?_r=1&_t=ZS-99mXXSnFdZY" target="_blank" rel="noopener" aria-label="TikTok">
             <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
           </a>
-
           <a href="https://www.instagram.com/l.ukie._?stkn=MWd3eGowM3NjYWhocQ==" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.2A6.6 6.6 0 1018.6 12 6.6 6.6 0 0012 5.4zm0 10.9A4.3 4.3 0 1116.3 12 4.3 4.3 0 0112 16.3zm6.9-11.1a1.5 1.5 0 11-1.5-1.5 1.5 1.5 0 011.5 1.5z"/></svg>
           </a>
-
           <a href="https://t.me/tradewithlukie" target="_blank" rel="noopener" aria-label="Telegram">
             <svg viewBox="0 0 24 24"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.2-.5.4-.9.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L7.3 12.6l-4.4-1.4c-1-.3-1-1 .2-1.4l17.4-6.7c.8-.3 1.5.2 1.4 1.2z"/></svg>
           </a>
@@ -583,12 +580,15 @@
         </ul>
       </div>
     </div>
-    <div class="risk">
+    <div class="risk" data-edit="footer.risk" data-edit-label="Footer — Risk Warning">
       <strong style="color:var(--muted)">Risk Warning:</strong> Trading foreign exchange and CFDs on margin carries a high level of risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade, you should carefully consider your investment objectives, level of experience and risk appetite. You could sustain a loss of some or all of your initial investment. LUKIE FX provides educational content and market analysis only and does not provide financial advice.
     </div>
     <div class="foot-bottom">
       <span>© <span id="year"></span> LUKIE FX. All rights reserved. Registered in Nairobi, Kenya.</span>
-      <span>Built with precision for traders worldwide.</span>
+      <span>
+        Built with precision for traders worldwide.
+        · <a href="#" data-admin-open style="color:var(--accent-gold);font-weight:700;opacity:.7">Admin</a>
+      </span>
     </div>
   </div>
 </footer>
@@ -613,6 +613,7 @@
 <script src="js/pages.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/tools.js"></script>
+<script src="js/admin.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
